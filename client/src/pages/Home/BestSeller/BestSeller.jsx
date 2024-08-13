@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function BestSeller() {
-  return <div>BestSeller</div>;
+  return <div className="text-red-400">BestSeller</div>;
 }
