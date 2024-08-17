@@ -44,8 +44,7 @@ export default {
       }
   },
   plugins: [],
-<<<<<<< HEAD
-=======
+
 }
->>>>>>> KingPig
+
 };
