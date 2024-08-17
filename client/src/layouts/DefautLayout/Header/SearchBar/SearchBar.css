@@ -7,19 +7,34 @@
   /* Khi màn hình nhỏ (dưới 768px), SearchBar sẽ tách ra khỏi header */
   @media (max-width: 768px) {
     .search-container {
-      position: absolute; /* Đưa SearchBar ra khỏi dòng chảy của header */
-      top: 100%; /* Đặt dưới header */
-      left: 0; /* Căn sang trái màn hình */
-      width: 100%; /* Chiếm toàn bộ chiều rộng màn hình */
-      padding: 10px 20px; /* Thêm khoảng cách cho đẹp */
-      background-color: white; /* Nền trắng để dễ nhìn */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng bóng để nổi bật */
-      z-index: 1000; /* Đảm bảo SearchBar nằm trên tất cả các phần tử khác */
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      padding: 10px 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
     }
     
     .search-bar {
-      width: 100%; /* Chiếm toàn bộ chiều rộng container mới */
-      margin: 0 auto; /* Căn giữa */
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .search-list {
+      top: 90%;
+      left: 0;
+      width: 100%;
+      margin-left: 0;
+      position: absolute;
+    }
+    .no-results {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      text-align: center;
     }
   }
   
