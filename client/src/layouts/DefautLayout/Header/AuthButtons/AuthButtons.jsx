@@ -1,9 +1,4 @@
-import React from "react";
-<<<<<<< HEAD
 
-export default function AuthButtons() {
-  return <div>AuthButtons</div>;
-=======
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 
@@ -15,5 +10,5 @@ export default function AuthButtons() {
       <div className="cursor-pointer hover:underline">Đăng ký</div>
     </div>
   </div>;
->>>>>>> KingPig
+
 }
