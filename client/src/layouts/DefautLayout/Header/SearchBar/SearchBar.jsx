@@ -59,7 +59,7 @@ export default function SearchBar() {
       {showList && (
         <div className="search-list absolute z-[80] w-96 rounded-lg top-full ml-40">
           {dataSearch?.length > 0 ? (
-            <div className="overflow-y-auto rounded-lg h-[50vh]">
+            <div className="overflow-y-auto rounded-lg h-[50vh] bg-white">
               {dataSearch.slice(0, 5).map((i) => (
                 <div
                   key={i.id}
