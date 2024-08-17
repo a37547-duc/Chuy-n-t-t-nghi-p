@@ -6,14 +6,7 @@ import Cart from "./Cart/Cart";
 
 export default function Header() {
   return (
-<<<<<<< HEAD
-    <div className="flex">
-      <Logo></Logo>
-      <SearchBar></SearchBar>
-      <AuthButtons></AuthButtons>
-      <Cart></Cart>
-    </div>
-=======
+
     <header className="flex bg-teal-50 border-b py-4 sm:px-8 px-6 font-[sans-serif] min-h-[80px] tracking-wide relative z-50">
       <div className="flex flex-wrap items-center lg:gap-y-2 gap-4 w-full">
         <Logo></Logo>
@@ -24,6 +17,6 @@ export default function Header() {
         </div>
       </div>
     </header>
->>>>>>> KingPig
+
   );
 }
