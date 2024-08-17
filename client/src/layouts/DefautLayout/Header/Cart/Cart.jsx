@@ -1,9 +1,7 @@
 import React from "react";
 
 export default function Cart() {
-<<<<<<< HEAD
-  return <div>Cart</div>;
-=======
+
   return <div className="flex items-center lg:order-2">
     <span className="relative">
         <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" className="cursor-pointer fill-[#333] inline"
@@ -15,5 +13,5 @@ export default function Cart() {
       <span className="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
     </span>
   </div>;
->>>>>>> KingPig
+
 }
