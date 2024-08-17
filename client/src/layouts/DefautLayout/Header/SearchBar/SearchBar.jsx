@@ -1,9 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-
-export default function SearchBar() {
-  return <div>SearchBar</div>;
-=======
 import './SearchBar.css'
 export default function SearchBar() {
   return (
@@ -19,5 +14,5 @@ export default function SearchBar() {
       </div>
     </div>
   );
->>>>>>> KingPig
+
 }
