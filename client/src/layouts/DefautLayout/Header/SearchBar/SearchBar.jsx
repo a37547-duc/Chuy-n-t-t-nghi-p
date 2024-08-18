@@ -30,7 +30,7 @@ export default function SearchBar() {
 
   return (
     <div className="search-container relative">
-      <div className='search-bar flex bg-white border-2 focus-within:border-gray-500 px-6 py-3 overflow-hidden w-96 ml-40'>
+      <div className='search-bar flex bg-white border-2 focus-within:border-gray-500 px-6 py-3 overflow-hidden w-96 ml-40 rounded-md'>
         <input 
           type='text' 
           placeholder='Tìm kiếm...' 
@@ -59,13 +59,13 @@ export default function SearchBar() {
       {showList && (
         <div className="search-list absolute z-[80] w-96 rounded-lg top-full ml-40">
           {dataSearch?.length > 0 ? (
-            <div className="overflow-y-auto rounded-lg h-[50vh] bg-white">
+            <div className="overflow-y-auto rounded-lg max-h-[50vh] bg-gray-200">
               {dataSearch.slice(0, 5).map((i) => (
                 <div
                   key={i.id}
                   className="hover:cursor-pointer"
                 >
-                  <div className="flex px-4 py-2 hover:bg-gray-200">
+                  <div className="flex px-4 py-2 hover:bg-white">
                     <img
                       className="w-12 h-12 mr-2"
                       src={i.image}
@@ -75,13 +75,13 @@ export default function SearchBar() {
                 </div>
               ))}
               {dataSearch.length > 5 && (
-                <div className="px-4 py-2 text-gray-600 justify-center text-center">
+                <div className="px-4 py-2 text-gray-600 justify-center text-center hover:cursor-pointer">
                   Xem thêm {dataSearch.length - 5} sản phẩm khác
                 </div>
               )}
             </div>
           ) : (
-            <div className="no-results bg-red-200">Không tìm thấy sản phẩm</div>
+            <div className="no-results bg-red-200">Không tìm thấy sản phẩm...</div>
           )}
         </div>
       )}
