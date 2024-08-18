@@ -74,7 +74,7 @@ const Taskbar = () => {
         >
           <FontAwesomeIcon icon={item.icon} className="mr-2" />
           {item.title}
-          <FontAwesomeIcon icon={faGreaterThan} className="ml-auto" />
+          <FontAwesomeIcon icon={faGreaterThan} className="ml-auto" style={{ fontSize: '12px', color: 'rgba(0, 0, 0, 0.3)'}} />
         </div>
       ))}
 

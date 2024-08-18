@@ -3,13 +3,18 @@
   top: 20px;
   position: relative;
   max-width: 210px;
-  height: 376px;
-  background-color: #f0f0f0;
+  max-height: 376px;
+  height: 100%;
+  background-color: white;
   display: flex;
   flex-direction: column;
-  left: 6%;
+  /* left: 6%; */
   z-index: 10;
   size: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 12px;
+  
 }
 
 .menu-item {
@@ -28,15 +33,16 @@
 
 .submenu-container {
   position: absolute;
-  left: 210px;
+  left: 100%;
   top: 0;
   height: 376px;
   width: calc(80vw - 200px);
   background-color: #ffffff;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 20;
   display: block;
+  border-radius: 0px 5px 5px 0px;
 }
 
 .submenu {
@@ -80,5 +86,5 @@
 }
 
 .sub-submenu-item:hover {
-  background-color: #e0e0e0;
+  color: red;
 }
