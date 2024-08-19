@@ -1,7 +1,8 @@
 .taskbar {
   width: 100%;
-  top: 20px;
-  position: relative;
+  /* top: 20px; */
+  /* margin-top: 80px; */
+
   max-width: 210px;
   height: 376px;
   background-color: #f0f0f0;

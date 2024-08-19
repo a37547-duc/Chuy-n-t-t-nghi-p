@@ -2,7 +2,7 @@ import React from "react";
 import { IoIosStar } from "react-icons/io";
 export default function ProductCategory() {
   return (
-    <div className="border-2 border-rose-600 bg-white-100 w-full min-h-screen gap-6 flex-wrap flex justify-center items-center">
+    <div className=" bg-white-100 w-full min-h-screen gap-6 flex-wrap flex justify-center items-center">
       {/* card1 */}
       <div
         className="w-60 p-2 bg-white rounded-xl transition-all hover:-translate-y-2  

@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLaptop, faDesktop, faGamepad, faCogs } from '@fortawesome/free-solid-svg-icons';
-import { faGreaterThan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLaptop,
+  faDesktop,
+  faGamepad,
+  faCogs,
+} from "@fortawesome/free-solid-svg-icons";
+import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
 import "./Taskbar.css";
 
 const Taskbar = () => {
@@ -31,7 +36,10 @@ const Taskbar = () => {
           subSubItems: ["Dell", "HP", "ABC"],
         },
         { title: "Nhu cầu sử dụng", subSubItems: ["Công việc", "Giải trí"] },
-        { title: "Linh kiện", subSubItems: ["RAM", "Ổ cứng", "Card đồ họa", "Cái con cc"] },
+        {
+          title: "Linh kiện",
+          subSubItems: ["RAM", "Ổ cứng", "Card đồ họa", "Cái con cc"],
+        },
       ],
     },
     {
@@ -65,7 +73,10 @@ const Taskbar = () => {
   ];
 
   return (
-    <div className="taskbar" onMouseLeave={handleMouseLeave}>
+    <div
+      className="taskbar absolute top-0 left-0"
+      onMouseLeave={handleMouseLeave}
+    >
       {menuItems.map((item, index) => (
         <div
           key={index}
@@ -87,7 +98,11 @@ const Taskbar = () => {
                 {subItem.subSubItems && (
                   <div className="sub-submenu">
                     {subItem.subSubItems.map((subSubItem, subSubIndex) => (
-                      <a key={subSubIndex} href="#" className="sub-submenu-item">
+                      <a
+                        key={subSubIndex}
+                        href="#"
+                        className="sub-submenu-item"
+                      >
                         {subSubItem}
                       </a>
                     ))}
