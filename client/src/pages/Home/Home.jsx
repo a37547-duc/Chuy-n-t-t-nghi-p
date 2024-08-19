@@ -11,35 +11,34 @@ export default function Home() {
   return (
     <div>
       <BackgroundImage />
-      <div style={{ display: 'flex', justifyContent: 'center', margin: '0 auto' }}>
-        <div style={{ display: 'flex', width: '100%', maxWidth: '1100px', height: '420px', flexWrap: 'nowrap' }}>
-          <div style={{ width: '200px', flexShrink: 0,paddingLeft:'5px' }}>
+      <div className="flex justify-center mx-auto">
+        <div className="flex w-full max-w-[1100px] h-[420px] flex-nowrap">
+          <div className="w-[200px] flex-shrink-0 pl-[5px]">
             <TaskBar />
           </div>
-          <div style={{ flexGrow: 1, minWidth: '0', height: '100%', margin: '0 10px', overflow: 'hidden' }}>
+          <div className="flex-grow min-w-0 h-full overflow-hidden mx-[10px]">
             {/* Nội dung phần giữa */}
           </div>
-          <div style={{ width: '200px', flexShrink: 0, paddingRight:'5px' }}>
+          <div className="w-[200px] flex-shrink-0 pr-[5px]">
             <ImageRow />
           </div>
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', margin: '0 auto' }}>
-        <div style={{ width: '100%', maxWidth: '1100px', height: '136px' }}>
+      <div className="flex justify-center mx-auto">
+        <div className="w-full max-w-[1100px] h-[136px]">
           <ImageColumn />
         </div>
       </div>
-      <div style={{marginTop:'50px', marginBottom:'20px'}}>
-        <div style={{maxWidth:'1100px', margin:'0 auto'}}>
+      <div className="mt-[50px] mb-[20px]">
+        <div className="max-w-[1100px] mx-auto">
           <div>
-            <h2 style={{fontSize:'24px', fontWeight:'700', margin:'20px 10px'}}>Laptop - Máy tính xách tay</h2>
+            <h2 className="text-[24px] font-bold my-[20px] mx-[10px]">Laptop - Máy tính xách tay</h2>
           </div>
           <div>
             <LogonButton />
           </div>
         </div>
       </div>
-      
       <ProductCategory />
       <BestSeller />
       <Carousel />

@@ -12,12 +12,24 @@ const Taskbar = () => {
   };
 
   const handleMouseLeave = (event) => {
-    // Check if the mouse has left both the taskbar and submenu
     if (
       event.relatedTarget &&
       !event.currentTarget.contains(event.relatedTarget)
     ) {
       setActiveIndex(null);
+    }
+  };
+
+  const handleMouseOver = (event) => {
+    const target = event.target;
+    if (target.classList.contains('menu-item') && activeIndex !== null) {
+      const rect = target.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+        const submenu = document.querySelector('.submenu-container');
+        if (!submenu.contains(event.relatedTarget)) {
+          setActiveIndex(null);
+        }
+      }
     }
   };
 
@@ -65,12 +77,13 @@ const Taskbar = () => {
   ];
 
   return (
-    <div className="taskbar" onMouseLeave={handleMouseLeave}>
+    <div className="taskbar w-full max-w-[210px] max-h-[376px] h-full top-[20px] relative bg-white flex flex-col z-10 rounded-md border border-[#ddd] text-[12px]" onMouseLeave={handleMouseLeave}>
       {menuItems.map((item, index) => (
         <div
           key={index}
-          className={`menu-item ${activeIndex === index ? "hover" : ""}`}
+          className={`menu-item flex items-center px-[20px] py-[10px] text-[#333] cursor-pointer transition-colors duration-300 ${activeIndex === index ? "hover" : ""}`}
           onMouseEnter={() => handleMouseEnter(index)}
+          onMouseOut={handleMouseOver}
         >
           <FontAwesomeIcon icon={item.icon} className="mr-2" />
           {item.title}
@@ -79,15 +92,15 @@ const Taskbar = () => {
       ))}
 
       {activeIndex !== null && (
-        <div className="submenu-container" onMouseLeave={handleMouseLeave}>
-          <div className="submenu">
+        <div className="submenu-container block absolute left-full top-0 h-[376px] w-[calc(80vw_-_200px)] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md" onMouseLeave={handleMouseLeave}>
+          <div className="submenu flex w-full p-2.5 justify-between">
             {menuItems[activeIndex].subItems.map((subItem, subIndex) => (
-              <div key={subIndex} className="submenu-item">
-                <div className="submenu-title">{subItem.title}</div>
+              <div key={subIndex} className="submenu-item w-full px-5 text-[#333] cursor-pointer text-left border-l border-[#ddd]">
+                <div className="submenu-title font-bold mb-2.5 text-center">{subItem.title}</div>
                 {subItem.subSubItems && (
-                  <div className="sub-submenu">
+                  <div className="sub-submenu flex flex-col w-full">
                     {subItem.subSubItems.map((subSubItem, subSubIndex) => (
-                      <a key={subSubIndex} href="#" className="sub-submenu-item">
+                      <a key={subSubIndex} href="#" className="sub-submenu-item px-[10px] py-[5px] text-[#333] no-underline whitespace-nowrap text-left hover:text-red-500">
                         {subSubItem}
                       </a>
                     ))}
