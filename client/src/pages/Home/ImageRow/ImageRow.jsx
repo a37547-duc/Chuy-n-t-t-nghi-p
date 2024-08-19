@@ -10,7 +10,7 @@ const ImageRow = () => {
       {imageUrls.map((url, index) => (
         <a
           key={index}
-          href="#" // Thay thế bằng đường dẫn đến trang mà bạn muốn liên kết
+          href="#"
           style={{
             width: '100%',
             height: '40%',

@@ -11,7 +11,7 @@ export default function ImageRow() {
           {imageUrls.map((url, index) => (
               <a
                   key={index}
-                  href="#" // Thay thế bằng đường dẫn đến trang mà bạn muốn liên kết
+                  href="#"
                   style={{
                       display: 'block',
                       width: '25%',
@@ -20,7 +20,7 @@ export default function ImageRow() {
                       position: 'relative',
                       overflow: 'hidden',
                       transition: 'transform 0.3s ease',
-                      textDecoration: 'none' // Loại bỏ gạch dưới của liên kết
+                      textDecoration: 'none'
                   }}
                   className="hover:translate-y-[-2px]"
               >

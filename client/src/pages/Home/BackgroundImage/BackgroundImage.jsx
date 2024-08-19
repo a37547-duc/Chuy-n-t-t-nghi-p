@@ -1,4 +1,4 @@
-// BackgroundImage.js
+
 import { useEffect, useState } from "react";
 import "./BackgroundImage.css";
 
