@@ -63,3 +63,21 @@ App.jsx
         - clientUtils.js
     - hooks (folder chứa các custom hook)
         - useClient.js
+
+############
+
+- pages(Folder)
+
+  - Cart (Folder) - Phúc phụ trách
+    - Cart.jsx
+  - Product (Folder)
+    - ProductDetail (Folder) - Thành phụ trách
+      -ProductDetail.jsx
+
+# TRUY CẬP ROUTER
+
+- Thành: Thêm "/product" vào đường dẫn
+- Phúc: Thêm "/cart" vào đường dẫn
+
+ví dụ: "http://localhost:5173/cart"
+"http://localhost:5173/product"
