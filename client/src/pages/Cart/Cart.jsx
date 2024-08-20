@@ -60,7 +60,7 @@ function ShoppingCart() {
   };
 
   return (
-    <div className="container mx-auto mt-20">
+    <div className="container mx-auto max-w-screen-lg w-full mt-5">
       <h1 className="text-2xl font-bold mb-5">Giỏ hàng</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="md:col-span-1">
@@ -114,7 +114,7 @@ function ShoppingCart() {
             </div>
           ))}
         </div>
-        <div className="col-span-1 border rounded-md p-4">
+        <div className="col-span-1 border rounded-md p-4 bg-gray-50 max-h-72">
           <h2 className="text-xl font-bold mb-4">Tổng đơn hàng</h2>
           <div className="flex justify-between mb-2">
             <span>Tổng</span>
