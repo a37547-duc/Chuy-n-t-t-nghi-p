@@ -27,10 +27,11 @@ export default function SearchBar() {
     };
     fetchProduct();
   }, []);
+  console.log(products);
 
   return (
     <div className="search-container relative">
-      <div className='search-bar flex bg-white border-2 focus-within:border-gray-500 px-6 py-3 overflow-hidden w-96 ml-40 rounded-md'>
+      <div className='search-bar flex bg-white border-2 focus-within:border-gray-500 px-6 py-3 overflow-hidden w-96 rounded-md'>
         <input 
           type='text' 
           placeholder='Tìm kiếm...' 
@@ -57,7 +58,7 @@ export default function SearchBar() {
         </svg>
       </div>
       {showList && (
-        <div className="search-list absolute z-[80] w-96 rounded-lg top-full ml-40">
+        <div className="search-list absolute z-[80] w-96 rounded-lg top-full">
           {dataSearch?.length > 0 ? (
             <div className="overflow-y-auto rounded-lg max-h-[50vh] bg-gray-200">
               {dataSearch.slice(0, 5).map((i) => (
