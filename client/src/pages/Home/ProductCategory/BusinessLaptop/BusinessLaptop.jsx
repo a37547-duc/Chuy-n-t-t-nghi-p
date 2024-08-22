@@ -1,12 +1,20 @@
+import React from "react";
 import { IoIosStar } from "react-icons/io";
-import { Link } from "react-router-dom";
+import Slider from "react-slick";
 
-export default function ProductCategory() {
+export default function BusinessLaptop() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+  };
   return (
     <div className=" w-10/12 flex flex-col items-center  ">
       <div className="flex w-full">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
-          LAPTOP VĂN PHÒNG
+          Laptop Văn Phòng
         </h2>
       </div>
 
@@ -14,7 +22,7 @@ export default function ProductCategory() {
         {/* card1 */}
 
         <div
-          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
+          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all
     duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
@@ -68,7 +76,7 @@ export default function ProductCategory() {
         {/* card1 */}
 
         <div
-          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
+          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all
     duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
@@ -119,7 +127,7 @@ export default function ProductCategory() {
           </div>
         </div>
         <div
-          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
+          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all
     duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
@@ -170,7 +178,7 @@ export default function ProductCategory() {
           </div>
         </div>
         <div
-          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
+          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all
     duration-300 shadow-lg hover:shadow-2xl lg:mt-0 max-h-[500px] group "
         >
           <img
@@ -221,7 +229,7 @@ export default function ProductCategory() {
           </div>
         </div>
         <div
-          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
+          className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all
     duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
