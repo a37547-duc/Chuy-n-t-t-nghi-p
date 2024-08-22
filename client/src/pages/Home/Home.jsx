@@ -21,9 +21,7 @@ export default function Home() {
           <ImageColumn />
         </div>
       </div>
-
       <LogonButton />
-
       <BusinessLaptop></BusinessLaptop>
       <GamingLaptop></GamingLaptop>
       <PcFlex></PcFlex>

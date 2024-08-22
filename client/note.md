@@ -81,3 +81,18 @@ App.jsx
 
 ví dụ: "http://localhost:5173/cart"
 "http://localhost:5173/product"
+
+# TRUY CẬP ROUTER PHẦN 2
+
+- THÀNH: thêm "/collections" vào đường dẫn
+- PHÚC: thêm "/checkouts" vào đường dẫn
+
+- Collections (Folder) (Thành phụ trách)
+
+  - CollectionsData (Folder)
+    - CollectionsData.jsx
+  - SideBarCollections (Folder)
+    - SideBarCollections.jsx
+
+- Cart (Folder) (Phúc phụ trách)
+  - Cart.jsx
