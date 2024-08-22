@@ -7,7 +7,13 @@ import ImageColumn from "./ImageColumn/ImageColumn";
 import ImageRow from "./ImageRow/ImageRow";
 import LogonButton from "./LogoButton/LogoButton";
 
+// import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 export default function Home() {
+  // const navigate = useNavigate();
+  // const link = Link();
+
   return (
     <div>
       <BackgroundImage />
@@ -16,8 +22,13 @@ export default function Home() {
           <div className="w-[200px] flex-shrink-0 pl-[5px]">
             <TaskBar />
           </div>
-          <div className="flex-grow min-w-0 h-full overflow-hidden mx-[10px]">
-            {/* Nội dung phần giữa */}
+          <div className="flex-grow min-w-0 h-full overflow-hidden mx-[10px] z-10">
+            {/* <button onClick={() => navigate('/product')} className="btn-primary bg-[#fff]">
+              Go to Product Detail
+            </button> */}
+            <Link to="/product" className="bg-[#fff]">
+              Xem chi tiết sản phẩm
+            </Link>
           </div>
           <div className="w-[200px] flex-shrink-0 pr-[5px]">
             <ImageRow />
