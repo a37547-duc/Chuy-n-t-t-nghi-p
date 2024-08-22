@@ -8,8 +8,7 @@ export default function DefauLayout() {
     <div>
       <Header></Header>
       <main>
-        {/* <Home></Home> */}
-        <Outlet></Outlet>
+        <Home></Home>
       </main>
       <Footer></Footer>
     </div>

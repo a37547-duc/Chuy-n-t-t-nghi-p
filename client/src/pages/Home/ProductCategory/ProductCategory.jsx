@@ -1,4 +1,5 @@
 import { IoIosStar } from "react-icons/io";
+import { Link } from "react-router-dom";
 export default function ProductCategory() {
   return (
     <div className="border-2 border-rose-600 bg-white-100 w-full min-h-screen gap-6 flex-wrap flex justify-center items-center">
