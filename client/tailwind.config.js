@@ -18,16 +18,12 @@ export default {
           950: "#172554",
         },
       },
-      // backgroundImage:{
-      //   "laptop-background":"../../"
-      // },
       fontFamily: {
         body: [
           "Inter",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
-          "system-ui",
           "Segoe UI",
           "Roboto",
           "Helvetica Neue",
@@ -44,7 +40,6 @@ export default {
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
-          "system-ui",
           "Segoe UI",
           "Roboto",
           "Helvetica Neue",
@@ -57,7 +52,22 @@ export default {
           "Noto Color Emoji",
         ],
       },
+      flexGrow: {
+        2: 2,
+        3: 3,
+      },
+      flexShrink: {
+        1: 1,
+        0: 0,
+      },
+      flexBasis: {
+        0: "0%",
+        "1/3": "33.333%",
+        "2/3": "66.666%",
+        "1/4": "25%",
+        "3/4": "75%",
+      },
     },
-    plugins: [],
   },
+  plugins: [],
 };

@@ -16,8 +16,9 @@ export default function Home() {
 
           <div className="w-10/12 h-full  flex items-center justify-between">
             <TaskBar />
-            <ImageRow />
           </div>
+
+          <ImageRow />
           <ImageColumn />
         </div>
       </div>

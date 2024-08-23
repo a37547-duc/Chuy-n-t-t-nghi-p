@@ -96,3 +96,20 @@ ví dụ: "http://localhost:5173/cart"
 
 - Cart (Folder) (Phúc phụ trách)
   - Cart.jsx
+
+# TRUY CẬP ROUTER PHẦN 2
+
+- THÀNH: thêm "/collections" vào đường dẫn
+- PHÚC: thêm "/checkouts" vào đường dẫn
+
+- Collections (Folder) (Thành phụ trách)
+
+  - CollectionsData (Folder)
+    - CollectionsData.jsx
+  - SideBarCollections (Folder)
+    - SideBarCollections.jsx
+
+- Cart (Folder) (Phúc phụ trách)
+  - Cart.jsx
+
+#Thêm thư viện: npm i react-toastify
