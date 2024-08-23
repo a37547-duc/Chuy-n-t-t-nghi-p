@@ -26,8 +26,11 @@ export default function Home() {
             {/* <button onClick={() => navigate('/product')} className="btn-primary bg-[#fff]">
               Go to Product Detail
             </button> */}
-            <Link to="/product" className="bg-[#fff]">
+            <Link to="/productDetails" className="bg-[#fff]">
               Xem chi tiết sản phẩm
+            </Link>
+            <Link to="/productList" className="bg-[#fff] ml-1">
+              Danh sách sản phẩm
             </Link>
           </div>
           <div className="w-[200px] flex-shrink-0 pr-[5px]">
