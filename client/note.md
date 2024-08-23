@@ -81,3 +81,5 @@ App.jsx
 
 ví dụ: "http://localhost:5173/cart"
 "http://localhost:5173/product"
+
+#Thêm thư viện: npm i react-toastify

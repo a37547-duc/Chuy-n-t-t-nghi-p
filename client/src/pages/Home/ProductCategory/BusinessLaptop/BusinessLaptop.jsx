@@ -1,6 +1,5 @@
 import React from "react";
 import { IoIosStar } from "react-icons/io";
-import Slider from "react-slick";
 
 export default function BusinessLaptop() {
   const settings = {
