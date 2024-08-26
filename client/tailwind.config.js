@@ -18,6 +18,9 @@ export default {
           "950": "#172554"
         }
       },
+      // backgroundImage:{
+      //   "laptop-background":"../../"
+      // },
       fontFamily: {
         body: [
           'Inter', 
