@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faShoppingCart } from '@fortawesome/free-solid-svg-icons'; // Import các icon
+import { faPlus, faMinus, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 function ShoppingCart() {
   const [items, setItems] = useState([
@@ -110,9 +110,9 @@ function ShoppingCart() {
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="relative border rounded-md p-4 mb-4 grid grid-cols-3 gap-4"
+                    className="border rounded-md p-4 mb-4 flex justify-between items-start"
                   >
-                    <div className="flex col-span-2">
+                    <div className="flex">
                       <img
                         src={`https://via.placeholder.com/100?text=${item.name}`}
                         alt={item.name}
@@ -126,10 +126,11 @@ function ShoppingCart() {
                         <p className="text-sm font-bold">${item.price.toFixed(2)}</p>
                       </div>
                     </div>
+
                     <div className="flex flex-col justify-between">
                       <div className="flex items-center">
                         <span className="mr-2 text-sm">Số lượng:</span>
-                        <div className="flex items-center border rounded-lg overflow-hidden bg-gray-50">
+                        <div className="flex items-center border rounded-lg bg-gray-50">
                           <button
                             onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                             className="bg-transparent px-1 py-1 text-gray-700 hover:text-gray-900 text-xs"
@@ -151,15 +152,17 @@ function ShoppingCart() {
                           </button>
                         </div>
                       </div>
+
                       <div className="mt-4">
                         <span className="text-sm font-bold">
                           Thành tiền: ${(item.price * item.quantity).toFixed(2)}
                         </span>
                       </div>
                     </div>
+
                     <button
                       onClick={() => handleRemoveItem(item.id)}
-                      className="absolute top-4 right-4 text-red-500 hover:text-red-700"
+                      className="text-red-500 hover:text-red-700 ml-4"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

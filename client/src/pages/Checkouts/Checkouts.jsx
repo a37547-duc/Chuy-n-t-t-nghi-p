@@ -179,26 +179,30 @@ function Checkout() {
 
             <div className="bg-white p-6 shadow rounded-lg">
               <h2 className="text-lg font-semibold mb-4">Thông tin giao hàng</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  placeholder="Tên"
-                  className="p-2 border rounded-md"
-                />
-                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
-                
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  placeholder="Họ"
-                  className="p-2 border rounded-md"
-                />
-                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+              <div className="flex flex-wrap gap-4">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    placeholder="Tên"
+                    className="w-full p-2 border rounded-md"
+                  />
+                  {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+                </div>
+
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    placeholder="Họ"
+                    className="w-full p-2 border rounded-md"
+                  />
+                  {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                </div>
               </div>
               <input
                 type="text"
@@ -210,68 +214,74 @@ function Checkout() {
               />
               {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
 
-              <div className="grid grid-cols-3 gap-4 mt-4">
-                <select
-                  name="province"
-                  className="p-2 border rounded-md col-span-1 order-0"
-                  value={selectedProvince}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedProvince(value);
-                    setFormData((prevData) => ({ ...prevData, province: value }));
-                    setSelectedDistrict(''); 
-                    setWards([]);
-                  }}
-                >
-                  <option value="">Chọn Tỉnh / Thành phố</option>
-                  {provinces.map(province => (
-                    <option key={province.code} value={province.code}>
-                      {province.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.province && <p className="text-red-500 text-sm">{errors.province}</p>}
+              <div className="flex flex-wrap gap-4 mt-4">
+                <div className="flex-1">
+                  <select
+                    name="province"
+                    className="w-full p-2 border rounded-md"
+                    value={selectedProvince}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSelectedProvince(value);
+                      setFormData((prevData) => ({ ...prevData, province: value }));
+                      setSelectedDistrict(''); 
+                      setWards([]);
+                    }}
+                  >
+                    <option value="">Chọn Tỉnh / Thành phố</option>
+                    {provinces.map(province => (
+                      <option key={province.code} value={province.code}>
+                        {province.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.province && <p className="text-red-500 text-sm">{errors.province}</p>}
+                </div>
 
-                <select
-                  name="district"
-                  className="p-2 border rounded-md"
-                  value={selectedDistrict}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedDistrict(value);
-                    setFormData((prevData) => ({ ...prevData, district: value }));
-                    setSelectedWard(''); // Reset ward when district changes
-                  }}
-                  disabled={!selectedProvince}
-                >
-                  <option value="">Chọn Quận / Huyện</option>
-                  {districts.map(district => (
-                    <option key={district.code} value={district.code}>
-                      {district.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>}
+                <div className="flex-1">
+                  <select
+                    name="district"
+                    className="w-full p-2 border rounded-md"
+                    value={selectedDistrict}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSelectedDistrict(value);
+                      setFormData((prevData) => ({ ...prevData, district: value }));
+                      setSelectedWard('');
+                    }}
+                    disabled={!selectedProvince}
+                  >
+                    <option value="">Chọn Quận / Huyện</option>
+                    {districts.map(district => (
+                      <option key={district.code} value={district.code}>
+                        {district.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>}
+                </div>
 
-                <select
-                  name="ward"
-                  className="p-2 border rounded-md"
-                  value={selectedWard}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedWard(value);
-                    setFormData((prevData) => ({ ...prevData, ward: value }));
-                  }}
-                  disabled={!selectedDistrict}
-                >
-                  <option value="">Chọn Xã / Phường</option>
-                  {wards.map(ward => (
-                    <option key={ward.code} value={ward.code}>
-                      {ward.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.ward && <p className="text-red-500 text-sm">{errors.ward}</p>}
+                <div className="flex-1">
+                  <select
+                    name="ward"
+                    className="w-full p-2 border rounded-md"
+                    value={selectedWard}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setSelectedWard(value);
+                      setFormData((prevData) => ({ ...prevData, ward: value }));
+                    }}
+                    disabled={!selectedDistrict}
+                  >
+                    <option value="">Chọn Xã / Phường</option>
+                    {wards.map(ward => (
+                      <option key={ward.code} value={ward.code}>
+                        {ward.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.ward && <p className="text-red-500 text-sm">{errors.ward}</p>}
+                </div>
               </div>
 
               <input
@@ -319,7 +329,7 @@ function Checkout() {
           {/* Tóm tắt đơn hàng */}
           <div className="space-y-6">
             <div className="bg-white p-6 shadow rounded-lg">
-              <h2 className="text-lg font-semibold mb-4">Tóm tắt đơn hàng</h2>
+              <h2 className="text-lg font-semibold mb-4">Thông tin đơn hàng</h2>
               <div className="space-y-4">
                 {cartItems.map(item => (
                   <div key={item.id} className="flex items-center">

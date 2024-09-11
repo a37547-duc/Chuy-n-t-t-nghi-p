@@ -5,6 +5,7 @@ import {
   faDesktop,
   faGamepad,
   faCogs,
+  faComputer,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
 import "./Taskbar.css";
@@ -48,43 +49,211 @@ const Taskbar = () => {
       title: "Laptop",
       icon: faLaptop,
       subItems: [
+        { title: "Thương hiệu", subSubItems: ["Dell", "HP", "ABC"] },
+        { title: "Nhu cầu", subSubItems: ["Công việc", "Giải trí", "Gaming"] },
         {
-          title: "Thương hiệu",
-          subSubItems: ["Dell", "HP", "ABC"],
+          title: "Kích thước",
+          subSubItems: [
+            "Dưới 13 inch",
+            "13-15 inch",
+            "Trên 15 inch",
+            "Cái con cc",
+          ],
         },
-        { title: "Nhu cầu sử dụng", subSubItems: ["Công việc", "Giải trí"] },
         {
-          title: "Linh kiện",
-          subSubItems: ["RAM", "Ổ cứng", "Card đồ họa", "Cái con cc"],
+          title: "Cấu hình",
+          subSubItems: ["Core i5", "Core i7", "Core i9", "Ryzen 5", "Ryzen 7"],
         },
       ],
     },
     {
       title: "PC",
-      icon: faDesktop,
+      icon: faComputer,
       subItems: [
         { title: "Thương hiệu", subSubItems: ["Asus", "MSI", "Gigabyte"] },
         { title: "Nhu cầu sử dụng", subSubItems: ["Gaming", "Office"] },
-        { title: "Linh kiện", subSubItems: ["CPU", "GPU", "Mainboard"] },
-        { title: "Màn hình", subSubItems: ["4K", "144Hz", "UltraWide"] },
+        {
+          title: "Giá",
+          subSubItems: [
+            "Dưới 10 triệu",
+            "10-15 triệu",
+            "15-20 triệu",
+            "Trên 20 triệu",
+          ],
+        },
+        {
+          title: "Cấu hình",
+          subSubItems: ["Core i3", "Core i5", "Core i7", "Ryzen"],
+        },
+      ],
+    },
+    {
+      title: "Màn hình",
+      icon: faDesktop,
+      subItems: [
+        { title: "Thương hiệu", subSubItems: ["Asus", "MSI", "Gigabyte"] },
+        {
+          title: "Tần số quét",
+          subSubItems: [
+            "60Hz",
+            "75Hz",
+            "100Hz",
+            "120Hz",
+            "144Hz",
+            "165Hz",
+            "170Hz",
+            "180Hz",
+            "240Hz",
+          ],
+        },
+        {
+          title: "Giá",
+          subSubItems: [
+            "Dưới 3 triệu",
+            "3-5 triệu",
+            "5-10 triệu",
+            "10-15 triệu",
+            "15-20 triệu",
+            "Trên 20 triệu",
+          ],
+        },
+        {
+          title: "Kích thước",
+          subSubItems: [
+            "Dưới 19inch",
+            "24 inch",
+            "27 inch",
+            "32 inch",
+            "Trên 32 inch",
+          ],
+        },
+        {
+          title: "Độ phân giải",
+          subSubItems: ["HD", "Full HD", "2K-QHD", "4K UHD"],
+        },
+      ],
+    },
+    {
+      title: "Linh kiện máy tính",
+      icon: faGamepad,
+      subItems: [
+        {
+          title: "Thùng máy tính",
+          subSubItems: [
+            "SAMA",
+            "Phong Vũ",
+            "ASUS",
+            "GIGABYTE",
+            "DELUXE",
+            "MSI",
+            "ANTEC",
+          ],
+        },
+        {
+          title: "Card màn hình",
+          subSubItems: [
+            "ASUS",
+            "GALAX",
+            "GIGABYTE",
+            "MSI",
+            "NVIDIA",
+            "VGA GTX 1650",
+            "VGA GTX 4070",
+            "VGA GTX 4080",
+            "VGA GTX 4090",
+            "VGA GTX 3060",
+            "VGA GTX 3090",
+          ],
+        },
+        {
+          title: "Ổ cứng",
+          subSubItems: ["SSD", "HDD", "WD", "INTEL", "Samsung", "Adata"],
+        },
+        {
+          title: "CPU",
+          subSubItems: [
+            "CPU-Intel",
+            "Core i3",
+            "Core i5",
+            "Core i7",
+            "Core i9",
+            "Ryzen 3",
+            "Ryzen 5",
+            "Ryzen 7",
+            "Ryzen 9",
+          ],
+        },
+        {
+          title: "RAM",
+          subSubItems: [
+            "DDR5",
+            "DDR4",
+            "16GB",
+            "32GB",
+            "Adata",
+            "Gigabyte",
+            "Apacer",
+          ],
+        },
+      ],
+    },
+    {
+      title: "Phụ kiện",
+      icon: faCogs,
+      subItems: [
+        {
+          title: "Chuột",
+          subSubItems: [
+            "ASUS",
+            "Logitech",
+            "Razer",
+            "HyperX",
+            "Dell",
+            "Microsoft",
+            "Xiaomi",
+            "MSI",
+          ],
+        },
+        {
+          title: "Bàn phím",
+          subSubItems: [
+            "Logitech",
+            "Microsoft",
+            "Dell",
+            "MSI",
+            "HyperX",
+            "ASUS",
+            "AKKO",
+            "Razer",
+          ],
+        },
+        {
+          title: "Lót chuột",
+          subSubItems: ["Logitech", "AKKO", "ASUS", "MSI", "Hyper", "Corsair"],
+        },
+        {
+          title: "Phụ kiện Laptop",
+          subSubItems: [
+            "Balo-túi chống sốc",
+            "Dán màn hình",
+            "Sạc",
+            "Bộ cấp nguồn",
+            "Giá đỡ",
+            "Ốp lưng",
+            "Đế tản nhiệt",
+          ],
+        },
       ],
     },
     {
       title: "Gaming Gear",
       icon: faGamepad,
       subItems: [
-        { title: "Bàn phím", subSubItems: ["Cơ", "Membrane"] },
-        { title: "Chuột", subSubItems: ["Wired", "Wireless"] },
-        { title: "Tai nghe", subSubItems: ["Over-ear", "In-ear"] },
-      ],
-    },
-    {
-      title: "Thiết bị văn phòng",
-      icon: faCogs,
-      subItems: [
-        { title: "Máy in", subSubItems: ["Cơ", "Membrane"] },
-        { title: "Phần mềm", subSubItems: ["Wired", "Wireless"] },
-        { title: "Decor bàn làm việc", subSubItems: ["Over-ear", "In-ear"] },
+        { title: "Bàn phím Gaming", subSubItems: ["Cơ", "Membrane"] },
+        { title: "Chuột Gaming", subSubItems: ["Wired", "Wireless"] },
+        { title: "Tai nghe Gaming", subSubItems: ["Over-ear", "In-ear"] },
+        { title: "Ghế Gaming", subSubItems: ["Over-ear", "In-ear"] },
+        { title: "Tay cầm chơi game", subSubItems: ["Over-ear", "In-ear"] },
       ],
     },
   ];
