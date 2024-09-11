@@ -1,78 +1,122 @@
 import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function ProductList() {
-    const [brandOptions, setBrandOptions] = useState([]);
-    const [colorOptions, setColorOptions] = useState([]);
-    const [sizeOptions, setSizeOptions] = useState([]);
-    const [configOptions, setConfigOptions] = useState([]);
-    const [showMoreBrands, setShowMoreBrands] = useState(false);
-    const [showMoreColors, setShowMoreColors] = useState(false);
-    const [showMoreSizes, setShowMoreSizes] = useState(false);
-    const [showMoreConfigs, setShowMoreConfigs] = useState(false);
+    const [options, setOptions] = useState([
+        { title: 'Thương hiệu', data: [], expanded: true, showMoreClicked: false },
+        { title: 'Màu sắc', data: [], expanded: true, showMoreClicked: false },
+        { title: 'Kích thước', data: [], expanded: true, showMoreClicked: false },
+        { title: 'Cấu hình', data: [], expanded: true, showMoreClicked: false },
+    ]);
 
-    // Giả lập gọi API để lấy các tùy chọn lọc
     useEffect(() => {
-        // Thay thế bằng các gọi API thật
-        setBrandOptions(['ASUS', 'Dell', 'HP', 'Lenovo', 'Apple', 'Acer']);
-        setColorOptions(['Đỏ', 'Xanh', 'Xanh lá', 'Đen', 'Trắng']);
-        setSizeOptions(['13 inch', '14 inch', '15 inch', '17 inch']);
-        setConfigOptions(['8GB RAM', '16GB RAM', '32GB RAM', '64GB RAM']);
+        setOptions(prevOptions => prevOptions.map(option => {
+            switch (option.title) {
+                case 'Thương hiệu':
+                    return { ...option, data: ['ASUS', 'Dell', 'HP', 'Lenovo', 'Apple', 'Acer'] };
+                case 'Màu sắc':
+                    return { ...option, data: ['Đỏ', 'Xanh', 'Xanh lá', 'Đen', 'Trắng'] };
+                case 'Kích thước':
+                    return { ...option, data: ['13 inch', '14 inch', '15 inch', '17 inch'] };
+                case 'Cấu hình':
+                    return { ...option, data: ['8GB RAM', '16GB RAM', '32GB RAM', '64GB RAM'] };
+                default:
+                    return option;
+            }
+        }));
     }, []);
 
-    const renderOptions = (options, showMore, setShowMore) => {
-        const displayOptions = showMore ? options : options.slice(0, 4);
+    // Sử lý mở rộng
+    const handleToggleExpand = (title) => {
+        setOptions(prevOptions =>
+            prevOptions.map(option =>
+                option.title === title
+                    ? { ...option, expanded: !option.expanded }
+                    : option
+            )
+        );
+    };
+
+    // Sử lý xem thêm
+    const handleShowMore = (title) => {
+        setOptions(prevOptions =>
+            prevOptions.map(option =>
+                option.title === title
+                    ? { ...option, showMoreClicked: true }
+                    : option
+            )
+        );
+    };
+
+    // Sử lý các tùy chọn
+    const renderOptions = (data, expanded, showMoreClicked, title) => {
+        if (!expanded) {
+            return null;
+        }
+
+        const visibleOptions = showMoreClicked ? data : data.slice(0, 4);
+
         return (
-            <div className="px-2">
-                <div className="grid grid-cols-2 gap-2">
-                    {displayOptions.map((option, index) => (
+            <div className="px-2 mt-3">
+                <div className="flex flex-col overflow-hidden gap-1">
+                    {visibleOptions.map((option, index) => (
                         <label key={index} className="flex items-center">
                             <input type="checkbox" className="mr-2" />
                             {option}
                         </label>
                     ))}
                 </div>
-                {options.length > 4 && (
-                    <button 
-                        className="text-blue-500 text-sm mt-2" 
-                        onClick={() => setShowMore(!showMore)}>
-                        {showMore ? 'Thu gọn' : 'Xem thêm'}
-                    </button>
+                {!showMoreClicked && data.length > 4 && (
+                    <div className="mt-2">
+                        <button
+                            className="text-blue-500 text-sm"
+                            onClick={() => handleShowMore(title)}
+                        >
+                            Xem thêm...
+                        </button>
+                    </div>
                 )}
             </div>
         );
     };
-  return (
-    <div className="bg-[#F5F5F5]">
-        <div className="flex justify-center mx-auto">
-            <div className="flex w-full max-w-[1100px] h-420px flex-nowrap my-6 p-6 ">
-                <div className="w-[20%] flex-shrink-0 pl-[5px] bg-white rounded">
-                    <div className="px-2">
-                    <div className="space-y-4">
-            <div>
-                <h3 className="font-bold text-lg">Thương hiệu</h3>
-                {renderOptions(brandOptions, showMoreBrands, setShowMoreBrands)}
-            </div>
-            <div>
-                <h3 className="font-bold text-lg">Màu sắc</h3>
-                {renderOptions(colorOptions, showMoreColors, setShowMoreColors)}
-            </div>
-            <div>
-                <h3 className="font-bold text-lg">Kích thước</h3>
-                {renderOptions(sizeOptions, showMoreSizes, setShowMoreSizes)}
-            </div>
-            <div>
-                <h3 className="font-bold text-lg">Cấu hình</h3>
-                {renderOptions(configOptions, showMoreConfigs, setShowMoreConfigs)}
-            </div>
-        </div>
+
+    return (
+        <div className="bg-[#F5F5F5]">
+            <div className="flex justify-center mx-auto">
+                <div className="flex w-full max-w-[1100px] h-420px flex-nowrap my-6 p-6">
+                    <div className="w-[20%] flex-shrink-0 pl-[5px] bg-white rounded overflow-y-auto">
+                        <div className="px-2">
+                            <div className="p-3 flex flex-col text-[13px]">
+                                {options.map((option, index) => (
+                                    <div key={index} className='box-border'>
+                                        <div
+                                            className='flex items-center h-6 select-none justify-between cursor-pointer'
+                                            onClick={() => handleToggleExpand(option.title)}
+                                        >
+                                            <div className="overflow-hidden font-bold leading-6">{option.title}</div>
+                                            <FontAwesomeIcon
+                                                className={`transition duration-200 ml-auto ${option.expanded ? 'rotate-180' : ''}`}
+                                                icon={faChevronDown}
+                                            />
+                                        </div>
+                                        {renderOptions(option.data, option.expanded, option.showMoreClicked, option.title)}
+                                        {index < options.length - 1 && (
+                                            <div className='py-3'>
+                                                <div className='dashs border-t border-dashed border-[#E4E5F0] w-full'></div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="w-[80%] flex-grow min-w-0 h-full overflow-hidden mx-[10px] bg-white rounded">
+                        Alo
                     </div>
                 </div>
-
-                <div className="w-[80%] flex-grow min-w-0 h-full overflow-hidden mx-[10px] bg-white rounded">
-                    Alo
-                </div>
             </div>
         </div>
-    </div>
-  );
+    );
 }
