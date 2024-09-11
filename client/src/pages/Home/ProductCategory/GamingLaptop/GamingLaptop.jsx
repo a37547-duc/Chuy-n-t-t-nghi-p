@@ -1,14 +1,9 @@
 import { IoIosStar } from "react-icons/io";
-// eslint-disable-next-line no-unused-vars
-import { Link } from "react-router-dom";
-
-export default function ProductCategory() {
+export default function GamingLaptop() {
   return (
     <div className=" w-10/12 flex flex-col items-center  ">
       <div className="flex w-full">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
-          LAPTOP VĂN PHÒNG
-        </h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">Gaming Laptop</h2>
       </div>
 
       <div className=" rounded-xl bg-sky-200 bg-white-100  w-full h-full gap-1.5 flex-wrap flex items-center justify-center">

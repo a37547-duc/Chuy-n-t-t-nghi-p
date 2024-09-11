@@ -6,6 +6,9 @@ import ProductCategory from "./ProductCategory/ProductCategory";
 import ImageColumn from "./ImageColumn/ImageColumn";
 import ImageRow from "./ImageRow/ImageRow";
 import LogonButton from "./LogoButton/LogoButton";
+import BusinessLaptop from "./ProductCategory/BusinessLaptop/BusinessLaptop";
+import GamingLaptop from "./ProductCategory/GamingLaptop/GamingLaptop";
+import PcFlex from "./ProductCategory/PcFlex/PcFlex";
 
 // import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -53,6 +56,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <BusinessLaptop></BusinessLaptop>
+      <GamingLaptop></GamingLaptop>
+      <PcFlex></PcFlex>
       <ProductCategory />
       <BestSeller />
       <Carousel />

@@ -1,13 +1,10 @@
 import { IoIosStar } from "react-icons/io";
-// eslint-disable-next-line no-unused-vars
-import { Link } from "react-router-dom";
-
-export default function ProductCategory() {
+export default function PcFlex() {
   return (
     <div className=" w-10/12 flex flex-col items-center  ">
       <div className="flex w-full">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
-          LAPTOP VĂN PHÒNG
+          PC Đa Dụng - Gaming Esport - Văn Phòng
         </h2>
       </div>
 
@@ -16,7 +13,7 @@ export default function ProductCategory() {
 
         <div
           className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
-    duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
+duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
             src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_1__1_8.png"
@@ -70,7 +67,7 @@ export default function ProductCategory() {
 
         <div
           className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
-    duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
+duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
             src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_1__1_8.png"
@@ -121,7 +118,7 @@ export default function ProductCategory() {
         </div>
         <div
           className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
-    duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
+duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
             src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_1__1_8.png"
@@ -172,7 +169,7 @@ export default function ProductCategory() {
         </div>
         <div
           className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
-    duration-300 shadow-lg hover:shadow-2xl lg:mt-0 max-h-[500px] group "
+duration-300 shadow-lg hover:shadow-2xl lg:mt-0 max-h-[500px] group "
         >
           <img
             src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_1__1_8.png"
@@ -223,7 +220,7 @@ export default function ProductCategory() {
         </div>
         <div
           className=" flex gap-4 flex-col items-center w-60 p-2 bg-white rounded-xl transition-all  
-    duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
+duration-300 shadow-lg hover:shadow-2xl  lg:mt-0 max-h-[500px] group "
         >
           <img
             src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_1__1_8.png"
