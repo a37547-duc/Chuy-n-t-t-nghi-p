@@ -9,7 +9,7 @@ import Cart from "./pages/Cart/Cart";
 import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
 import Admin from "./pages/Admin/Admin";
-
+import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -44,7 +44,13 @@ const router = createBrowserRouter([
   {
     path: "admin",
     element: <Admin></Admin>,
-  },
+    children: [
+      {
+        path: "products",
+        element: <ProductManagement />,
+      }
+    ]
+  }
 ]);
 
 export default router;
