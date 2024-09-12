@@ -8,6 +8,7 @@ import ProductList from "./pages/Product/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
 import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
+import Admin from "./pages/Admin/Admin";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,11 @@ const router = createBrowserRouter([
   {
     path: "checkouts",
     element: <Checkouts></Checkouts>,
+  },
+
+  {
+    path: "admin",
+    element: <Admin></Admin>,
   },
 ]);
 
