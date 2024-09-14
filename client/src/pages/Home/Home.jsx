@@ -59,11 +59,11 @@ export default function Home() {
       <div className="mt-[50px] mb-[20px]">
         <div className="max-w-[1100px] mx-auto">
         <BusinessLaptop />
-      <GamingLaptop />
-      <PcFlex />
-      <ProductCategory />
-      <BestSeller />
-      <Carousel />
+        <GamingLaptop />
+        <PcFlex />
+        <ProductCategory />
+        <BestSeller />
+        <Carousel />
         </div>
       </div>
       

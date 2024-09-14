@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function ProductCategory() {
   return (
-    <div className=" w-10/12 flex flex-col items-center  ">
+    <div className=" flex flex-col items-center  ">
       <div className="flex w-full">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           LAPTOP VĂN PHÒNG
