@@ -70,29 +70,3 @@ export default function Home() {
     </div>
   );
 }
-
-// export default function Home() {
-//   return (
-//     <div>
-//       <BackgroundImage />
-//       <div style={{ width: '80%', height: '430px', display: 'flex', justifyContent: 'center', textAlign: 'center', margin: '0 auto' }}>
-//         <div style={{ width: '200px'}}>
-//           <TaskBar />
-//         </div>
-//         <div style={{ flexGrow: 1, height: '100%', margin: '0 10px' }}>
-//           {/* Thêm nội dung cho phần giữa ở đây */}
-//         </div>
-//         <div style={{ width: '200px'}}>
-//           <ImageRow />
-//         </div>
-//       </div>
-//       <div style={{display: 'flex', width: '80%', height:'100px', margin:'0 auto'}}>
-//         <ImageColumn />
-//       </div>
-//       <ProductCategory />
-//       <BestSeller />
-//       <Carousel />
-      
-//     </div>
-//   );
-// }
