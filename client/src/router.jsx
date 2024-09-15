@@ -6,7 +6,10 @@ import Root from "./pages/Root";
 import ProductDetail from "./pages/Product/ProductDetail/ProductDetail";
 import ProductList from "./pages/Product/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
-
+import Checkouts from "./pages/Checkouts/Checkouts";
+import Collections from "./pages/Collections/Collections";
+import Admin from "./pages/Admin/Admin";
+import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,15 +20,15 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home></Home>,
         index: true,
-        // loader: teamLoader,
       },
+      ,
       {
-        path: "/productDetails",
+        path: "/products",
         element: <ProductDetail></ProductDetail>,
       },
       {
-        path: "/productList",
-        element: <ProductList></ProductList>,
+        path: "/collections",
+        element: <Collections></Collections>,
       },
       {
         path: "/cart",
@@ -33,6 +36,21 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "checkouts",
+    element: <Checkouts></Checkouts>,
+  },
+
+  {
+    path: "admin",
+    element: <Admin></Admin>,
+    children: [
+      {
+        path: "products",
+        element: <ProductManagement />,
+      }
+    ]
+  }
 ]);
 
 export default router;

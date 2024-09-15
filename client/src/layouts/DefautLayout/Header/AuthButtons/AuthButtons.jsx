@@ -9,8 +9,8 @@ export default function AuthButtons() {
         className="h-5 w-5 text-gray-800 dark:text-white mr-4"
       />
       <div className="flex flex-col text-xs mr-2">
-        <div className="cursor-pointer hover:underline">Đăng nhập</div>
-        <div className="cursor-pointer hover:underline">Đăng ký</div>
+        <div className="cursor-pointer hover:underline hover:text-red-500">Đăng nhập</div>
+        <div className="cursor-pointer hover:underline hover:text-red-500">Đăng ký</div>
       </div>
     </div>
   );

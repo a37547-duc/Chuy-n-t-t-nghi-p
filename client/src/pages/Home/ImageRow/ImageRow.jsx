@@ -1,4 +1,3 @@
-
 const ImageRow = () => {
   const imageUrls = [
     "https://lh3.googleusercontent.com/fkzJ0jxq-3RW3xfboqfIiQIc2D8Fz6pUOX1P8AkthdpajzRiUib6B_L9J-De1iIwqxavjFZUKZ1ZE31j0S5cMJb-RDW3N87ZJA=w300-rw",
