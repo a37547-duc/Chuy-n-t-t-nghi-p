@@ -8,8 +8,9 @@ import ProductList from "./pages/Product/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
 import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
-import Admin from "./pages/Admin/Admin";
+import AdminLayout from "./pages/Admin/AdminLayout";
 import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
+import DashBoard from "./pages/Admin/DashBoard/DashBoard";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,12 +44,17 @@ const router = createBrowserRouter([
 
   {
     path: "admin",
-    element: <Admin></Admin>,
+    element: <AdminLayout></AdminLayout>,
     children: [
+      {
+        path: "dashboard",
+        element: <DashBoard/>,
+        index: true,
+      },
       {
         path: "products",
         element: <ProductManagement />,
-      }
+      },
     ]
   }
 ]);
