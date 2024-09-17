@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
+// eslint-disable-next-line react/prop-types
 function Header({ toggleSidebar }) {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -23,8 +24,10 @@ function Header({ toggleSidebar }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
           </button>
-          <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Logo" />
-          <span className="font-bold text-lg">Admin</span>
+          <a href='/' className='flex items-center space-x-2'>
+            <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Logo" />
+            <span className="font-bold text-lg">Admin</span>
+          </a>
         </div>
 
         {/* Icons */}

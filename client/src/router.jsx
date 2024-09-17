@@ -1,6 +1,4 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Root from "./pages/Root";
 import ProductDetail from "./pages/Product/ProductDetail/ProductDetail";
@@ -10,6 +8,9 @@ import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
 import Admin from "./pages/Admin/Admin";
 import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
+import UserManagement from "./pages/Admin/UserManagement/UserManagement";
+import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
+import Account from "./pages/Account/Account";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,7 +22,6 @@ const router = createBrowserRouter([
         element: <Home></Home>,
         index: true,
       },
-      ,
       {
         path: "/products",
         element: <ProductDetail></ProductDetail>,
@@ -31,8 +31,16 @@ const router = createBrowserRouter([
         element: <Collections></Collections>,
       },
       {
+        path: "/productList",
+        element: <ProductList></ProductList>,
+      },
+      {
         path: "/cart",
         element: <Cart></Cart>,
+      },
+      {
+        path: "/account",
+        element: <Account></Account>,
       },
     ],
   },
@@ -46,9 +54,17 @@ const router = createBrowserRouter([
     element: <Admin></Admin>,
     children: [
       {
-        path: "products",
+        path: "AdminProducts",
         element: <ProductManagement />,
-      }
+      },
+      {
+        path: "AdminUsers",
+        element: <UserManagement />,
+      },
+      {
+        path: "AdminBrands",
+        element: <BrandManagement />,
+      },
     ]
   }
 ]);

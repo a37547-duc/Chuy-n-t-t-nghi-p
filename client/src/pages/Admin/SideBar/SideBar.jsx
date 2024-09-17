@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { FiInbox, FiUsers, FiPackage, FiFileText, FiLock, FiHelpCircle, FiChevronDown, FiChevronRight, FiTag, FiGrid, FiBox, FiHome } from "react-icons/fi";
+import { useState } from "react";
+import { 
+        FiInbox, FiUsers, FiPackage, FiFileText, FiLock, FiHelpCircle, FiChevronDown, 
+        FiChevronRight, FiTag, FiGrid, FiBox, FiHome 
+} from "react-icons/fi";
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [isBrandsOpen, setIsBrandsOpen] = useState(false);
@@ -31,15 +35,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       <div className="flex flex-col h-full overflow-y-auto">
         {/* Sidebar Content */}
         <nav className="mt-4 flex flex-col">
-          <ul className="space-y-2">
+          <ul className="space-y-2 hover:cursor-pointer ">
             <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
               <FiHome className="w-5 h-5" />
               <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Dashboard</span>
             </li>
-            <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
-              <FiBox className="w-5 h-5" />
-              <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Products</span>
-            </li>
+            <Link to="/admin/AdminProducts" className="flex flex-col space-x-2">
+              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+                <FiBox className="w-5 h-5" />
+                <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Products</span>
+              </li>
+            </Link>
             <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
               <FiInbox className="w-5 h-5" />
               <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Inbox</span>
@@ -48,17 +54,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               <FiPackage className="w-5 h-5" />
               {isOpen && <span>Orders</span>}
             </li>
-            <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
-              <FiUsers className="w-5 h-5" />
-              <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Users</span>
-            </li>
+            <Link to="/admin/AdminUsers" className="flex flex-col space-x-2">
+              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+                  <FiUsers className="w-5 h-5" />
+                  <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Users</span>
+              </li>
+            </Link>
             {/* Brands Menu with Submenu */}
-            <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer ${!isOpen ? 'justify-center' : ''}`} onClick={toggleBrands}>
-              <FiTag className="w-5 h-5" />
-              <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Brands</span>
-              <div className={`${!isOpen ? 'hidden' : 'ml-auto'}`}>
-              </div>
-            </li>
+            <Link to="/admin/AdminBrands" className="flex flex-col space-x-2">
+              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer ${!isOpen ? 'justify-center' : ''}`} onClick={toggleBrands}>
+                  <FiTag className="w-5 h-5" />
+                  <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Brands</span>
+                  <div className={`${!isOpen ? 'hidden' : 'ml-auto'}`}>
+                  </div>
+              </li>
+            </Link>
             {/* Categories Menu with Submenu */}
             <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer ${!isOpen ? 'justify-center' : ''}`} onClick={toggleCategories}>
               <FiGrid className="w-5 h-5" />

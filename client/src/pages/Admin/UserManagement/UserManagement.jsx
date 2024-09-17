@@ -3,74 +3,74 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
-const ProductManagement = () => {
+const UserManagement = () => {
   const [page, setPage] = useState(1);
-  const [productsPerPage] = useState(7);
+  const [usersPerPage] = useState(7);
   const [selectAll, setSelectAll] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
-  const products = [
-    { id: "1", name: "ASUS ROG Strix G15", category: "Laptop Gaming", technology: "Intel Core i7, 16GB RAM, 512GB SSD", price: "$1499" },
-    { id: "2", name: "Dell XPS 13", category: "Ultrabook", technology: "Intel Core i5, 8GB RAM, 256GB SSD", price: "$1299" },
-    { id: "3", name: "Acer Nitro 5", category: "Laptop Gaming", technology: "AMD Ryzen 5, 16GB RAM, 1TB HDD", price: "$999" },
-    { id: "4", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "5", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "6", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "7", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "8", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "9", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "10", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "11", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+  const users = [
+    { id: "1", name: "Nguyễn Văn A", role: "Manage", email: "ABC@gmail.com", register:"11/11/1111", status: "Active" },
+    { id: "2", name: "Nguyễn Văn B", role: "Manage", email: "ABC@gmail.com", register:"11/11/1111", status: "InActive" },
+    { id: "3", name: "Nguyễn Văn C", role: "Client", email: "ABC@gmail.com", register:"11/11/1111", status: "Active" },
+    { id: "4", name: "Nguyễn Văn D", role: "Client", email: "ABC@gmail.com", register:"11/11/1111", status: "Active" },
+    { id: "5", name: "Nguyễn Văn E", role: "Manage", email: "ABC@gmail.com", register:"11/11/1111", status: "InActive" },
+    { id: "6", name: "Nguyễn Văn F", role: "Client", email: "ABC@gmail.com", register:"11/11/1111", status: "Active" },
+    { id: "7", name: "Nguyễn Văn G", role: "Client", email: "ABC@gmail.com", register:"11/11/1111", status: "Active" },
+    { id: "8", name: "Nguyễn Văn H", role: "Manage", email: "ABC@gmail.com", register:"11/11/1111", status: "Active" },
+    { id: "9", name: "Nguyễn Văn I", role: "Client", email: "ABC@gmail.com", register:"11/11/1111", status: "Active" },
+    { id: "10", name: "Nguyễn Văn K", role: "Client", email: "ABC@gmail.com", register:"11/11/1111", status: "InActive" },
+    { id: "11", name: "Nguyễn Văn L", role: "Client", email: "ABC@gmail.com", register:"11/11/1111", status: "InActive" },
   ];
 
-  const totalProducts = products.length;
-  const totalPages = Math.ceil(totalProducts / productsPerPage);
+  const totalUsers = users.length;
+  const totalPages = Math.ceil(totalUsers / usersPerPage);
 
   const handleChange = (event, value) => {
     setPage(value);
   };
 
-  const indexOfLastProduct = page * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const indexOfLastUser = page * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   // Cập nhật trạng thái checkbox selectAll khi chuyển trang
   useEffect(() => {
-    const allSelected = currentProducts.every((product) => selectedProducts.includes(product.id));
+    const allSelected = currentUsers.every((user) => selectedUsers.includes(user.id));
     setSelectAll(allSelected);
-  }, [page, selectedProducts, currentProducts]);
+  }, [page, selectedUsers, currentUsers]);
 
   // Sử lý chọn hết checkbox
   const handleSelectAll = (e) => {
     setSelectAll(e.target.checked);
     if (e.target.checked) {
-      const allIds = currentProducts.map((product) => product.id);
-      setSelectedProducts([...selectedProducts, ...allIds.filter(id => !selectedProducts.includes(id))]);
+      const allIds = currentUsers.map((user) => user.id);
+      setSelectedUsers([...selectedUsers, ...allIds.filter(id => !selectedUsers.includes(id))]);
     } else {
-      const remainingIds = selectedProducts.filter(id => !currentProducts.some(product => product.id === id));
-      setSelectedProducts(remainingIds);
+      const remainingIds = selectedUsers.filter(id => !currentUsers.some(user => user.id === id));
+      setSelectedUsers(remainingIds);
     }
   };
 
   // Sử lý riêng lẻ checkbox
-  const handleCheckboxChange = (e, productId) => {
+  const handleCheckboxChange = (e, userId) => {
     if (e.target.checked) {
-      setSelectedProducts([...selectedProducts, productId]); // Thêm product ID danh sách chọn
+      setSelectedUsers([...selectedUsers, userId]); // Thêm user ID danh sách chọn
     } else {
-      setSelectedProducts(selectedProducts.filter((id) => id !== productId)); // Xóa product ID khỏi danh sách chọn
+      setSelectedUsers(selectedUsers.filter((id) => id !== userId)); // Xóa user ID khỏi danh sách chọn
     }
   };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold">All products</h1>
+      <h1 className="text-2xl font-bold">All Users</h1>
 
       {/* Search Bar & Add Button */}
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
           <input
             type="text"
-            placeholder="Search for products"
+            placeholder="Search for users..."
             className="flex-grow px-4 py-2 border border-gray-200 rounded-md"
           />
           <button className="ml-2 p-2 bg-gray-200 rounded-md">
@@ -86,13 +86,13 @@ const ProductManagement = () => {
           </div>
         </div>
 
-        {/* Add Product Button */}
+        {/* Add Users Button */}
         <button className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600">
-          <span className="mr-2">+ Add product</span>
+          <span className="mr-2">+ Add User</span>
         </button>
       </div>
 
-      {/* Product Table */}
+      {/* User Table */}
       <table className="table-auto w-full mt-6 bg-white shadow-md rounded-lg">
         <thead>
           <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
@@ -104,14 +104,15 @@ const ProductManagement = () => {
               />
             </th>
             <th className="p-4">id</th>
-            <th className="p-4">product name</th>
-            <th className="p-4">technology</th>
-            <th className="p-4">price</th>
+            <th className="p-4">user name</th>
+            <th className="p-4">email</th>
+            <th className="p-4">status</th>
+            <th className="p-4">Registration date</th>
             <th className="p-4">actions</th>
           </tr>
         </thead>
         <tbody>
-          {currentProducts.map((product, index) => (
+          {currentUsers.map((user, index) => (
             <tr
               key={index}
               className="border-b border-gray-200 text-gray-700 hover:bg-gray-100"
@@ -120,19 +121,20 @@ const ProductManagement = () => {
                 <input
                   type="checkbox"
                   className="form-checkbox text-blue-600 transition duration-150 ease-in-out border border-gray-300 rounded"
-                  checked={selectedProducts.includes(product.id)}
-                  onChange={(e) => handleCheckboxChange(e, product.id)}
+                  checked={selectedUsers.includes(user.id)}
+                  onChange={(e) => handleCheckboxChange(e, user.id)}
                 />
               </td>
-              <td className="p-4 text-sm">{product.id}</td>
+              <td className="p-4 text-sm">{user.id}</td>
               <td className="p-4">
                 <div className="flex flex-col">
-                  <span className="font-semibold text-sm">{product.name}</span>
-                  <span className="text-sm text-gray-500">{product.category}</span>
+                  <span className="font-semibold text-sm">{user.name}</span>
+                  <span className="text-sm text-gray-500">{user.role}</span>
                 </div>
               </td>
-              <td className="p-4 text-sm">{product.technology}</td>
-              <td className="p-4 text-sm">{product.price}</td>
+              <td className="p-4 text-sm">{user.email}</td>
+              <td className="p-4 text-sm">{user.status}</td>
+              <td className="p-4 text-sm">{user.register}</td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">
                   <button className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
@@ -165,4 +167,4 @@ const ProductManagement = () => {
   );
 };
 
-export default ProductManagement;
+export default UserManagement;
