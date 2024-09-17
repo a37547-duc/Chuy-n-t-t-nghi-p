@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faBell } from '@fortawesome/free-solid-svg-icons';
 
+// eslint-disable-next-line react/prop-types
 function Header({ toggleSidebar }) {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 

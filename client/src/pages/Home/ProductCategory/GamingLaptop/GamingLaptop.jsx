@@ -1,8 +1,7 @@
-import React from "react";
 import { IoIosStar } from "react-icons/io";
 export default function GamingLaptop() {
   return (
-    <div className=" w-10/12 flex flex-col items-center  ">
+    <div className=" flex flex-col items-center  ">
       <div className="flex w-full">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">Gaming Laptop</h2>
       </div>

@@ -1,6 +1,4 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Root from "./pages/Root";
 import ProductDetail from "./pages/Product/ProductDetail/ProductDetail";
@@ -11,6 +9,9 @@ import Collections from "./pages/Collections/Collections";
 import AdminLayout from "./pages/Admin/AdminLayout";
 import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
 import DashBoard from "./pages/Admin/DashBoard/DashBoard";
+import Account from "./pages/Account/Account"
+import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
+import UserManagement from "./pages/Admin/UserManagement/UserManagement";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,7 +23,6 @@ const router = createBrowserRouter([
         element: <Home></Home>,
         index: true,
       },
-      ,
       {
         path: "/products",
         element: <ProductDetail></ProductDetail>,
@@ -32,8 +32,16 @@ const router = createBrowserRouter([
         element: <Collections></Collections>,
       },
       {
+        path: "/productList",
+        element: <ProductList></ProductList>,
+      },
+      {
         path: "/cart",
         element: <Cart></Cart>,
+      },
+      {
+        path: "/account",
+        element: <Account></Account>,
       },
     ],
   },
@@ -55,6 +63,14 @@ const router = createBrowserRouter([
         path: "products",
         element: <ProductManagement />,
       },
+      {
+        path: "users",
+        element: <UserManagement /> ,
+      },
+      {
+        path: "brand",
+        element: <BrandManagement />,
+      }
     ]
   }
 ]);

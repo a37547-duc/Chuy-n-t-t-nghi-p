@@ -31,6 +31,8 @@ export default function ProductDetailTop() {
             setIsApplied(true);
             toast.success('Áp dụng khuyến mãi thành công', {className:'text-[15px]'});
         }
+
+        
     };
 
     return (

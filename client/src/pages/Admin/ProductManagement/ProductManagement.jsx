@@ -1,5 +1,4 @@
-// ProductManagement.js
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -15,25 +14,21 @@ const ProductManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
   const products = [
-    { id: "#194556", name: "ASUS ROG Strix G15", category: "Laptop Gaming", technology: "Intel Core i7, 16GB RAM, 512GB SSD", price: "$1499" },
-    { id: "#623232", name: "Dell XPS 13", category: "Ultrabook", technology: "Intel Core i5, 8GB RAM, 256GB SSD", price: "$1299" },
-    { id: "#746734", name: "Acer Nitro 5", category: "Laptop Gaming", technology: "AMD Ryzen 5, 16GB RAM, 1TB HDD", price: "$999" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
-    { id: "#239874", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "1", name: "ASUS ROG Strix G15", category: "Laptop Gaming", technology: "Intel Core i7, 16GB RAM, 512GB SSD", price: "$1499" },
+    { id: "2", name: "Dell XPS 13", category: "Ultrabook", technology: "Intel Core i5, 8GB RAM, 256GB SSD", price: "$1299" },
+    { id: "3", name: "Acer Nitro 5", category: "Laptop Gaming", technology: "AMD Ryzen 5, 16GB RAM, 1TB HDD", price: "$999" },
+    { id: "4", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "5", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "6", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "7", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "8", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "9", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "10", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
+    { id: "11", name: "HP Pavilion x360", category: "Laptop 2-in-1", technology: "Intel Core i3, 8GB RAM, 256GB SSD", price: "$799" },
   ];
 
   const totalProducts = products.length;
@@ -46,6 +41,33 @@ const ProductManagement = () => {
   const indexOfLastProduct = (page + 1) * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Cập nhật trạng thái checkbox selectAll khi chuyển trang
+  useEffect(() => {
+    const allSelected = currentProducts.every((product) => selectedProducts.includes(product.id));
+    setSelectAll(allSelected);
+  }, [page, selectedProducts, currentProducts]);
+
+  // Sử lý chọn hết checkbox
+  const handleSelectAll = (e) => {
+    setSelectAll(e.target.checked);
+    if (e.target.checked) {
+      const allIds = currentProducts.map((product) => product.id);
+      setSelectedProducts([...selectedProducts, ...allIds.filter(id => !selectedProducts.includes(id))]);
+    } else {
+      const remainingIds = selectedProducts.filter(id => !currentProducts.some(product => product.id === id));
+      setSelectedProducts(remainingIds);
+    }
+  };
+
+  // Sử lý riêng lẻ checkbox
+  const handleCheckboxChange = (e, productId) => {
+    if (e.target.checked) {
+      setSelectedProducts([...selectedProducts, productId]); // Thêm product ID danh sách chọn
+    } else {
+      setSelectedProducts(selectedProducts.filter((id) => id !== productId)); // Xóa product ID khỏi danh sách chọn
+    }
+  };
 
   const handleOpenAddModal = () => setIsAddModalOpen(true);
   const handleCloseAddModal = () => setIsAddModalOpen(false);
@@ -96,26 +118,32 @@ const ProductManagement = () => {
       {/* Product Table */}
       <table className="table-auto w-full mt-6 bg-white shadow-md rounded-lg">
         <thead>
-          <tr className="text-left text-xs bg-gray-200 text-gray-500">
-            {/* <th className="p-4">
-              <input type="checkbox" />
-            </th> */}
-            <th className="p-4">ID</th>
-            <th className="p-4">PRODUCT NAME</th>
-            <th className="p-4">DESCRIPTIONS </th>
-            <th className="p-4">PRICE</th>
-            <th className="p-4">ACTIONS</th>
+          <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
+            <th className="p-4">
+              <input 
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+              />
+            </th>
+            <th className="p-4">id</th>
+            <th className="p-4">product name</th>
+            <th className="p-4">technology</th>
+            <th className="p-4">price</th>
+            <th className="p-4">actions</th>
           </tr>
         </thead>
         <tbody>
           {currentProducts.map((product, index) => (
             <tr key={index} className="border-b border-gray-200 text-gray-700 hover:bg-gray-100">
-              {/* <td className="p-4">
+              <td className="p-4">
                 <input
                   type="checkbox"
                   className="form-checkbox text-blue-600 transition duration-150 ease-in-out border border-gray-300 rounded"
+                  checked={selectedProducts.includes(product.id)}
+                  onChange={(e) => handleCheckboxChange(e, product.id)}
                 />
-              </td> */}
+              </td>
               <td className="p-4 text-sm">{product.id}</td>
               <td className="p-4">
                 <div className="flex flex-col">
