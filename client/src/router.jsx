@@ -6,7 +6,7 @@ import ProductList from "./pages/Product/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
 import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
-import Admin from "./pages/Admin/Admin";
+import Admin from "./pages/Admin/AdminLayout";
 import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
 import UserManagement from "./pages/Admin/UserManagement/UserManagement";
 import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
