@@ -2,10 +2,10 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t border-blue-500 dark:border-gray-700 mt-10">
+    <footer className="bg-white dark:bg-gray-900 border-t border-blue-500 dark:border-gray-700">
       <div className="w-full">
         <div className="mx-auto max-w-screen-lg px-4">
-          <div className="grid grid-cols-2 gap-8 py-8 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-8 py-8 lg:grid-cols-4 text-sm">
             <div>
               <h2 className="mb-6 text-sm font-bold text-gray-900 uppercase dark:text-white">Sản phẩm</h2>
               <ul className="text-gray-500 dark:text-gray-400 space-y-4">

@@ -53,7 +53,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               </li>
             </Link>
             {/* Brands Menu with Submenu */}
-            <Link to="/admin/AdminBrands" className="flex flex-col space-x-2">
+            <Link to="/admin/brand" className="flex flex-col space-x-2">
               <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer ${!isOpen ? 'justify-center' : ''}`} onClick={toggleBrands}>
                   <FiTag className="w-5 h-5" />
                   <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Brands</span>

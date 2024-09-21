@@ -48,7 +48,7 @@ const ProductManagement = () => {
     setSelectAll(allSelected);
   }, [page, selectedProducts, currentProducts]);
 
-  // Sử lý chọn hết checkbox
+  // Xử lý chọn hết checkbox
   const handleSelectAll = (e) => {
     setSelectAll(e.target.checked);
     if (e.target.checked) {
@@ -60,7 +60,7 @@ const ProductManagement = () => {
     }
   };
 
-  // Sử lý riêng lẻ checkbox
+  // Xử lý riêng lẻ checkbox
   const handleCheckboxChange = (e, productId) => {
     if (e.target.checked) {
       setSelectedProducts([...selectedProducts, productId]); // Thêm product ID danh sách chọn

@@ -12,6 +12,8 @@ import DashBoard from "./pages/Admin/DashBoard/DashBoard";
 import Account from "./pages/Account/Account"
 import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
 import UserManagement from "./pages/Admin/UserManagement/UserManagement";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
         path: "/account",
         element: <Account></Account>,
       },
+      {
+        path: "/login",
+        element: <Login></Login>
+      },
+      {
+        path: "/signup",
+        element: <Signup></Signup>
+      }
     ],
   },
   {
