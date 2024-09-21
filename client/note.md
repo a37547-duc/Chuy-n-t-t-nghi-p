@@ -55,7 +55,7 @@ App.jsx
 # Các nghiệp vụ call API thì tách ra 1 service để tách biệt logic vs components
 
     - services (folder)
-        -  productService.js
+        - productService.js
         - userService.js
 
     - utils (folder - chứa các hàm hỗ trợ)
@@ -112,4 +112,6 @@ ví dụ: "http://localhost:5173/cart"
 - Cart (Folder) (Phúc phụ trách)
   - Cart.jsx
 
-#Thêm thư viện: npm i react-toastify
+#Thêm thư viện: npm i react-toastify, npm install react-paginate, npm install react-modal, npm install recharts
+
+

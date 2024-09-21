@@ -31,11 +31,10 @@ export default function SearchBar() {
     };
     fetchProduct();
   }, []);
-  console.log(products);
 
   return (
     <div className="search-container relative">
-      <div className="search-bar flex bg-white border-2 focus-within:border-gray-500 px-6 py-3 overflow-hidden w-96 rounded-md">
+      <div className="search-bar flex bg-white border-2 focus-within:border-blue-400 px-6 py-3 overflow-hidden w-96 rounded-md">
         <input
           type="text"
           placeholder="Tìm kiếm..."

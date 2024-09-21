@@ -7,32 +7,15 @@ export default function ImageRow() {
   ];
 
   return (
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', height: '100%', zIndex: '10', position: 'relative' }}>
+      <div className="flex justify-between w-full h-full z-10 relative">
           {imageUrls.map((url, index) => (
-              <a
+              <a className="block h-full w-1/4 px-2 relative overflow-hidden transition-transform duration-300 ease-linear no-underline hover:translate-y-[-2px]"
                   key={index}
                   href="#"
-                  style={{
-                      display: 'block',
-                      width: '25%',
-                      height: '100%',
-                      padding: '0px 8px',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      transition: 'transform 0.3s ease',
-                      textDecoration: 'none'
-                  }}
-                  className="hover:translate-y-[-2px]"
               >
-                  <img
-                      src={url}
-                      alt={`Image ${index + 1}`}
-                      style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'contain',
-                          display: 'block'
-                      }}
+                  <img className="block w-full h-full object-contain"
+                        src={url}
+                        alt={`Image ${index + 1}`}
                   />
               </a>
           ))}

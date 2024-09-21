@@ -348,7 +348,7 @@ function Checkout() {
               </div>
             </div>
 
-            <button type="submit" className="w-full p-3 bg-blue-500 text-white rounded-md">
+            <button type="submit" className="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-md">
               Đặt hàng
             </button>
           </div>

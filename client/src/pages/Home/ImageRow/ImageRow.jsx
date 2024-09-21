@@ -5,31 +5,15 @@ const ImageRow = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', zIndex: '9', position: 'relative' }}>
+    <div className="flex flex-col h-full relative" style={{zIndex:9}}>
       {imageUrls.map((url, index) => (
-        <a
+        <a className="w-full h-2/5 first:mb-[22px] mb-0 first:mt-[22px] mt-0 relative overflow-hidden transition-transform duration-300 ease-linear hover:translate-y-[-2px]"
           key={index}
           href="#"
-          style={{
-            width: '100%',
-            height: '40%',
-            marginBottom: index === 0 ? '22px' : '0',
-            marginTop: index === 0 ? '22px' : '0',
-            position: 'relative',
-            overflow: 'hidden',
-            transition: 'transform 0.3s ease'
-          }}
-          className="hover:translate-y-[-2px]"
         >
-          <img
+          <img className="block w-full h-full object-contain"
             src={url}
             alt={`Image ${index + 1}`}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              display: 'block'
-            }}
           />
         </a>
       ))}
