@@ -1,80 +1,53 @@
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const AddProduct = ({ onSave, onClose }) => {
-  const [newProduct, setNewProduct] = useState({
+const AddBrand = ({ onSave, onClose }) => {
+  const [newBrand, setNewBrand] = useState({
     name: "",
-    category: "",
-    technology: "",
-    price: "",
-    details: "",
-    image: null,
+    NumProduct: "",
+    description: "",
+    Logo: null,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
+    setNewBrand({ ...newBrand, [name]: value });
   };
 
   const handleFileChange = (e) => {
     const { files } = e.target;
     if (files && files.length > 0) {
-      setNewProduct({ ...newProduct, image: files[0] });
+        setNewBrand({ ...newBrand, Logo: files[0] });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(newProduct);
-    setNewProduct({ name: "", category: "", technology: "", price: "", details: "", image: null });
+    onSave(newBrand);
+    setNewBrand({ name: "", NumProduct: "", description: "", Logo: null });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="mb-4 text-xl font-semibold tracking-wide">Thêm sản phẩm mới</h2>
+      <h2 className="mb-4 text-xl font-semibold tracking-wide">Thêm thương hiệu mới</h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium">Product Name</label>
+          <label className="block text-sm font-medium">Brand Name</label>
           <input
             type="text"
             name="name"
-            value={newProduct.name}
+            value={newBrand.name}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium">Category</label>
+          <label className="block text-sm font-medium">NumProduct</label>
           <input
-            type="text"
-            name="category"
-            value={newProduct.category}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Descriptions</label>
-          <input
-            type="text"
-            name="technology"
-            value={newProduct.technology}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Price</label>
-          <input
-            type="text"
-            name="price"
-            value={newProduct.price}
+            type="number"
+            name="NumProduct"
+            value={newBrand.NumProduct}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -84,20 +57,20 @@ const AddProduct = ({ onSave, onClose }) => {
 
       <div className="grid grid-cols-1 gap-4">
         <div>
-          <label className="block text-sm font-medium">Details</label>
+          <label className="block text-sm font-medium">Description</label>
           <input
             type="text"
-            name="details"
-            value={newProduct.details}
+            name="description"
+            value={newBrand.description}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium">Product Image</label>
+          <label className="block text-sm font-medium">Brand Logo</label>
           <input
             type="file"
-            name="image"
+            name="Logo"
             onChange={handleFileChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
           />
@@ -109,7 +82,7 @@ const AddProduct = ({ onSave, onClose }) => {
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Save Product
+          Save
         </button>
         <button
           onClick={onClose}
@@ -122,4 +95,4 @@ const AddProduct = ({ onSave, onClose }) => {
   );
 };
 
-export default AddProduct;
+export default AddBrand;

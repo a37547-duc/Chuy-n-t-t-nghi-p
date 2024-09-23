@@ -100,7 +100,7 @@ const Taskbar = () => {
   ];
 
   return (
-    <div className="taskbar w-full max-w-[210px] max-h-[376px] h-full top-[20px] relative bg-white flex flex-col z-10 rounded-md border border-[#ddd] text-[12px]" onMouseLeave={handleMouseLeave}>
+    <div className="taskbar w-full max-w-[1100px] max-h-[376px] h-full top-[20px] relative bg-white flex flex-col z-10 rounded-md border border-[#ddd] text-[12px]" onMouseLeave={handleMouseLeave}>
       {menuItems.map((item, index) => (
         <div
           key={index}
@@ -115,7 +115,7 @@ const Taskbar = () => {
       ))}
 
       {activeIndex !== null && (
-        <div className="submenu-container block absolute left-full top-0 h-[376px] w-[calc(80vw_-_200px)] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md" onMouseLeave={handleMouseLeave}>
+        <div className="submenu-container block absolute left-full top-0 h-[376px] w-[900px] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md" onMouseLeave={handleMouseLeave}>
           <div className="submenu flex w-full p-2.5 justify-between">
             {menuItems[activeIndex].subItems.map((subItem, subIndex) => (
               <div key={subIndex} className="submenu-item w-full px-5 text-[#333] cursor-pointer text-left border-l border-[#ddd]">

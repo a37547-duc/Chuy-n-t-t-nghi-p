@@ -1,4 +1,3 @@
-import React from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { LineChart, Line } from 'recharts';

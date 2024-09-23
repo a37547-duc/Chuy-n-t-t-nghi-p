@@ -1,8 +1,8 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 
-// eslint-disable-next-line react/prop-types
-const AddProduct = ({ onSave, onClose }) => {
-  const [newProduct, setNewProduct] = useState({
+const UpdateUser = ({ user, onUpdate, onClose }) => {
+  const [updatedUser, setUpdatedUser] = useState({
     name: "",
     category: "",
     technology: "",
@@ -11,34 +11,48 @@ const AddProduct = ({ onSave, onClose }) => {
     image: null,
   });
 
+  useEffect(() => {
+    // Populate the form with the existing user data when the modal opens
+    if (user) {
+        setUpdatedUser({
+        name: user.name || "",
+        category: user.category || "",
+        technology: user.technology || "",
+        price: user.price || "",
+        details: user.details || "",
+        image: null, // Image should be updated via file input
+      });
+    }
+  }, [user]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
+    setUpdatedUser({ ...updatedUser, [name]: value });
   };
 
   const handleFileChange = (e) => {
     const { files } = e.target;
     if (files && files.length > 0) {
-      setNewProduct({ ...newProduct, image: files[0] });
+        setUpdatedUser({ ...updatedUser, image: files[0] });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(newProduct);
-    setNewProduct({ name: "", category: "", technology: "", price: "", details: "", image: null });
+    onUpdate(updatedUser);
+    setUpdatedUser({ name: "", category: "", technology: "", price: "", details: "", image: null });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="mb-4 text-xl font-semibold tracking-wide">Thêm sản phẩm mới</h2>
+      <h2 className="mb-4 text-xl font-semibold tracking-wide">Cập nhật người dùng <span className="font-bold">{user}</span></h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium">Product Name</label>
+          <label className="block text-sm font-medium">User Name</label>
           <input
             type="text"
             name="name"
-            value={newProduct.name}
+            value={updatedUser.name}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -49,7 +63,7 @@ const AddProduct = ({ onSave, onClose }) => {
           <input
             type="text"
             name="category"
-            value={newProduct.category}
+            value={updatedUser.category}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -63,7 +77,7 @@ const AddProduct = ({ onSave, onClose }) => {
           <input
             type="text"
             name="technology"
-            value={newProduct.technology}
+            value={updatedUser.technology}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -74,7 +88,7 @@ const AddProduct = ({ onSave, onClose }) => {
           <input
             type="text"
             name="price"
-            value={newProduct.price}
+            value={updatedUser.price}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -88,13 +102,13 @@ const AddProduct = ({ onSave, onClose }) => {
           <input
             type="text"
             name="details"
-            value={newProduct.details}
+            value={updatedUser.details}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium">Product Image</label>
+          <label className="block text-sm font-medium">User Image</label>
           <input
             type="file"
             name="image"
@@ -109,7 +123,7 @@ const AddProduct = ({ onSave, onClose }) => {
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Save Product
+          Update User
         </button>
         <button
           onClick={onClose}
@@ -122,4 +136,4 @@ const AddProduct = ({ onSave, onClose }) => {
   );
 };
 
-export default AddProduct;
+export default UpdateUser;

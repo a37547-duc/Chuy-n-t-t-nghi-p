@@ -47,7 +47,7 @@ function FormLogin() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600 py-12">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md space-y-8">
         <div>
           <h2 className="text-center text-3xl font-bold text-gray-800">Đăng nhập</h2>
@@ -98,6 +98,11 @@ function FormLogin() {
             Chưa có tài khoản?{' '}
             <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
               Đăng ký ngay
+            </Link>
+          </p>
+          <p className="text-gray-600 mt-2">
+            <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Quên mật khẩu?
             </Link>
           </p>
         </div>

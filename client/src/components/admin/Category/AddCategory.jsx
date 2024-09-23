@@ -1,11 +1,11 @@
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const AddProduct = ({ onSave, onClose }) => {
-  const [newProduct, setNewProduct] = useState({
+const AddCategory = ({ onSave, onClose }) => {
+  const [newCategory, setNewCategory] = useState({
     name: "",
     category: "",
-    technology: "",
+    description: "",
     price: "",
     details: "",
     image: null,
@@ -13,32 +13,32 @@ const AddProduct = ({ onSave, onClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
+    setNewCategory({ ...newCategory, [name]: value });
   };
 
   const handleFileChange = (e) => {
     const { files } = e.target;
     if (files && files.length > 0) {
-      setNewProduct({ ...newProduct, image: files[0] });
+        setNewCategory({ ...newCategory, image: files[0] });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(newProduct);
-    setNewProduct({ name: "", category: "", technology: "", price: "", details: "", image: null });
+    onSave(newCategory);
+    setNewCategory({ name: "", category: "", description: "", price: "", details: "", image: null });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="mb-4 text-xl font-semibold tracking-wide">Thêm sản phẩm mới</h2>
+      <h2 className="mb-4 text-xl font-semibold tracking-wide">Thêm danh mục mới</h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium">Product Name</label>
           <input
             type="text"
             name="name"
-            value={newProduct.name}
+            value={newCategory.name}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -49,7 +49,7 @@ const AddProduct = ({ onSave, onClose }) => {
           <input
             type="text"
             name="category"
-            value={newProduct.category}
+            value={newCategory.category}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -62,8 +62,8 @@ const AddProduct = ({ onSave, onClose }) => {
           <label className="block text-sm font-medium">Descriptions</label>
           <input
             type="text"
-            name="technology"
-            value={newProduct.technology}
+            name="description"
+            value={newCategory.description}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -74,7 +74,7 @@ const AddProduct = ({ onSave, onClose }) => {
           <input
             type="text"
             name="price"
-            value={newProduct.price}
+            value={newCategory.price}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
@@ -88,7 +88,7 @@ const AddProduct = ({ onSave, onClose }) => {
           <input
             type="text"
             name="details"
-            value={newProduct.details}
+            value={newCategory.details}
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
           />
@@ -109,7 +109,7 @@ const AddProduct = ({ onSave, onClose }) => {
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Save Product
+          Save
         </button>
         <button
           onClick={onClose}
@@ -122,4 +122,4 @@ const AddProduct = ({ onSave, onClose }) => {
   );
 };
 
-export default AddProduct;
+export default AddCategory;

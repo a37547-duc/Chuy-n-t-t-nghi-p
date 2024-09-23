@@ -1,8 +1,8 @@
-import React from "react";
 import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
+// eslint-disable-next-line react/prop-types
 const BasicModal = ({ isOpen, onRequestClose, children }) => {
   Modal.setAppElement("#root");
   return (
@@ -14,12 +14,12 @@ const BasicModal = ({ isOpen, onRequestClose, children }) => {
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
     >
-      <div className="bg-white rounded-lg shadow-md max-w-lg w-full p-6 relative">
+      <div className="bg-white rounded-lg shadow-md max-w-3xl w-full p-6 relative">
         <button
           onClick={onRequestClose}
           className="absolute top-2 right-2 w-7 text-red-500 hover:text-red-700 focus:outline-none bg-transparent border-none rounded-lg text-xl font-bold transition duration-200 ease-in-out transform hover:bg-gray-200"
         >
-          <FontAwesomeIcon icon={faTimes} /> {/* Thay &times; bằng icon */}
+          <FontAwesomeIcon icon={faTimes} /> 
         </button>
         {children}
       </div>

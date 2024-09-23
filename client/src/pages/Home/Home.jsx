@@ -44,13 +44,14 @@ export default function Home() {
             <Link to="checkouts" className="bg-[#fff] ml-1">
               Trang Checkouts
             </Link>
-            <Link to="./account" className="bg-[#fff] ml-1">
+            <br/>
+            <Link to="account" className="bg-[#fff] ml-1">
               Trang Account
             </Link>
           </div>
-          {/* <div className="w-[200px] flex-shrink-0 pr-[5px]">
+          <div className="w-[200px] flex-shrink-0 pr-[5px]">
             <ImageRow />
-          </div> */}
+          </div>
         </div>
       </div>
       <div className="flex justify-center mx-auto">

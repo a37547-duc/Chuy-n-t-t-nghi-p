@@ -1,12 +1,21 @@
 import { useState, useEffect  } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import ReactPaginate from "react-paginate";
+import BasicModal from "../../../components/Modal/BasicModal";
+import AddBrand from "../../../components/admin/Brands/AddBrand";
+import UpdateBrand from "../../../components/admin/Brands/UpdateBrand";
+import DeleteBrand from "../../../components/admin/Brands/DeleteBrand";
 
 const BrandManagement = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [brandsPerPage] = useState(7);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
   const brands = [
@@ -26,11 +35,11 @@ const BrandManagement = () => {
   const totalBrands = brands.length;
   const totalPages = Math.ceil(totalBrands / brandsPerPage);
 
-  const handleChange = (event, value) => {
-    setPage(value);
+  const handlePageClick = (data) => {
+    setPage(data.selected);
   };
 
-  const indexOfLastBrand = page * brandsPerPage;
+  const indexOfLastBrand = (page + 1) * brandsPerPage;
   const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;
   const currentBrands = brands.slice(indexOfFirstBrand, indexOfLastBrand);
 
@@ -61,6 +70,44 @@ const BrandManagement = () => {
     }
   };
 
+  const handleOpenAddModal = () => setIsAddModalOpen(true);
+  const handleCloseAddModal = () => setIsAddModalOpen(false);
+
+  const handleOpenDeleteModal = (brand) => {
+    setSelectedBrand(brand); 
+    setIsDeleteModalOpen(true); 
+  };
+
+  const handleCloseDeleteModal = () => {
+    setSelectedBrand(null);
+    setIsDeleteModalOpen(false);
+  };
+
+  const handeOpenUpdateModal = (brand) => {
+    setSelectedBrand(brand);
+    setIsUpdateModalOpen(true);
+  };
+  
+  const handleCloseUpdateModal = () => {
+    setSelectedBrand(null);
+    setIsUpdateModalOpen(false);
+  };
+
+  // Hàm mô phỏng sau khi hoàn thành
+  const handleSaveBrand = (brand) => {
+    console.log("New brand added:", brand);
+    handleCloseAddModal();
+  };
+  
+  const handleDeleteBrand = () => {
+    console.log(`Delete brand: ${selectedBrand.name}`);
+    handleCloseDeleteModal();
+  };
+  const handleUpdateBrand = (updatedBrand) => {
+    console.log(`Brand updated: ${updatedBrand.name}`);
+    handleCloseUpdateModal();
+  };
+  
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold">All brands</h1>
@@ -87,7 +134,10 @@ const BrandManagement = () => {
         </div>
 
         {/* Add Brand Button */}
-        <button className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600">
+        <button 
+          className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600"
+          onClick={handleOpenAddModal}
+          >
           <span className="mr-2">+ Add brand</span>
         </button>
       </div>
@@ -134,34 +184,79 @@ const BrandManagement = () => {
               <td className="p-4 text-sm">{brand.NumProduct}</td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">
-                  <button className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                  <button 
+                    className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    onClick={() => handeOpenUpdateModal(brand)}
+                  >
                     <FaEdit className="mr-2" />
-                    Edit item
+                    Edit
                   </button>
-                  <button className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                  <button 
+                    className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    onClick={() => handleOpenDeleteModal(brand)}
+                    >
                     <FaTrashAlt className="mr-2" />
-                    Delete item
+                    Delete
                   </button>
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
+
+        {/* Pagination & Count within table footer */}
+        <tfoot>
+          <tr>
+            <td colSpan="7" className="p-4">
+              <div className="flex justify-between items-center">
+                {/* Left: Count display */}
+                <div className="text-sm text-gray-500">
+                  Hiển thị {indexOfFirstBrand + 1} đến {Math.min(indexOfLastBrand, totalBrands)} / {totalBrands} thương hiệu
+                </div>
+
+                {/* Right: Pagination */}
+                <div className="flex justify-end">
+                <ReactPaginate
+                  previousLabel={<FontAwesomeIcon icon={faChevronLeft} size="xs" />}
+                  nextLabel={<FontAwesomeIcon icon={faChevronRight} size="xs" />}
+                  pageCount={totalPages}
+                  onPageChange={handlePageClick}
+                  containerClassName={"flex items-center space-x-2"}
+                  previousLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                  nextLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                  disabledClassName={"text-blue-500"}
+                  activeLinkClassName={"bg-blue-500 text-white rounded w-8 h-8 flex items-center justify-center hover:bg-blue-600"}
+                  pageClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                  pageLinkClassName={"w-full h-full flex items-center justify-center focus:outline-none"}
+                  breakLabel={"..."}
+                  breakClassName={"w-8 h-8 flex items-center justify-center text-gray-500"}
+                />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
 
-      {/* Pagination */}
-      <div className="mt-4 flex justify-center">
-        <Stack spacing={2}>
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handleChange}
-            color="primary"
-          />
-        </Stack>
-      </div>
+      {/* Modal for Adding Product */}
+      <BasicModal isOpen={isAddModalOpen} onRequestClose={handleCloseAddModal}>
+        <AddBrand onSave={handleSaveBrand} onClose={handleCloseAddModal} />
+      </BasicModal>
+      <BasicModal isOpen={isDeleteModalOpen} onRequestClose={handleCloseDeleteModal}>
+        <DeleteBrand 
+          brandName={selectedBrand ? selectedBrand.name : ""}
+          onDelete={handleDeleteBrand}
+          onClose={handleCloseDeleteModal}
+        />
+      </BasicModal>
+      <BasicModal isOpen={isUpdateModalOpen} onRequestClose={handleCloseUpdateModal}>
+        <UpdateBrand 
+          brand={selectedBrand ? selectedBrand.name : ""}
+          onUpdate={handleUpdateBrand} 
+          onClose={handleCloseUpdateModal} 
+        />
+      </BasicModal>
     </div>
   );
 };
-
 export default BrandManagement;

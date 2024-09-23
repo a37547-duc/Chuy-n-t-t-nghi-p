@@ -1,10 +1,23 @@
-import React, { useState } from "react";
-import { FiInbox, FiUsers, FiPackage, FiFileText, FiLock, FiHelpCircle, FiChevronDown, FiChevronRight, FiTag, FiGrid, FiBox, FiHome } from "react-icons/fi";
-import { Link } from 'react-router-dom';
+import { useState, useEffect  } from "react";
+import { FiInbox, FiUsers, FiPackage, FiLock, FiHelpCircle, FiTag, FiGrid, FiBox, FiHome } from "react-icons/fi";
+import { Link, useLocation, useNavigate  } from 'react-router-dom';
 
+// eslint-disable-next-line react/prop-types
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  useEffect(() => {
+    if (location.pathname === "/admin") {
+      navigate("/admin/dashboard");
+    }
+  }, [location.pathname, navigate]);
 
   const toggleBrands = () => {
     setIsBrandsOpen(!isBrandsOpen);
@@ -13,7 +26,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const toggleCategories = () => {
     setIsCategoriesOpen(!isCategoriesOpen);
   };
-
+  
   return (
     <div
       className={`bg-white text-gray-800 h-screen fixed z-40 shadow-md transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}
@@ -23,38 +36,63 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <nav className="mt-4 flex flex-col">
           <ul className="space-y-2">
             <Link to="/admin/dashboard" className="block">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+              <li 
+                className={`px-4 py-2 flex items-center space-x-2 hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/dashboard') ? 'bg-gray-300' : ''}`}
+              >
                 <FiHome className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Dashboard</span>
               </li>
             </Link>
             <Link to="/admin/products" className="block">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+              <li 
+                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/products') ? 'bg-gray-300' : ''}`}
+              >
                 <FiBox className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Products</span>
               </li>
             </Link>
             <Link to="/inbox" className="block">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+              <li 
+                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/inbox') ? 'bg-gray-300' : ''}`}
+              >
                 <FiInbox className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Inbox</span>
               </li>
             </Link>
             <Link to="/admin/orders" className="block">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+              <li 
+                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/orders') ? 'bg-gray-300' : ''}`}
+              >
                 <FiPackage className="w-5 h-5" />
                 {isOpen && <span>Orders</span>}
               </li>
             </Link>
             <Link to="/admin/users" className="block">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+              <li 
+                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/users') ? 'bg-gray-300' : ''}`}
+              >
                 <FiUsers className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Users</span>
               </li>
             </Link>
             {/* Brands Menu with Submenu */}
-            <Link to="/admin/brand" className="flex flex-col space-x-2">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer ${!isOpen ? 'justify-center' : ''}`} onClick={toggleBrands}>
+            <Link to="/admin/brand" className="block">
+              <li 
+                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/brand') ? 'bg-gray-300' : ''}`}
+                onClick={toggleBrands}
+              >
                   <FiTag className="w-5 h-5" />
                   <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Brands</span>
                   <div className={`${!isOpen ? 'hidden' : 'ml-auto'}`}>
@@ -62,26 +100,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               </li>
             </Link>
             {/* Categories Menu with Submenu */}
-            <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 cursor-pointer ${!isOpen ? 'justify-center' : ''}`} onClick={toggleCategories}>
-              <FiGrid className="w-5 h-5" />
-              <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Categories</span>
-              <div className={`${!isOpen ? 'hidden' : 'ml-auto'}`}>
-                {isCategoriesOpen ? <FiChevronDown /> : <FiChevronRight />}
-              </div>
-            </li>
-            {isCategoriesOpen && isOpen && (
-              <ul className="ml-8 space-y-1">
-                <Link to="/categories/category1" className="block">
-                  <li className="px-4 py-2 hover:bg-gray-100">Category 1</li>
-                </Link>
-                <Link to="/categories/category2" className="block">
-                  <li className="px-4 py-2 hover:bg-gray-100">Category 2</li>
-                </Link>
-                <Link to="/categories/category3" className="block">
-                  <li className="px-4 py-2 hover:bg-gray-100">Category 3</li>
-                </Link>
-              </ul>
-            )}
+            <Link to="/admin/category" className="block">
+              <li 
+                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/category') ? 'bg-gray-300' : ''}`}
+                onClick={toggleBrands}
+              >
+                <FiGrid className="w-5 h-5" />
+                <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Category</span>
+              </li>
+            </Link>
             <div className="flex items-center justify-between px-4 py-2 border-b">
             </div>
             <Link to="/authentication" className="block">
