@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import ReactPaginate from "react-paginate";
+import BasicModal from "../../../components/Modal/BasicModal";
+import AddUser from "../../../components/admin/Users/AddUser";
+import DeleteUser from "../../../components/admin/Users/DeleteUser";
+import UpdateUser from "../../../components/admin/Users/UpdateUser";
 
 const UserManagement = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [usersPerPage] = useState(7);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const users = [
@@ -26,11 +35,11 @@ const UserManagement = () => {
   const totalUsers = users.length;
   const totalPages = Math.ceil(totalUsers / usersPerPage);
 
-  const handleChange = (event, value) => {
-    setPage(value);
+  const handlePageClick = (data) => {
+    setPage(data.selected);
   };
 
-  const indexOfLastUser = page * usersPerPage;
+  const indexOfLastUser = (page + 1) * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
@@ -61,6 +70,44 @@ const UserManagement = () => {
     }
   };
 
+  const handleOpenAddModal = () => setIsAddModalOpen(true);
+  const handleCloseAddModal = () => setIsAddModalOpen(false);
+
+  const handleOpenDeleteModal = (user) => {
+    setSelectedUser(user);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setSelectedUser(null);
+    setIsDeleteModalOpen(false);
+  };
+
+  const hanleOpenUpdateModal = (user) => {
+    setSelectedUser(user);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setSelectedUser(null);
+    setIsUpdateModalOpen(false);
+  };
+
+  const handleSaveUser = (user) => {
+    console.log("New user added:", user);
+    handleCloseAddModal();
+  };
+
+  const handleDeleteUser = () => {
+    console.log(`Deleted User: ${selectedUser.name}`);
+    handleCloseDeleteModal();
+  };
+
+  const handleUpdateUser = (updatedUser) => {
+    console.log(`User updated: ${updatedUser.name}`);
+    handleCloseUpdateModal();
+  };
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold">All Users</h1>
@@ -87,7 +134,10 @@ const UserManagement = () => {
         </div>
 
         {/* Add Users Button */}
-        <button className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600">
+        <button 
+          className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600"
+          onClick={handleOpenAddModal}
+        >
           <span className="mr-2">+ Add User</span>
         </button>
       </div>
@@ -137,32 +187,76 @@ const UserManagement = () => {
               <td className="p-4 text-sm">{user.register}</td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">
-                  <button className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                  <button 
+                    className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    onClick={() => hanleOpenUpdateModal(user)}
+                  >
                     <FaEdit className="mr-2" />
-                    Edit item
+                    Edit
                   </button>
-                  <button className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                  <button 
+                    className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    onClick={() => handleOpenDeleteModal(user)}
+                  >
                     <FaTrashAlt className="mr-2" />
-                    Delete item
+                    Delete
                   </button>
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
+
+        {/* Pagination & Count within table footer */}
+        <tfoot>
+          <tr>
+            <td colSpan="7" className="p-4">
+              <div className="flex justify-between items-center">
+                {/* Left: Count display */}
+                <div className="text-sm text-gray-500">
+                  Hiển thị {indexOfFirstUser + 1} đến {Math.min(indexOfLastUser, totalUsers)} / {totalUsers} sản phẩm
+                </div>
+
+                {/* Right: Pagination */}
+                <div className="flex justify-end">
+                  <ReactPaginate
+                    previousLabel={<FontAwesomeIcon icon={faChevronLeft} size="xs" />}
+                    nextLabel={<FontAwesomeIcon icon={faChevronRight} size="xs" />}
+                    pageCount={totalPages}
+                    onPageChange={handlePageClick}
+                    containerClassName={"flex items-center space-x-2"}
+                    previousLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                    nextLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                    disabledClassName={"text-blue-500"}
+                    activeLinkClassName={"bg-blue-500 text-white rounded w-8 h-8 flex items-center justify-center hover:bg-blue-600"}
+                    pageClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                    pageLinkClassName={"w-full h-full flex items-center justify-center focus:outline-none"}
+                    breakLabel={"..."}
+                    breakClassName={"w-8 h-8 flex items-center justify-center text-gray-500"}
+                  />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
 
-      {/* Pagination */}
-      <div className="mt-4 flex justify-center">
-        <Stack spacing={2}>
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handleChange}
-            color="primary"
-          />
-        </Stack>
-      </div>
+      {/* Modal for Adding Product */}
+      <BasicModal isOpen={isAddModalOpen} onRequestClose={handleCloseAddModal}>
+        <AddUser onSave={handleSaveUser} onClose={handleCloseAddModal} />
+      </BasicModal>
+      <BasicModal isOpen={isDeleteModalOpen} onRequestClose={handleCloseDeleteModal}>
+        <DeleteUser 
+          userName={selectedUser ? selectedUser.name : ""}
+          onDelete={handleDeleteUser} 
+          onClose={handleCloseDeleteModal} />
+      </BasicModal>
+      <BasicModal isOpen={isUpdateModalOpen} onRequestClose={handleCloseUpdateModal}>
+        <UpdateUser 
+          user={selectedUser ? selectedUser.name : ""}
+          onUpdate={handleUpdateUser} 
+          onClose={handleCloseUpdateModal} />
+      </BasicModal>
     </div>
   );
 };

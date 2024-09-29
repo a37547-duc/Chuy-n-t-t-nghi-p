@@ -46,14 +46,7 @@ export default function ProductCategory() {
                 - 10%
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm line-through opacity-75">
-                26.990.000 đ
-              </span>
-              <span className="font-bold text-sm p-2 bg-yellow-300 rounded-ss-2xl text-gray-600">
-                - 10%
-              </span>
-            </div>
+          
 
             <div className="Thông số ">
               <ul className="list-disc list-inside">
@@ -262,22 +255,6 @@ export default function ProductCategory() {
               </span>
             </div>
 
-            <div className="Thông số ">
-              <ul className="list-disc list-inside">
-                <li className="text-sm">Màn hình</li>
-                <li className="text-sm">Card</li>
-                <li className="text-sm">CPU</li>
-                <li className="text-sm">Pin</li>
-                <li className="text-sm">Khối lượng</li>
-              </ul>
-            </div>
-            <div className="flex items-center mt-2 gap-1">
-              <IoIosStar className="text-yellow-300"></IoIosStar>
-              <IoIosStar className="text-yellow-300"></IoIosStar>
-              <IoIosStar className="text-yellow-300"></IoIosStar>
-              <IoIosStar className="text-yellow-300"></IoIosStar>
-              <p className="font-bold text-xs text-gray-700">(0 đánh giá)</p>
-            </div>
             <div className="Thông số ">
               <ul className="list-disc list-inside">
                 <li className="text-sm">Màn hình</li>

@@ -31,7 +31,6 @@ export default function SearchBar() {
     };
     fetchProduct();
   }, []);
-  console.log(products);
 
   return (
     <div className="search-container relative">

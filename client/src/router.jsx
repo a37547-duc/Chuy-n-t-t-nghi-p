@@ -6,12 +6,22 @@ import ProductList from "./pages/Product/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
 import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
+import Account from "./pages/Account/Account";
+import AccountInformation from "./pages/Account/AccountInformation/AccountInformation";
+import AccountOrder from "./pages/Account/AccountOrder/AccountOrder";
+import EmptyPagePayMent from "./pages/Account/AccountOrder/EmptyPage/EmptyPagePayMent";
+import AccountNotification from "./pages/Account/AccountNotification/AccountNotification";
 import AdminLayout from "./pages/Admin/AdminLayout";
-import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
 import DashBoard from "./pages/Admin/DashBoard/DashBoard";
-import Account from "./pages/Account/Account"
+import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
 import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
 import UserManagement from "./pages/Admin/UserManagement/UserManagement";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement"
+import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManagement"
+import EmptyPageDelivery from "./pages/Account/AccountOrder/EmptyPage/EmptyPageDelivery";
+import EmptyPageCompleted from "./pages/Account/AccountOrder/EmptyPage/EmptyPageCompleted";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,9 +49,48 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart></Cart>,
       },
+
       {
-        path: "/account",
-        element: <Account></Account>,
+        path: "/login",
+        element: <Login></Login>
+      },
+      {
+        path: "/signup",
+        element: <Signup></Signup>
+      },
+      {
+        path: "account",
+        element: <Account />,
+        children: [
+          {
+            path: "information",
+            element: <AccountInformation />,
+            index: true,
+          },
+          {
+            path: "order",
+            element: <AccountOrder />,
+            children: [
+              {
+                path: "emptyDelivery",
+                element: <EmptyPageDelivery />,
+                index: true,
+              },
+              {
+                path: "emptyPayment",
+                element: <EmptyPagePayMent />,
+              },
+              {
+                path: "emptyCompleted",
+                element: <EmptyPageCompleted />,
+              },
+            ]
+          },
+          {
+            path: "notifications",
+            element: <AccountNotification />,
+          },
+        ]
       },
     ],
   },
@@ -50,6 +99,7 @@ const router = createBrowserRouter([
     element: <Checkouts></Checkouts>,
   },
 
+  
   {
     path: "admin",
     element: <AdminLayout></AdminLayout>,
@@ -64,13 +114,21 @@ const router = createBrowserRouter([
         element: <ProductManagement />,
       },
       {
+        path: "orders",
+        element: <OrderManagement />,
+      },
+      {
         path: "users",
         element: <UserManagement /> ,
       },
       {
         path: "brand",
         element: <BrandManagement />,
-      }
+      },
+      {
+        path: "category",
+        element: <CategoryManagement />,
+      },
     ]
   }
 ]);
