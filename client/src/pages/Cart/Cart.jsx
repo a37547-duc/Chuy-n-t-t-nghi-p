@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import {Link} from "react-router-dom"
 
 function ShoppingCart() {
   const [items, setItems] = useState([
@@ -24,6 +25,33 @@ function ShoppingCart() {
     },
     {
       id: 3,
+      name: 'Desktop PC',
+      brand: 'Custom Build',
+      specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
+      price: 3000.0,
+      quantity: 1,
+      inStock: true,
+    },
+    {
+      id: 4,
+      name: 'Desktop PC',
+      brand: 'Custom Build',
+      specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
+      price: 3000.0,
+      quantity: 1,
+      inStock: true,
+    },
+    {
+      id: 5,
+      name: 'Desktop PC',
+      brand: 'Custom Build',
+      specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
+      price: 3000.0,
+      quantity: 1,
+      inStock: true,
+    },
+    {
+      id: 6,
       name: 'Desktop PC',
       brand: 'Custom Build',
       specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
@@ -88,12 +116,14 @@ function ShoppingCart() {
           <div className="flex flex-col items-center justify-center h-96">
             <FontAwesomeIcon icon={faShoppingCart} className="text-gray-500 text-6xl mb-4" />
             <p className="text-gray-600 mb-4">Giỏ hàng của bạn trống.</p>
-            <button
-              onClick={handleContinueShopping}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Quay lại mua hàng
-            </button>
+            <Link to="/">
+              <button
+                onClick={handleContinueShopping}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Quay lại mua hàng
+              </button>
+            </Link>
           </div>
         ) : (
           <>
@@ -116,7 +146,7 @@ function ShoppingCart() {
                       <img
                         src={`https://via.placeholder.com/100?text=${item.name}`}
                         alt={item.name}
-                        className="w-20 h-20 rounded-md"
+                        className="w-16 h-16 rounded-md"
                       />
                       <div className="ml-4">
                         <h2 className="text-lg font-medium">{item.name}</h2>
@@ -170,7 +200,7 @@ function ShoppingCart() {
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className="w-5 h-5"
                       >
                         <path
                           strokeLinecap="round"
@@ -200,18 +230,22 @@ function ShoppingCart() {
                   <span className="font-bold">Tổng cộng</span>
                   <span className="font-bold">${orderSummary.total.toFixed(2)}</span>
                 </div>
-                <button
-                  onClick={handleCheckout}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-full"
-                >
-                  Thanh toán
-                </button>
-                <button
-                  onClick={handleContinueShopping}
-                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2 w-full"
-                >
-                  Tiếp tục mua sắm
-                </button>
+                <Link to="/checkouts">
+                  <button
+                    onClick={handleCheckout}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-full"
+                  >
+                    Thanh toán
+                  </button>
+                </Link>
+                <Link to="/">
+                  <button
+                    onClick={handleContinueShopping}
+                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2 w-full"
+                  >
+                    Tiếp tục mua sắm
+                  </button>
+                </Link>
               </div>
             </div>
           </>
