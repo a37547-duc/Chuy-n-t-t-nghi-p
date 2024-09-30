@@ -11,9 +11,11 @@ import UpdateProduct from "../../../components/admin/Products/UpdateProduct"
 const ProductManagement = () => {
   const [page, setPage] = useState(0);
   const [productsPerPage] = useState(7);
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  
   const [selectAll, setSelectAll] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
 

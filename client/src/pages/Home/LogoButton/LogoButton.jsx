@@ -8,7 +8,8 @@ const logos = [
   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/LG.png",
   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/masstel-mobile-logo022.png",
   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/MSI-1.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Huawei.png"
+  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Huawei.png",
+  "https://lh3.googleusercontent.com/dupfTD9OKdjV88iSqg7DQcbBMxVAB9_bo1QSmp0-me7EKKTOTRyP25AA0WpZG_pvJmfrkfrEI_D0yT5G5bR2LTT6WpESH-df=rw"
 ];
 
 export default function LogonButton() {
@@ -17,10 +18,10 @@ export default function LogonButton() {
       {logos.map((logo, index) => (
         <button
           key={index}
-          className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg"
-          style={{ flexBasis: 'calc(25% - 0.5rem)', maxWidth: '120px' }}
+          className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg max-w-[120px]"
+          style={{ flexBasis: 'calc(25% - 0.5rem)'}}
         >
-          <img src={logo} alt={`Logo ${index + 1}`} className="w-100%" />
+          <img src={logo} alt={`Logo ${index + 1}`} className="w-full" />
         </button>
       ))}
     </div>

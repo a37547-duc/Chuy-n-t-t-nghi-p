@@ -136,7 +136,7 @@ export default function ProductDetailTop() {
                                     Giảm 3đ (áp dụng vào giá sản phẩm)
                                 </div>
                                 <div className='max-w-full mt-1 text-[12px] leading-[16px] text-[#848788] overflow-hidden whitespace-pre-line'>
-                                    Khuyến mãi áp dụng khi mua tối thiểu một sản phẩm
+                                    Khuyến mãi áp dụng khi mua tối thiểu một sản phẩm 
                                 </div>
                                 <div className='border-none border border-gray-200 opacity-100 w-full mt-2 flex flex-row gap-0 justify-between items-baseline'>
                                     <div className='text-xs leading-4 text-gray-500'>
