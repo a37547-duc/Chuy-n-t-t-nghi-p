@@ -172,7 +172,7 @@ function Checkout() {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="Địa chỉ email"
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
               />
               {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
@@ -187,7 +187,7 @@ function Checkout() {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="Tên"
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                   />
                   {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
                 </div>
@@ -199,7 +199,7 @@ function Checkout() {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Họ"
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                   />
                   {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
                 </div>
@@ -210,7 +210,7 @@ function Checkout() {
                 value={formData.address}
                 onChange={handleInputChange}
                 placeholder="Địa chỉ chi tiết (căn hộ, số phòng, v.v...)"
-                className="w-full p-2 border rounded-md mt-4"
+                className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md mt-4"
               />
               {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
 
@@ -218,7 +218,7 @@ function Checkout() {
                 <div className="flex-1">
                   <select
                     name="province"
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                     value={selectedProvince}
                     onChange={(e) => {
                       const value = e.target.value;
@@ -241,7 +241,7 @@ function Checkout() {
                 <div className="flex-1">
                   <select
                     name="district"
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                     value={selectedDistrict}
                     onChange={(e) => {
                       const value = e.target.value;
@@ -264,7 +264,7 @@ function Checkout() {
                 <div className="flex-1">
                   <select
                     name="ward"
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                     value={selectedWard}
                     onChange={(e) => {
                       const value = e.target.value;
@@ -290,7 +290,7 @@ function Checkout() {
                 value={formData.phone}
                 onChange={handleInputChange}
                 placeholder="Số điện thoại"
-                className="w-full p-2 border rounded-md mt-4"
+                className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md mt-4"
               />
               {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
             </div>
@@ -299,7 +299,7 @@ function Checkout() {
               <h2 className="text-lg font-semibold mb-4">Phương thức giao hàng</h2>
               <select
                 name="delivery"
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                 value={formData.delivery}
                 onChange={handleInputChange}
               >
@@ -314,7 +314,7 @@ function Checkout() {
               <h2 className="text-lg font-semibold mb-4">Phương thức thanh toán</h2>
               <select
                 name="payment"
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                 value={formData.payment}
                 onChange={handleInputChange}
               >

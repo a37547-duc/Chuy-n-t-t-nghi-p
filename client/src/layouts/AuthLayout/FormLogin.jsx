@@ -69,7 +69,12 @@ function FormLogin() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
+            <div className="flex justify-between items-center">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
+              <Link to="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500">
+                Quên mật khẩu?
+              </Link>
+            </div>
             <input
               id="password"
               name="password"
@@ -78,7 +83,7 @@ function FormLogin() {
               onChange={handleInputChange}
               placeholder="Nhập mật khẩu"
               required
-              className="mt-1 p-3 block w-full border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
@@ -98,11 +103,6 @@ function FormLogin() {
             Chưa có tài khoản?{' '}
             <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
               Đăng ký ngay
-            </Link>
-          </p>
-          <p className="text-gray-600 mt-2">
-            <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
-              Quên mật khẩu?
             </Link>
           </p>
         </div>
