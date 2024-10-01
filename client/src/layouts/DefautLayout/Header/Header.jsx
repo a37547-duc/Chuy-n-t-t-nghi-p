@@ -5,13 +5,13 @@ import Cart from "./Cart/Cart";
 
 export default function Header() {
   return (
-    <header className="flex bg-teal-50 border-b py-4 sm:px-8 px-6 font-[sans-serif] min-h-[80px] tracking-wide relative z-50">
-      <div className="flex flex-wrap items-center lg:gap-y-2 gap-4 w-full">
+    <header className="sticky top-0 flex shadow-md py-4 px-4 sm:px-10 bg-white font-[sans-serif] min-h-[70px] tracking-wide z-50">
+      <div className="flex items-center justify-between mx-auto max-w-screen-lg w-full">
         <Logo />
-        <div className="flex-grow">
-          <SearchBar className="w-full" />
+        <div className="flex-1 mx-4">
+          <SearchBar />
         </div>
-        <div className="flex ml-auto gap-4 mr-20">
+        <div className="flex items-center space-x-4">
           <AuthButtons />
           <Cart />
         </div>

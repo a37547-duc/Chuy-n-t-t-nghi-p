@@ -1,85 +1,88 @@
-.taskbar {
+/* .taskbar {
   width: 100%;
-  /* top: 20px; */
-  /* margin-top: 80px; */
-
+  top: 20px;
+  position: relative;
   max-width: 210px;
-  height: 376px;
-  background-color: #f0f0f0;
+  max-height: 376px;
+  height: 100%;
+  background-color: white;
   display: flex;
   flex-direction: column;
-  left: 6%;
   z-index: 10;
   size: 5px;
-}
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 12px;
+} */
 
-.menu-item {
+/* .menu-item {
   display: flex;
   align-items: center;
   padding: 10px 20px;
   color: #333;
   cursor: pointer;
   transition: background-color 0.3s;
-}
+} */
 
 .menu-item.hover,
 .menu-item:hover {
   background-color: #e0e0e0;
 }
 
-.submenu-container {
+/* .submenu-container {
   position: absolute;
-  left: 210px;
+  left: 100%;
   top: 0;
   height: 376px;
   width: calc(80vw - 200px);
   background-color: #ffffff;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 20;
   display: block;
-}
+  border-radius: 0px 5px 5px 0px;
+} */
 
-.submenu {
+/* .submenu {
   display: flex;
   width: 100%;
   padding: 10px;
   justify-content: space-between;
-}
+} */
 
-.submenu-item {
+/* .submenu-item {
   width: 100%;
   padding: 0px 20px;
   color: #333;
   cursor: pointer;
   text-align: left;
   border-left: 1px solid #ddd;
-}
+} */
 
 .submenu-item:first-child {
   border-left: none;
 }
 
-.submenu-title {
+/* .submenu-title {
   font-weight: bold;
   margin-bottom: 10px;
   text-align: center;
-}
+} */
 
-.sub-submenu {
+/* .sub-submenu {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
+} */
 
-.sub-submenu-item {
+/* .sub-submenu-item {
   padding: 5px 10px;
   color: #333;
   text-decoration: none;
   white-space: nowrap;
   text-align: left;
-}
+} */
 
-.sub-submenu-item:hover {
-  background-color: #e0e0e0;
-}
+/* .sub-submenu-item:hover {
+  color: red;
+} */

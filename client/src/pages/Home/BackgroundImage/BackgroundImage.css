@@ -1,0 +1,9 @@
+.background-image {
+  position: absolute; /* Giữ hình ảnh ở vị trí cố định */
+  width: 100%; /* Đặt chiều rộng theo 100% chiều rộng của cửa sổ */
+  height: 70vh; /* Đặt chiều cao theo 100% chiều cao của cửa sổ */
+  background-size: cover; /* Hình ảnh sẽ bao phủ toàn bộ khung hình */
+  background-position: center;
+  z-index: 1; /* Đặt z-index nhỏ hơn thanh taskbar */
+  transition: width 0.5s ease, height 0.5s ease; /* Thêm hiệu ứng chuyển đổi mềm mại */
+}

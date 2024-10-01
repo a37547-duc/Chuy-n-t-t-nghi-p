@@ -1,17 +1,16 @@
-import React from "react";
-
 import Home from "../../pages/Home/Home";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
+import { Outlet } from "react-router-dom";
 
-export default function DefaultLayout() {
+export default function DefauLayout() {
   return (
-    <div className="flex flex-col justify-around min-h-screen">
-      <Header />
-      <main className="flex-grow">
-        <Home />
+    <div>
+      <Header></Header>
+      <main>
+        <Outlet></Outlet>
       </main>
-      <Footer />
+      <Footer></Footer>
     </div>
   );
 }

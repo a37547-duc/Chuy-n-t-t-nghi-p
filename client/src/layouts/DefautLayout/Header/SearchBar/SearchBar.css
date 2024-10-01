@@ -1,7 +1,10 @@
 /* Mặc định SearchBar nằm trong header */
 .search-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
   }
   
   /* Khi màn hình nhỏ (dưới 768px), SearchBar sẽ tách ra khỏi header */

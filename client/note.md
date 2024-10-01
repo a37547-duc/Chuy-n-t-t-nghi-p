@@ -55,7 +55,7 @@ App.jsx
 # Các nghiệp vụ call API thì tách ra 1 service để tách biệt logic vs components
 
     - services (folder)
-        -  productService.js
+        - productService.js
         - userService.js
 
     - utils (folder - chứa các hàm hỗ trợ)
@@ -63,3 +63,55 @@ App.jsx
         - clientUtils.js
     - hooks (folder chứa các custom hook)
         - useClient.js
+
+############
+
+- pages(Folder)
+
+  - Cart (Folder) - Phúc phụ trách
+    - Cart.jsx
+  - Product (Folder)
+    - ProductDetail (Folder) - Thành phụ trách
+      -ProductDetail.jsx
+
+# TRUY CẬP ROUTER
+
+- Thành: Thêm "/product" vào đường dẫn
+- Phúc: Thêm "/cart" vào đường dẫn
+
+ví dụ: "http://localhost:5173/cart"
+"http://localhost:5173/product"
+
+# TRUY CẬP ROUTER PHẦN 2
+
+- THÀNH: thêm "/collections" vào đường dẫn
+- PHÚC: thêm "/checkouts" vào đường dẫn
+
+- Collections (Folder) (Thành phụ trách)
+
+  - CollectionsData (Folder)
+    - CollectionsData.jsx
+  - SideBarCollections (Folder)
+    - SideBarCollections.jsx
+
+- Cart (Folder) (Phúc phụ trách)
+  - Cart.jsx
+
+# TRUY CẬP ROUTER PHẦN 2
+
+- THÀNH: thêm "/collections" vào đường dẫn
+- PHÚC: thêm "/checkouts" vào đường dẫn
+
+- Collections (Folder) (Thành phụ trách)
+
+  - CollectionsData (Folder)
+    - CollectionsData.jsx
+  - SideBarCollections (Folder)
+    - SideBarCollections.jsx
+
+- Cart (Folder) (Phúc phụ trách)
+  - Cart.jsx
+
+#Thêm thư viện: npm i react-toastify, npm install react-paginate, npm install react-modal, npm install recharts
+
+
