@@ -1,6 +1,7 @@
 const Product = require("../../models/productModel");
 const ProductVariant = require("../../models/Products_Skus/productSkudModel");
 const Brand = require("../../models/brandModel");
+const Category = require("../../models/categoryModel");
 
 // CÁC CHỨC NĂNG Products (Sản phẩm)
 const createProduct = async (req, res) => {
@@ -156,6 +157,18 @@ const createCategory = async (req, res) => {
     res.status(500).json({ message: "Lỗi tạo Category" });
   }
 };
+const getCategory = async (req, res) => {
+  try {
+    // Lấy danh sách các hãng sản phẩm thuộc về category
+    const category = await Category.find({});
+
+    res.status(200).json(category);
+  } catch (error) {
+    console.error("Lỗi lấy Category", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   addProductVariant,
@@ -163,4 +176,5 @@ module.exports = {
   getBrandsByCategoryId,
   createBrand,
   createCategory,
+  getCategory,
 };

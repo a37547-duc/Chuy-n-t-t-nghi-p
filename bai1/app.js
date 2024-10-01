@@ -37,29 +37,29 @@ app.use(express.json());
 // });
 
 // Route để tạo Brand
-// app.post("/brand/create", async (req, res) => {
-//   try {
-//     const { name, category_id, description } = req.body;
+app.post("/brand/create", async (req, res) => {
+  try {
+    const { name, category_id, description } = req.body;
 
-//     // Tạo một Brand mới
-//     const newBrand = new Brand({
-//       name,
-//       category_id: category_id,
-//       description,
-//     });
+    // Tạo một Brand mới
+    const newBrand = new Brand({
+      name,
+      category_id: category_id,
+      description,
+    });
 
-//     // Lưu vào cơ sở dữ liệu
-//     const savedBrand = await newBrand.save();
+    // Lưu vào cơ sở dữ liệu
+    const savedBrand = await newBrand.save();
 
-//     res.status(201).json({
-//       message: "Brand created successfully",
-//       brand: savedBrand,
-//     });
-//   } catch (error) {
-//     console.error("Error creating brand:", error.message);
-//     res.status(500).json({ message: "Failed to create brand" });
-//   }
-// });
+    res.status(201).json({
+      message: "Brand created successfully",
+      brand: savedBrand,
+    });
+  } catch (error) {
+    console.error("Error creating brand:", error.message);
+    res.status(500).json({ message: "Failed to create brand" });
+  }
+});
 
 // Route tạo use_case
 

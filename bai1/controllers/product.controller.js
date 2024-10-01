@@ -3,6 +3,7 @@ const Product = require("../models/productModel");
 const ProductVariant = require("../models/Products_Skus/productSkudModel");
 
 const Category = require("../models/categoryModel");
+const Brand = require("../models/brandModel");
 
 const getAllProducts = async (req, res) => {
   try {
@@ -115,10 +116,16 @@ const getCategoryProduct = async (req, res) => {
   res.status(200).json(data);
 };
 
+const getBrand = async (req, res) => {
+  const data = await Brand.find({});
+  res.status(200).json(data);
+};
+
 module.exports = {
   getAllProducts,
   getDetailProduct,
   getCategoryProduct,
+  getBrand,
 };
 
 // Cần bổ sung thêm các middleware

@@ -34,6 +34,7 @@ const {
   getAllProducts,
   getDetailProduct,
   getCategoryProduct,
+  getBrand,
 } = require("../../controllers/product.controller");
 
 router.post("/create", createProduct);
@@ -44,6 +45,7 @@ router.put("/variants/update/:id", updateProductVariant);
 
 // Route của Products (Sản phẩm)
 router.get("/category", getCategoryProduct);
+router.get("/brand", getBrand);
 router.get("/category/:id/brands", getBrandsByCategoryId);
 
 // Route của Brand (Thương hiệu)
