@@ -120,12 +120,26 @@ const getBrand = async (req, res) => {
   const data = await Brand.find({});
   res.status(200).json(data);
 };
+const getBrandsByCategoryId = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+
+    // Lấy danh sách các hãng sản phẩm thuộc về category
+    const brands = await Brand.find({ category_id: categoryId });
+
+    res.status(200).json(brands);
+  } catch (error) {
+    console.error("Lỗi lấy brands bằng category", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 module.exports = {
   getAllProducts,
   getDetailProduct,
   getCategoryProduct,
   getBrand,
+  getBrandsByCategoryId,
 };
 
 // Cần bổ sung thêm các middleware
