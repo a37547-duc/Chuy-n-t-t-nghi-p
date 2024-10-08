@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { Select, Option } from "@material-tailwind/react";
+import { faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import BasicModal from "../../../components/Modal/BasicModal";
 import AddProduct from "../../../components/admin/Products/AddProduct";
@@ -16,6 +17,7 @@ const ProductManagement = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
+
 
   const products = [
     { id: "1", name: "ASUS ROG Strix G15", category: "Laptop Gaming", technology: "Intel Core i7, 16GB RAM, 512GB SSD", price: "$1499" },
@@ -91,12 +93,24 @@ const ProductManagement = () => {
     handleCloseUpdateModal();
   };
 
+  const handleFilterToggle = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleBrandChange = (e) => {
+    setSelectedBrand(e.target.value);
+  };
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold">All products</h1>
 
       {/* Search Bar & Add Button */}
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex justify-between items-center mt-4 relative">
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
           <input
             type="text"
@@ -107,12 +121,24 @@ const ProductManagement = () => {
             <i className="fa fa-search"></i>
           </button>
         </div>
-        <button
-          onClick={handleOpenAddModal}
-          className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600"
-        >
-          <span className="mr-2">+ Add product</span>
-        </button>
+        <div className="flex items-center ml-4">
+          <div className="w-48 mr-2">
+          <Select
+            variant="outlined"
+            name="12312312"
+            className="bg-green-500 text-white px-4 py-2 rounded flex items-center hover:bg-green-600 border border-transparent focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+          >
+            <Option value="">Giá: Thấp đến Cao</Option>
+            <Option value="highToLow">Giá: Cao đến Thấp</Option>
+          </Select>
+            </div>
+          <button
+            onClick={handleOpenAddModal}
+            className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600"
+          >
+            <span className="mr-2">+ Add product</span>
+          </button>
+        </div>
       </div>
 
       {/* Product Table */}
