@@ -14,11 +14,7 @@ const productSchema = new mongoose.Schema({
     trim: true,
     maxlength: [500, "Product description cannot exceed 500 characters"],
   },
-  price: {
-    type: Number,
-    required: [true, "Product price is required"],
-    min: [0, "Price cannot be negative"],
-  },
+
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
@@ -51,21 +47,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: moment().format("DD/MM/YYYY HH[h]/mm[p]/ss[s]"),
   },
-});
-
-// Middleware để cập nhật createdAt và updatedAt trước khi lưu
-productSchema.pre("save", function (next) {
-  const currentDate = moment().format("DD/MM/YYYY HH[h]/mm[p]/ss[s]");
-
-  // Cập nhật updatedAt mỗi lần lưu
-  this.updatedAt = currentDate;
-
-  // Nếu product là mới, cập nhật createdAt
-  if (!this.createdAt) {
-    this.createdAt = currentDate;
-  }
-
-  next();
 });
 
 const Product = mongoose.model("Product", productSchema);

@@ -22,29 +22,34 @@
 const express = require("express");
 const router = express.Router();
 const {
+  getAdminProducts,
   createProduct,
   addProductVariant,
   updateProductVariant,
   getBrandsByCategoryId,
   createBrand,
   createCategory,
+  editProduct,
+  getUseCase,
 } = require("../../controllers/admin/admin.products.controller");
 
 const {
   getAllProducts,
   getDetailProduct,
-  getCategoryProduct,
+  getCategory,
   getBrand,
 } = require("../../controllers/product.controller");
 
+router.get("/", getAdminProducts);
 router.post("/create", createProduct);
+router.patch("/edit/:id", editProduct);
 
 router.post("/variants/add/:id", addProductVariant);
 
 router.put("/variants/update/:id", updateProductVariant);
 
 // Route của Products (Sản phẩm)
-router.get("/category", getCategoryProduct);
+router.get("/category", getCategory);
 router.get("/brand", getBrand);
 router.get("/category/:id/brands", getBrandsByCategoryId);
 
@@ -53,6 +58,9 @@ router.post("/brand/create", createBrand);
 
 // Route của Category (Chuyên mục)
 router.post("/brand/create", createCategory);
+
+// Route của UseCase (Trường hợp sử dụng)
+router.get("/use_case", getUseCase);
 module.exports = router;
 
 // CẦN BỔ SUNG MIDDLEWARE

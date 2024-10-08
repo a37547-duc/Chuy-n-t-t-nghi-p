@@ -2,26 +2,132 @@ const Product = require("../../models/productModel");
 const ProductVariant = require("../../models/Products_Skus/productSkudModel");
 const Brand = require("../../models/brandModel");
 const Category = require("../../models/categoryModel");
+const Usecase = require("../../models/usecaseModel");
+const {
+  ProductVariantBase,
+  LaptopVariant,
+  MouseVariant,
+} = require("../../models/Products_Skus/productSkudModel");
 
 // CÁC CHỨC NĂNG Products (Sản phẩm)
+
+const getAdminProducts = async (req, res) => {
+  try {
+    const products = await Product.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      {
+        $unwind: "$category",
+      },
+      {
+        $lookup: {
+          from: "brands",
+          localField: "brand",
+          foreignField: "_id",
+          as: "brand",
+        },
+      },
+      {
+        $unwind: "$brand",
+      },
+      {
+        $lookup: {
+          from: "usecases",
+          localField: "use_case_ids",
+          foreignField: "_id",
+          as: "use_cases",
+        },
+      },
+      {
+        $unwind: "$use_cases",
+      },
+      {
+        $lookup: {
+          from: "productvariantbases",
+          localField: "_id",
+          foreignField: "productId",
+          as: "product_variants",
+        },
+      },
+      {
+        $addFields: {
+          allOutOfStock: {
+            $allElementsTrue: {
+              $map: {
+                input: "$product_variants",
+                as: "variant",
+                in: { $eq: ["$$variant.stock_quantity", 0] }, // Kiểm tra nếu stock_quantity = 0
+              },
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          status: {
+            $cond: {
+              if: "$allOutOfStock",
+              then: "out of stock",
+              else: "$status",
+            }, // Cập nhật trạng thái sản phẩm
+          },
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          price: 1,
+          images: 1,
+          status: 1,
+          "category.name": 1,
+          "category._id": 1,
+          "brand.name": 1,
+          "brand._id": 1,
+          "use_cases.name": 1,
+          "use_cases._id": 1,
+          product_variants: 1,
+          stock_quantity: "$product_variants.stock_quantity", // Thông tin chi tiết về tồn kho
+        },
+      },
+    ]);
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, brand, images, use_case_ids } =
-      req.body;
-
-    const product = new Product({
-      name,
-      description,
-      price,
-      category,
-      brand,
-      images,
-      use_case_ids, // Thêm use_case_ids vào product
-    });
-
+    const product = new Product(req.body);
     const savedProduct = await product.save();
 
     res.status(201).json(savedProduct);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const editProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updatedData = req.body;
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { $set: updatedData },
+      { new: true, runValidators: true } // Trả về bản ghi sau khi cập nhật và kiểm tra giá trị
+    );
+
+    res.status(200).json(updatedProduct);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -33,6 +139,7 @@ const addProductVariant = async (req, res) => {
   try {
     const productId = req.params.id;
     const variantData = req.body;
+    const { type } = variantData;
 
     // Kiểm tra xem sản phẩm chính có tồn tại không
     const productExists = await Product.findById(productId);
@@ -42,16 +149,30 @@ const addProductVariant = async (req, res) => {
         .json({ message: "Không tìm thấy sản phẩm chính với ID này" });
     }
 
-    // Tạo một sản phẩm variant mới
-    const newVariant = new ProductVariant({
-      productId: productId,
-      ...variantData,
-    });
+    let newVariant;
+    switch (type) {
+      case "LaptopVariant":
+        newVariant = new LaptopVariant({
+          productId: productId,
+          ...variantData,
+        });
+        break;
+
+      case "MouseVariant":
+        newVariant = new MouseVariant({
+          productId: productId,
+          ...variantData,
+        });
+        break;
+
+      default:
+        return res.status(400).json({ message: "Loại sản phẩm không hợp lệ" });
+    }
 
     const savedVariant = await newVariant.save();
 
     return res.status(201).json({
-      message: "Thêm sản phẩm variant thành công",
+      message: `Thêm sản phẩm ${type} thành công`,
       variant: savedVariant,
     });
   } catch (error) {
@@ -169,6 +290,17 @@ const getCategory = async (req, res) => {
   }
 };
 
+// CÁC CHỨC NĂNG UseCase (Trường hợp sử dụng)
+const getUseCase = async (req, res) => {
+  try {
+    const use_case = await Usecase.find({});
+    res.status(200).json(use_case);
+  } catch (error) {
+    console.error("Lỗi lấy UseCase", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   createProduct,
   addProductVariant,
@@ -177,4 +309,7 @@ module.exports = {
   createBrand,
   createCategory,
   getCategory,
+  getAdminProducts,
+  editProduct,
+  getUseCase,
 };
