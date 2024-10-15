@@ -29,13 +29,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   
   return (
     <div
-      className={`bg-white text-gray-800 h-screen fixed z-1 shadow-md transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}
+      className={`bg-white text-gray-800 h-screen fixed z-5 shadow-md transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}
     >
       <div className="flex flex-col h-full overflow-y-auto">
         {/* Sidebar Content */}
         <nav className="mt-4 flex flex-col">
           <ul className="space-y-2">
-            <Link to="/admin/dashboard" className="block">
+            <Link to="/admin/dashboard" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
                 className={`px-4 py-2 flex items-center space-x-2 hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400
                 ${!isOpen ? 'justify-center' : ''} 
@@ -45,7 +45,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Dashboard</span>
               </li>
             </Link>
-            <Link to="/admin/products" className="block">
+            <Link to="/admin/products" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
                 className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
                 ${!isOpen ? 'justify-center' : ''} 
@@ -55,7 +55,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Products</span>
               </li>
             </Link>
-            <Link to="/inbox" className="block">
+            <Link to="/inbox" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
                 className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
                 ${!isOpen ? 'justify-center' : ''} 
@@ -65,17 +65,18 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Inbox</span>
               </li>
             </Link>
-            <Link to="/admin/orders" className="block">
+            <Link to="/admin/orders" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
                 className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/orders') ? 'bg-gray-300' : ''}`}
+                ${isActive('/admin/orders') ? 'bg-gray-300' : ''}
+                `}
               >
                 <FiPackage className="w-5 h-5" />
                 {isOpen && <span>Orders</span>}
               </li>
             </Link>
-            <Link to="/admin/users" className="block">
+            <Link to="/admin/users" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
                 className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
                 ${!isOpen ? 'justify-center' : ''} 
@@ -86,7 +87,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               </li>
             </Link>
             {/* Brands Menu with Submenu */}
-            <Link to="/admin/brand" className="block">
+            <Link to="/admin/brand" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
                 className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
                 ${!isOpen ? 'justify-center' : ''} 
@@ -100,7 +101,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               </li>
             </Link>
             {/* Categories Menu with Submenu */}
-            <Link to="/admin/category" className="block">
+            <Link to="/admin/category" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
                 className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
                 ${!isOpen ? 'justify-center' : ''} 

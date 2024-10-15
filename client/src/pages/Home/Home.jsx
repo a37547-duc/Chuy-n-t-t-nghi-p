@@ -10,6 +10,7 @@ import BusinessLaptop from "./ProductCategory/BusinessLaptop/BusinessLaptop";
 import GamingLaptop from "./ProductCategory/GamingLaptop/GamingLaptop";
 import PcFlex from "./ProductCategory/PcFlex/PcFlex";
 
+
 // import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -18,7 +19,7 @@ export default function Home() {
   // const link = Link();
 
   return (
-    <div>
+    <div className="bg-[#F5F5F5]">
       <BackgroundImage />
       <div className="flex justify-center mx-auto">
         <div className="flex w-full max-w-[1100px] h-[420px] flex-nowrap">
@@ -71,10 +72,10 @@ export default function Home() {
       </div>
       <div className="mt-[50px] mb-[20px]">
         <div className="max-w-[1100px] mx-auto">
+        <ProductCategory />
         <BusinessLaptop />
         <GamingLaptop />
         <PcFlex />
-        <ProductCategory />
         <BestSeller />
         <Carousel />
         </div>

@@ -212,7 +212,7 @@ function ShoppingCart() {
                   </div>
                 ))}
               </div>
-              <div className="md:col-span-1 border rounded-md p-4 bg-gray-50">
+              <div className="md:col-span-1 border rounded-md p-4 bg-gray-50 h-80">
                 <h2 className="text-xl font-bold mb-4">Tổng đơn hàng</h2>
                 <div className="flex justify-between mb-2">
                   <span>Tổng</span>

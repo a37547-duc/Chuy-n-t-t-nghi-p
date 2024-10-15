@@ -14,13 +14,16 @@ const BasicModal = ({ isOpen, onRequestClose, children }) => {
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
     >
-      <div className="bg-white rounded-lg shadow-md max-w-3xl w-full p-6 relative">
+      <div className="bg-white rounded-lg shadow-md max-w-3xl w-full p-6 relative max-h-[80vh] overflow-y-auto">
+        {/* Nút đóng modal */}
         <button
           onClick={onRequestClose}
           className="absolute top-2 right-2 w-7 text-red-500 hover:text-red-700 focus:outline-none bg-transparent border-none rounded-lg text-xl font-bold transition duration-200 ease-in-out transform hover:bg-gray-200"
         >
-          <FontAwesomeIcon icon={faTimes} /> 
+          <FontAwesomeIcon icon={faTimes} />
         </button>
+        
+        {/* Nội dung modal */}
         {children}
       </div>
     </Modal>

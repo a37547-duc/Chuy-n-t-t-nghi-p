@@ -87,7 +87,7 @@ const OrderItemDetailAdmin = ({ orderId, onClose }) => {
       
       <h3 className="text-lg font-semibold mb-2">Chi tiết đơn hàng:</h3>
       
-      <div className="max-h-24 overflow-y-auto">
+      <div className="">
         <table className="w-full mb-4 border-collapse">
           <thead>
             <tr className="border-b">

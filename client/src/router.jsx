@@ -22,6 +22,7 @@ import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement"
 import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManagement"
 import EmptyPageDelivery from "./pages/Account/AccountOrder/EmptyPage/EmptyPageDelivery";
 import EmptyPageCompleted from "./pages/Account/AccountOrder/EmptyPage/EmptyPageCompleted";
+import ProductVariation from "./pages/Admin/ProductManagement/ProductVariation";
 
 const router = createBrowserRouter([
   {
@@ -129,6 +130,10 @@ const router = createBrowserRouter([
       {
         path: "category",
         element: <CategoryManagement />,
+      },
+      {
+        path: "products/:productId",
+        element: <ProductVariation />,
       },
     ]
   }

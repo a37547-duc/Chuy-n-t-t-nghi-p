@@ -31,7 +31,7 @@ const AccountSideBar = () => {
             </div>
 
             <ul className='text-[14px]'>
-                <Link to="/account/information">
+                <Link to="/account/information" onDragStart={(e) => e.preventDefault()}>
                     <div 
                         className={`cursor-pointer flex items-center justify-between py-1 my-2 bg-transparent hover:text-[rgb(20,53,195)] hover:font-bold 
                         ${isActive('/account/information') ? 'text-[rgb(20,53,195)] font-bold' : ''}`}
@@ -40,7 +40,7 @@ const AccountSideBar = () => {
                         <div className='text-ellipsis overflow-hidden mx-[0.6rem] flex-1'>Thông tin tài khoản</div>
                     </div>
                 </Link>
-                <Link to="/account/order">
+                <Link to="/account/order" onDragStart={(e) => e.preventDefault()}>
                     <div 
                         className={`cursor-pointer flex items-center justify-between py-1 my-2 bg-transparent hover:text-[rgb(20,53,195)] hover:font-bold 
                         ${isActive('/account/order') ? 'text-[rgb(20,53,195)] font-bold' : ''}`}
@@ -49,7 +49,7 @@ const AccountSideBar = () => {
                         <div className='text-ellipsis overflow-hidden mx-[0.6rem] flex-1'>Quản lý đơn hàng</div>
                     </div>
                 </Link>
-                <Link to="/account/notifications">
+                <Link to="/account/notifications" onDragStart={(e) => e.preventDefault()}>
                     <div 
                         className={`cursor-pointer flex items-center justify-between py-1 my-2 bg-transparent hover:text-[rgb(20,53,195)] hover:font-bold 
                         ${isActive('/account/notifications') ? 'text-[rgb(20,53,195)] font-bold' : ''}`}

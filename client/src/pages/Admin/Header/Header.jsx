@@ -11,7 +11,7 @@ function Header({ toggleSidebar }) {
   };
 
   return (
-    <header className="bg-white border-b px-5 py-5 shadow-sm z-1 w-full sticky top-0">
+    <header className="bg-white border-b px-5 py-5 shadow-sm w-full sticky top-0">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <button 

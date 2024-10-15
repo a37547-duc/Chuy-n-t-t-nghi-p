@@ -7,7 +7,7 @@ const ImageRow = () => {
   return (
     <div className="flex flex-col h-full relative" style={{zIndex:9}}>
       {imageUrls.map((url, index) => (
-        <a className="w-full h-2/5 first:mb-[22px] mb-0 first:mt-[22px] mt-0 relative overflow-hidden transition-transform duration-300 ease-linear hover:translate-y-[-2px]"
+        <a className="w-full h-2/5 first:mb-[36px] mb-0 first:mt-[22px] mt-0 relative overflow-hidden transition-transform duration-300 ease-linear hover:translate-y-[-2px]"
           key={index}
           href="#"
         >
