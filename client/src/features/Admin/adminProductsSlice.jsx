@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 // Thunk để gọi API thêm sản phẩm
 export const addProduct = createAsyncThunk(
@@ -16,6 +19,7 @@ export const addProduct = createAsyncThunk(
     }
   }
 );
+
 
 // Thunk để gọi API cập nhật sản phẩm
 export const updateProduct = createAsyncThunk(
@@ -44,7 +48,6 @@ const adminProductSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Thêm sản phẩm
       .addCase(addProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -52,10 +55,12 @@ const adminProductSlice = createSlice({
       .addCase(addProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.products.push(action.payload);
+        toast.success("Thêm sản phẩm thành công!");
       })
       .addCase(addProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        toast.error("Thêm sản phẩm thất bại. Vui lòng thử lại!");
       });
     builder
       .addCase(updateProduct.pending, (state) => {
@@ -70,10 +75,12 @@ const adminProductSlice = createSlice({
         if (index !== -1) {
           state.products[index] = action.payload;
         }
+        toast.success("Cập nhật sản phẩm thành công!");
       })
       .addCase(updateProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        toast.error("Cập nhập sản phẩm thất bại. Vui lòng thử lại!");
       });
   },
 });

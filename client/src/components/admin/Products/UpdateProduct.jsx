@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct } from "../../../features/Admin/adminProductsSlice";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
@@ -10,9 +10,9 @@ import ImageUpload from "../../images/ImageUpload";
 
 const UpdateProduct = ({ onClose, data }) => {
   const dispatch = useDispatch();
-  const { categories } = useSelector((state) => state.category);
-  const { brands } = useSelector((state) => state.brand);
-  const { useCases } = useSelector((state) => state.useCase);
+  const { categories, loading: loadingCategories } = useSelector((state) => state.category);
+  const { brands, loading: loadingBrands } = useSelector((state) => state.brand);
+  const { useCases, loading: loadingUseCases } = useSelector((state) => state.useCase);
   const { register, handleSubmit, setValue, formState: { errors } } = useForm({
     defaultValues: {
       name: data?.name || "",
@@ -66,16 +66,20 @@ const UpdateProduct = ({ onClose, data }) => {
           <label className="block text-sm font-medium">Nhu cầu sử dụng</label>
           <select
             {...register("use_case_ids", { required: "Nhu cầu sử dụng là bắt buộc" })}
-            className={`mt-1 block w-full border ${errors.use_cases_ids ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
+            className={`mt-1 block w-full border ${errors.use_case_ids ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
           >
             <option disabled value="">Chọn nhu cầu sử dụng</option>
-            {useCases.map((useCase) => (
-              <option key={useCase._id} value={useCase._id}>
-                {useCase.name}
-              </option>
-            ))}
+            {loadingUseCases ? (
+              <option disabled>Đang tải...</option>
+            ) : (
+              useCases.map((useCase) => (
+                <option key={useCase._id} value={useCase._id}>
+                  {useCase.name}
+                </option>
+              ))
+            )}
           </select>
-          {errors.use_case_ids && <p className="text-red-500 text-sm">{errors.use_cases_ids.message}</p>}
+          {errors.use_case_ids && <p className="text-red-500 text-sm">{errors.use_case_ids.message}</p>}
         </div>
       </div>
 
@@ -87,11 +91,15 @@ const UpdateProduct = ({ onClose, data }) => {
             className={`mt-1 block w-full border ${errors.category ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
           >
             <option disabled value="">Chọn danh mục</option>
-            {categories.map((category) => (
-              <option key={category._id} value={category._id}>
-                {category.name}
-              </option>
-            ))}
+            {loadingCategories ? (
+              <option disabled>Đang tải...</option>
+            ) : (
+              categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))
+            )}
           </select>
           {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
         </div>
@@ -103,11 +111,15 @@ const UpdateProduct = ({ onClose, data }) => {
             className={`mt-1 block w-full border ${errors.brand ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
           >
             <option disabled value="">Chọn thương hiệu</option>
-            {brands.map((brand) => (
-              <option key={brand._id} value={brand._id}>
-                {brand.name}
-              </option>
-            ))}
+            {loadingBrands ? (
+              <option disabled>Đang tải...</option>
+            ) : (
+              brands.map((brand) => (
+                <option key={brand._id} value={brand._id}>
+                  {brand.name}
+                </option>
+              ))
+            )}
           </select>
           {errors.brand && <p className="text-red-500 text-sm">{errors.brand.message}</p>}
         </div>
@@ -124,7 +136,7 @@ const UpdateProduct = ({ onClose, data }) => {
 
       <div>
         <label className="block text-sm font-medium"></label>
-        <ImageUpload onUpload={handleImageUpload} />
+        <ImageUpload onUpload={handleImageUpload} existingImages={data.images} />
       </div>
 
       <div className="flex justify-end space-x-2">

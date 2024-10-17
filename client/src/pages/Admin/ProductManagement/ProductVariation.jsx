@@ -1,37 +1,35 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { FaEdit, FaTrashAlt } from "react-icons/fa"; // Removed unused FaEye
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import BasicModal from "../../../components/Modal/BasicModal";
-// import AddProductVariation from "../../../components/admin/Products/AddProductVariation";
-// import DeleteProductVariation from "../../../components/admin/Products/DeleteProductVariation";
-// import UpdateProductVariation from "../../../components/admin/Products/UpdateProductVariation";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductVariations } from "../../../features/product/productVariationSlice";
+import AddProductVariation from "../../../components/admin/ProductVariation/AddProductVariation";
+// import DeleteProductVariation from "../../../components/admin/ProductVariation/DeleteProductVariation";
+// import UpdateProductVariation from "../../../components/admin/ProductVariation/UpdateProductVariation";
 
 const ProductVariation = () => {
-  const { productId } = useParams();
+  const { productId, productType } = useParams();
   const dispatch = useDispatch();
-  const { variations, loading, error } = useSelector((state) => state.productVariation);
-  
+  const { variations, loading: variationLoading, error: variationError } = useSelector((state) => state.productVariation);
   const [page, setPage] = useState(0);
   const variationsPerPage = 7;
-
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [id, setId] = useState(null);
   const [initV, setInitV] = useState(null);
   
   const [selectAll, setSelectAll] = useState(false);
   const [selectedVariations, setSelectedVariations] = useState([]);
 
-  useEffect(() => {
-    dispatch(getAllProductVariations(productId));
-  }, [dispatch, productId]);
 
+  useEffect(() => {
+    if (productId) {
+      dispatch(getAllProductVariations(productId));
+    }
+  }, [dispatch, productId]);
   const totalVariations = variations.length;
   const totalPages = Math.ceil(totalVariations / variationsPerPage);
 
@@ -73,49 +71,6 @@ const ProductVariation = () => {
   const handleOpenUpdateModal = () => setIsUpdateModalOpen(true);
   const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
 
-  const handleSaveVariation = (newVariation) => {
-    // Implement addProductVariation action
-    // Example:
-    // dispatch(addProductVariation(newVariation))
-    //   .unwrap()
-    //   .then(() => {
-    //     dispatch(getAllProductVariations(productId));
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error adding variation:", error);
-    //   });
-    handleCloseAddModal();
-  };
-
-  const handleDeleteVariation = () => {
-    // Implement deleteProductVariations action
-    // Example:
-    // dispatch(deleteProductVariations(selectedVariations))
-    //   .unwrap()
-    //   .then(() => {
-    //     dispatch(getAllProductVariations(productId));
-    //     setSelectedVariations([]);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error deleting variations:", error);
-    //   });
-    handleCloseDeleteModal();
-  };
-
-  const handleUpdateVariation = (updatedVariation) => {
-    // Implement updateProductVariation action
-    // Example:
-    // dispatch(updateProductVariation(updatedVariation))
-    //   .unwrap()
-    //   .then(() => {
-    //     dispatch(getAllProductVariations(productId));
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error updating variation:", error);
-    //   });
-    handleCloseUpdateModal();
-  };
-
   const handleDeleteButtonClick = () => {
     if (selectedVariations.length > 0) {
       handleOpenDeleteModal();
@@ -125,7 +80,6 @@ const ProductVariation = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold">Variations for Product ID: {productId}</h1>
-
       {/* Search Bar & Add Button */}
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
@@ -156,7 +110,7 @@ const ProductVariation = () => {
       </div>
 
       {/* Error and Loading States */}
-      {loading && (
+      {variationLoading && (
         <div className="flex justify-center items-center mt-6">
           <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle
@@ -178,14 +132,14 @@ const ProductVariation = () => {
       )}
 
       {/* Error Message */}
-      {error && (
+      {variationError && (
         <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
           <p>Sản phẩm không có biến thể nào</p>
         </div>
       )}
 
       {/* Variation Table */}
-      {!loading && !error && (
+      {!variationLoading && !variationError && (
         <table className="table-auto w-full mt-6 bg-white shadow-md rounded-lg">
           <thead>
             <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
@@ -302,15 +256,18 @@ const ProductVariation = () => {
       )}
 
       {/* Modals for Add, Update, and Delete */}
-      {/* <BasicModal
+      <BasicModal
         isOpen={isAddModalOpen}
-        onClose={handleCloseAddModal}
+        onRequestClose={handleCloseAddModal}
         title="Thêm biến thể sản phẩm"
       >
-        <AddProductVariation onSubmit={handleSaveVariation} onClose={handleCloseAddModal} />
+        <AddProductVariation 
+        productId={productId} 
+        onClose={handleCloseAddModal} 
+        />
       </BasicModal>
       
-      <BasicModal
+      {/* <BasicModal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
         title="Xóa biến thể sản phẩm"
@@ -320,9 +277,9 @@ const ProductVariation = () => {
           onDelete={handleDeleteVariation} 
           onClose={handleCloseDeleteModal} 
         />
-      </BasicModal>
+      </BasicModal> */}
       
-      <BasicModal
+      {/* <BasicModal
         isOpen={isUpdateModalOpen}
         onClose={handleCloseUpdateModal}
         title="Cập nhật biến thể sản phẩm"

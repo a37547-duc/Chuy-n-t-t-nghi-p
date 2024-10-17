@@ -132,7 +132,7 @@ const router = createBrowserRouter([
         element: <CategoryManagement />,
       },
       {
-        path: "products/:productId",
+        path: "products/:productType/:productId",
         element: <ProductVariation />,
       },
     ]

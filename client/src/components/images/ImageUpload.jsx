@@ -1,14 +1,18 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const ImageUpload = ({ onUpload }) => {
+const ImageUpload = ({ onUpload, existingImages = [] }) => {
   const [images, setImages] = useState([]);
   const [urls, setUrls] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    console.log(existingImages);
+    setUrls(existingImages);
+  }, [existingImages]);
 
   const onDrop = useCallback((acceptedFiles) => {
     setIsLoading(true);
@@ -44,7 +48,7 @@ const ImageUpload = ({ onUpload }) => {
     <div>
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed p-6 ${isDragActive ? "bg-gray-200" : "bg-white"} text-center`}
+        className={`border-2 border-dashed p-6 focus:border-2 focus:border-blue-500 focus:outline-none ${isDragActive ? "bg-gray-200" : "bg-white"} text-center`}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
@@ -54,7 +58,7 @@ const ImageUpload = ({ onUpload }) => {
         )}
       </div>
 
-      {isLoading && <p className="mt-4 text-blue-500">Đang tải hình ảnh...</p>} {/* Hiển thị loading */}
+      {isLoading && <p className="mt-4 text-blue-500">Đang tải hình ảnh...</p>}
 
       {urls.length > 0 && (
         <div>

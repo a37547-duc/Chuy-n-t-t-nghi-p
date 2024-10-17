@@ -79,27 +79,26 @@ const ProductManagement = () => {
   const hanleOpenUpdateModal = () => setIsUpdateModalOpen(true);
   const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
 
-  const handleSaveProduct = (newProduct) => {
-    dispatch(addProduct(newProduct)) // Dispatch action addProduct với dữ liệu sản phẩm mới
-      .unwrap()
-      .then(() => {
-        // Cập nhật danh sách sản phẩm sau khi thêm
-        dispatch(getAllProducts());
-      })
-      .catch((error) => {
-        console.log("Lỗi khi thêm sản phẩm:", error);
-      });
+  // const handleSaveProduct = (newProduct) => {
+  //   dispatch(addProduct(newProduct))
+  //     .unwrap()
+  //     .then(() => {
+  //       dispatch(getAllProducts());
+  //     })
+  //     .catch((error) => {
+  //       console.log("Lỗi khi thêm sản phẩm:", error);
+  //     });
   
-    handleCloseAddModal();
-  };
+  //   handleCloseAddModal();
+  // };
   const handleDeleteProduct = () => {
     console.log("Product deleted:", selectedProducts);
     handleCloseDeleteModal();
   };
-  const handleUpdateProduct = (updatedProduct) => {
-    console.log("Product updated:", updatedProduct);
-    handleCloseUpdateModal();
-  };
+  // const handleUpdateProduct = (updatedProduct) => {
+  //   console.log("Product updated:", updatedProduct);
+  //   handleCloseUpdateModal();
+  // };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -228,7 +227,7 @@ const ProductManagement = () => {
                     <FaTrashAlt className="mr-2" />
                     Delete
                   </button>
-                  <Link to={`/admin/products/${products._id}`}>
+                  <Link to={`/admin/products/${products.type}/${products._id}`}>
                     <button 
                       className="flex items-center bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                     >
@@ -279,7 +278,6 @@ const ProductManagement = () => {
       {/* Modal for Adding Product */}
       <BasicModal isOpen={isAddModalOpen} onRequestClose={handleCloseAddModal}>
         <AddProduct 
-          onSave={handleSaveProduct} 
           onClose={handleCloseAddModal} 
         />
       </BasicModal>
@@ -292,7 +290,6 @@ const ProductManagement = () => {
       </BasicModal>
       <BasicModal isOpen={isUpdateModalOpen} onRequestClose={handleCloseUpdateModal}>
         <UpdateProduct 
-          onUpdate={handleUpdateProduct} 
           onClose={handleCloseUpdateModal} 
           data={initP}
         />

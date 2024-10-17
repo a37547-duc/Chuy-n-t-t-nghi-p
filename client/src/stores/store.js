@@ -5,6 +5,7 @@ import brandReducer from "../features/brand/brandsSlice";
 import categoryReducer from "../features/Category/categoriesSlice";
 import useCaseReducer from "../features/usecase/usecaseSlice";
 import productVariationReducer from "../features/product/productVariationSlice";
+import adminVariationReducer from "../features/Admin/adminVariationsSlice"
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     category: categoryReducer,
     product: productReducer,
     adminProduct: adminProductReducer,
+    adminVariation: adminVariationReducer,
   },
 });

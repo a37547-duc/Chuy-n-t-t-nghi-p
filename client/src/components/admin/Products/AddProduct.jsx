@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
-import {getAllCategories} from "../../../features/Category/categoriesSlice";
+import { getAllCategories } from "../../../features/Category/categoriesSlice";
 import { addProduct } from "../../../features/Admin/adminProductsSlice";
 import { getAllUseCase } from "../../../features/usecase/usecaseSlice";
-import { getAllProducts } from "../../../features/product/productsSlice"
+import { getAllProducts } from "../../../features/product/productsSlice";
 import ImageUpload from "../../../components/images/ImageUpload";
-
 const AddProduct = ({ onClose }) => {
   const dispatch = useDispatch();
   const [newProduct, setNewProduct] = useState({
@@ -15,7 +14,7 @@ const AddProduct = ({ onClose }) => {
     brand: "",
     description: "",
     use_case_ids: "",
-    images: "",
+    images: [],
   });
   const [errors, setErrors] = useState({});
 
@@ -40,7 +39,7 @@ const AddProduct = ({ onClose }) => {
   const handleImageUpload = (url) => {
     setNewProduct((prevProduct) => ({
       ...prevProduct,
-      images: url,
+      images: [...prevProduct.images, url],
     }));
   };
 
@@ -49,13 +48,15 @@ const AddProduct = ({ onClose }) => {
     if (!newProduct.name) newErrors.name = "Tên sản phẩm không được để trống.";
     if (!newProduct.category) newErrors.category = "Danh mục không được để trống.";
     if (!newProduct.brand) newErrors.brand = "Thương hiệu không được để trống.";
-    if (!newProduct.images) newErrors.images = "Hình ảnh không được để trống.";
+    if (!newProduct.images.length) newErrors.images = "Hình ảnh không được để trống.";
+    if (!newProduct.use_case_ids) newErrors.use_case_ids = "Nhu cầu sử dụng không được để trống.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(newProduct);
     if (validateForm()) {
       dispatch(addProduct(newProduct))
         .unwrap()
@@ -154,7 +155,7 @@ const AddProduct = ({ onClose }) => {
               ))
             )}
           </select>
-          {errors.use_case_ids && <p className="text-red-500 text-sm">{errors.use_cases_ids}</p>}
+          {errors.use_case_ids && <p className="text-red-500 text-sm">{errors.use_case_ids}</p>}
         </div>
       </div>
 
@@ -170,8 +171,8 @@ const AddProduct = ({ onClose }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium"></label>
-        <ImageUpload onUpload={handleImageUpload} />
+        <label className="block text-sm font-medium">Hình ảnh</label>
+        <ImageUpload onUpload={handleImageUpload} existingImages={newProduct.images} />
         {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
       </div>
 
