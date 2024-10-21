@@ -16,11 +16,15 @@ import DashBoard from "./pages/Admin/DashBoard/DashBoard";
 import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
 import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
 import UserManagement from "./pages/Admin/UserManagement/UserManagement";
-import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement";
-import CategoryManagement from "./pages/Admin/CategoryManagement/CategoryManagement";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement"
+import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManagement"
 import RestoreManagement from "./pages/Admin/RestoreManagement/RestoreManagement";
 import EmptyPageDelivery from "./pages/Account/AccountComputer/AccountOrder/EmptyPage/EmptyPageDelivery";
 import EmptyPageCompleted from "./pages/Account/AccountComputer/AccountOrder/EmptyPage/EmptyPageCompleted";
+import ProductVariation from "./pages/Admin/ProductManagement/ProductVariation";
+
 import AccountChangePassword from "./pages/Account/AccountComputer/AccountChangePassword/AccountChangePassword";
 import InformationUser from "./pages/Account/AccountMobile/InformationUser/InformationUser";
 import PurchaseHistoryUser from "./pages/Account/AccountMobile/PurchaseHistoryUser/PurchaseHistoryUser";
@@ -56,6 +60,15 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart></Cart>,
+      },
+
+      {
+        path: "/login",
+        element: <Login></Login>
+      },
+      {
+        path: "/signup",
+        element: <Signup></Signup>
       },
       {
         path: "account",
@@ -144,6 +157,10 @@ const router = createBrowserRouter([
       {
         path: "category",
         element: <CategoryManagement />,
+      },
+      {
+        path: "products/:productType/:productId",
+        element: <ProductVariation />,
       },
       {
         path: "restore",

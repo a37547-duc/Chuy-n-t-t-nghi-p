@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   
   return (
     <div
-      className={`bg-white text-gray-800 h-screen fixed z-40 shadow-md transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}
+      className={`bg-white text-gray-800 h-screen fixed z-5 shadow-md transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}
     >
       <div className="flex flex-col h-full overflow-y-auto">
         {/* Sidebar Content */}
