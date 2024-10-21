@@ -1,0 +1,14 @@
+/* Ẩn scrollbar trên Chrome, Safari và Edge */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ẩn scrollbar trên Firefox */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+/* Vẫn giữ tính năng cuộn */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Ẩn scrollbar trên Internet Explorer và Edge cũ */
+}

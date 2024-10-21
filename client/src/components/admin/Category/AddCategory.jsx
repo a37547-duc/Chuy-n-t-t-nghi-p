@@ -4,11 +4,8 @@ import { useState } from "react";
 const AddCategory = ({ onSave, onClose }) => {
   const [newCategory, setNewCategory] = useState({
     name: "",
-    category: "",
-    description: "",
-    price: "",
-    details: "",
-    image: null,
+    // Thêm trường description nếu cần
+    description: "", // Nếu bạn muốn giữ lại trường mô tả
   });
 
   const handleChange = (e) => {
@@ -16,25 +13,36 @@ const AddCategory = ({ onSave, onClose }) => {
     setNewCategory({ ...newCategory, [name]: value });
   };
 
-  const handleFileChange = (e) => {
-    const { files } = e.target;
-    if (files && files.length > 0) {
-        setNewCategory({ ...newCategory, image: files[0] });
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(newCategory);
-    setNewCategory({ name: "", category: "", description: "", price: "", details: "", image: null });
+    try {
+      // Gửi dữ liệu đến API
+      const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/category/create", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newCategory), // Chuyển đổi dữ liệu thành JSON
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create category");
+      }
+
+      const savedCategory = await response.json();
+      onSave(savedCategory); // Gọi hàm onSave với dữ liệu trả về từ API
+      setNewCategory({ name: "", description: "" }); // Reset form
+    } catch (error) {
+      console.error("Error saving category:", error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="mb-4 text-xl font-semibold tracking-wide">Thêm danh mục mới</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <div>
-          <label className="block text-sm font-medium">Product Name</label>
+          <label className="block text-sm font-medium">Category Name</label>
           <input
             type="text"
             name="name"
@@ -45,21 +53,7 @@ const AddCategory = ({ onSave, onClose }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium">Category</label>
-          <input
-            type="text"
-            name="category"
-            value={newCategory.category}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Descriptions</label>
+          <label className="block text-sm font-medium">Description</label>
           <input
             type="text"
             name="description"
@@ -67,39 +61,6 @@ const AddCategory = ({ onSave, onClose }) => {
             onChange={handleChange}
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Price</label>
-          <input
-            type="text"
-            name="price"
-            value={newCategory.price}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Details</label>
-          <input
-            type="text"
-            name="details"
-            value={newCategory.details}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Product Image</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleFileChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
           />
         </div>
       </div>
@@ -112,6 +73,7 @@ const AddCategory = ({ onSave, onClose }) => {
           Save
         </button>
         <button
+          type="button" // Đổi thành type="button" để không gửi form
           onClick={onClose}
           className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
         >

@@ -7,10 +7,10 @@ import Cart from "./pages/Cart/Cart";
 import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
 import Account from "./pages/Account/Account";
-import AccountInformation from "./pages/Account/AccountInformation/AccountInformation";
-import AccountOrder from "./pages/Account/AccountOrder/AccountOrder";
-import EmptyPagePayMent from "./pages/Account/AccountOrder/EmptyPage/EmptyPagePayMent";
-import AccountNotification from "./pages/Account/AccountNotification/AccountNotification";
+import AccountInformation from "./pages/Account/AccountComputer/AccountInformation/AccountInformation";
+import AccountOrder from "./pages/Account/AccountComputer/AccountOrder/AccountOrder";
+import EmptyPagePayMent from "./pages/Account/AccountComputer/AccountOrder/EmptyPage/EmptyPagePayMent";
+import AccountNotification from "./pages/Account/AccountComputer/AccountNotification/AccountNotification";
 import AdminLayout from "./pages/Admin/AdminLayout";
 import DashBoard from "./pages/Admin/DashBoard/DashBoard";
 import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
@@ -18,8 +18,14 @@ import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
 import UserManagement from "./pages/Admin/UserManagement/UserManagement";
 import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement";
 import CategoryManagement from "./pages/Admin/CategoryManagement/CategoryManagement";
-import EmptyPageDelivery from "./pages/Account/AccountOrder/EmptyPage/EmptyPageDelivery";
-import EmptyPageCompleted from "./pages/Account/AccountOrder/EmptyPage/EmptyPageCompleted";
+import RestoreManagement from "./pages/Admin/RestoreManagement/RestoreManagement";
+import EmptyPageDelivery from "./pages/Account/AccountComputer/AccountOrder/EmptyPage/EmptyPageDelivery";
+import EmptyPageCompleted from "./pages/Account/AccountComputer/AccountOrder/EmptyPage/EmptyPageCompleted";
+import AccountChangePassword from "./pages/Account/AccountComputer/AccountChangePassword/AccountChangePassword";
+import InformationUser from "./pages/Account/AccountMobile/InformationUser/InformationUser";
+import PurchaseHistoryUser from "./pages/Account/AccountMobile/PurchaseHistoryUser/PurchaseHistoryUser";
+import ChangePasswordMobile from "./pages/Account/AccountMobile/ChangePasswordMobile/ChangePasswordMobile";
+import ProductOneBrand from "./pages/Product/ProductOneBrand/ProductOneBrand";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/productList",
         element: <ProductList></ProductList>,
+      },
+      {
+        path: "/productOneBrand",
+        element: <ProductOneBrand />
       },
       {
         path: "/cart",
@@ -78,6 +88,23 @@ const router = createBrowserRouter([
           {
             path: "notifications",
             element: <AccountNotification />,
+          },
+          {
+            path: "changePassword",
+            element: <AccountChangePassword />,
+          },
+          // Mobile
+          {
+            path: "informationMobile",
+            element: <InformationUser />,
+          },
+          {
+            path: "orderMobile",
+            element: <PurchaseHistoryUser />,
+          },
+          {
+            path: "changePasswordMobile",
+            element: <ChangePasswordMobile />
           },
         ]
       },
@@ -117,6 +144,10 @@ const router = createBrowserRouter([
       {
         path: "category",
         element: <CategoryManagement />,
+      },
+      {
+        path: "restore",
+        element: <RestoreManagement />,
       },
     ]
   }

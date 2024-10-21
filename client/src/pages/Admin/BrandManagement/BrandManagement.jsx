@@ -17,21 +17,25 @@ const BrandManagement = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [brands, setBrands] = useState([]);  // State để lưu dữ liệu brands từ API
+  const [loading, setLoading] = useState(true); // Để hiển thị trạng thái tải dữ liệu
+  const [error, setError] = useState(null); // Để hiển thị lỗi nếu có
 
-  const brands = [
-    { id: "1", name: "ASUS", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Asus.png", description: "Intel Core i7, 16GB RAM, 512GB SSD", NumProduct: "1499" },
-    { id: "2", name: "Dell", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Dell.png", description: "Intel Core i5, 8GB RAM, 256GB SSD", NumProduct: "1299" },
-    { id: "3", name: "Acer", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/acer.png", description: "AMD Ryzen 5, 16GB RAM, 1TB HDD", NumProduct: "999" },
-    { id: "4", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-    { id: "5", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-    { id: "6", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-    { id: "7", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-    { id: "8", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-    { id: "9", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-    { id: "10", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-    { id: "11", name: "HP", logo: "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png", description: "Intel Core i3, 8GB RAM, 256GB SSD", NumProduct: "799" },
-  ];
-
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/brand");
+        const data = await response.json();
+        setBrands(data);  // Cập nhật state với dữ liệu từ API
+        setLoading(false); // Ngừng trạng thái loading sau khi dữ liệu được tải
+      } catch (err) {
+        setError(err.message); // Lưu thông báo lỗi nếu có
+        setLoading(false); // Ngừng trạng thái loading nếu xảy ra lỗi
+      }
+    };
+    fetchBrands(); // Gọi API
+  }, []);
+  
   const totalBrands = brands.length;
   const totalPages = Math.ceil(totalBrands / brandsPerPage);
 
@@ -45,7 +49,7 @@ const BrandManagement = () => {
 
   // Cập nhật trạng thái checkbox selectAll khi chuyển trang
   useEffect(() => {
-    const allSelected = currentBrands.every((brand) => selectedBrands.includes(brand.id));
+    const allSelected = currentBrands.every((brand) => selectedBrands.includes(brand._id));
     setSelectAll(allSelected);
   }, [page, selectedBrands, currentBrands]);
 
@@ -53,10 +57,10 @@ const BrandManagement = () => {
   const handleSelectAll = (e) => {
     setSelectAll(e.target.checked);
     if (e.target.checked) {
-      const allIds = currentBrands.map((brand) => brand.id);
-      setSelectedBrands([...selectedBrands, ...allIds.filter(id => !selectedBrands.includes(id))]);
+      const allIds = currentBrands.map((brand) => brand._id); // Sử dụng brand._id
+      setSelectedBrands([...new Set([...selectedBrands, ...allIds])]); // Sử dụng new Set để loại bỏ ID trùng lặp
     } else {
-      const remainingIds = selectedBrands.filter(id => !currentBrands.some(brand => brand.id === id));
+      const remainingIds = selectedBrands.filter(id => !currentBrands.some(brand => brand._id === id));
       setSelectedBrands(remainingIds);
     }
   };
@@ -64,9 +68,9 @@ const BrandManagement = () => {
   // Sử lý riêng lẻ checkbox
   const handleCheckboxChange = (e, brandId) => {
     if (e.target.checked) {
-      setSelectedBrands([...selectedBrands, brandId]); // Thêm brand ID danh sách chọn
+      setSelectedBrands([...selectedBrands, brandId]); // Thêm brand ID vào danh sách đã chọn
     } else {
-      setSelectedBrands(selectedBrands.filter((id) => id !== brandId)); // Xóa brand ID khỏi danh sách chọn
+      setSelectedBrands(selectedBrands.filter((id) => id !== brandId)); // Xóa brand ID khỏi danh sách đã chọn
     }
   };
 
@@ -107,6 +111,9 @@ const BrandManagement = () => {
     console.log(`Brand updated: ${updatedBrand.name}`);
     handleCloseUpdateModal();
   };
+
+  if (loading) return <p>Loading brands...</p>;
+  if (error) return <p>Error loading brands: {error}</p>;
   
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -156,8 +163,7 @@ const BrandManagement = () => {
             <th className="p-4">id</th>
             <th className="p-4">brand name</th>
             <th className="p-4">logo</th>
-            <th className="p-4">descriptions</th>
-            <th className="p-4">Number of products</th>
+            <th className="p-4">category</th>
             <th className="p-4">actions</th>
           </tr>
         </thead>
@@ -171,17 +177,17 @@ const BrandManagement = () => {
                 <input
                   type="checkbox"
                   className="form-checkbox text-blue-600 transition duration-150 ease-in-out border border-gray-300 rounded"
-                  checked={selectedBrands.includes(brand.id)}
-                  onChange={(e) => handleCheckboxChange(e, brand.id)}
+                  checked={selectedBrands.includes(brand._id)}
+                  onChange={(e) => handleCheckboxChange(e, brand._id)}
                 />
               </td>
-              <td className="p-4 text-sm">{brand.id}</td>
+              <td className="p-4 text-sm">{brand._id}</td>
               <td className="p-4 text-sm font-semibold">{brand.name}</td>
               <td className="p-1 text-sm">
-                <img src={brand.logo} alt={brand.name} className="h-10 w-20 object-contain" />
+                <img src={brand.image} alt={brand.name} className="h-10 w-20 object-contain" />
               </td>
-              <td className="p-4 text-sm">{brand.description}</td>
-              <td className="p-4 text-sm">{brand.NumProduct}</td>
+              <td className="p-4 text-sm font-semibold">
+                {brand.category_id.name}</td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">
                   <button 

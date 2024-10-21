@@ -1,5 +1,5 @@
 import NewImportedLaptop from "./NewImportedLaptop/NewImportedLaptop";
-import NewImportedPC from "./NewImportedPC/NewImportedPC";
+import NewImportedMouse from "./NewImportedMouse/NewImportedMouse";
 import NewImportedGamingGear from "./NewImportedGamingGear/NewImportedGamingGear";
 import NewImportedComponents from "./NewImportedComponents/NewImportedComponents";
 import NewImportedAccessories from "./NewImportedAccessories/NewImportedAccessories";
@@ -9,10 +9,10 @@ const NewImportedGoods =() => {
   return (
     <div>
       <NewImportedLaptop/>
-      <NewImportedPC/>
-      <NewImportedGamingGear/>
+      <NewImportedMouse />
+      {/* <NewImportedGamingGear/>
       <NewImportedComponents/>
-      <NewImportedAccessories/>
+      <NewImportedAccessories/> */}
     </div>
   );
 }
