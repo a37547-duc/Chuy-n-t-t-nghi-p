@@ -1,0 +1,20 @@
+/* Global CSS */
+.bottombar-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Đảm bảo thanh điều hướng hiển thị trên cùng */
+}
+
+/* Chỉ áp dụng khi màn hình nhỏ hơn hoặc bằng 540px */
+@media screen and (max-width: 540px) {
+  .bottombar-fixed {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+    height: 70px; /* Chiều cao cố định */
+    padding: 10px 0 10px;
+  }
+}

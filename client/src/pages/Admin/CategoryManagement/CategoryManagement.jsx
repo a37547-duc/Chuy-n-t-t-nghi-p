@@ -16,15 +16,22 @@ const CategoryManagement = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [categories, setCategories] = useState([]); // State để lưu danh mục
 
-  const categories = [
-    { id: "1", name: "Laptop", category: "Laptop Gaming", description: "Intel Core i7, 16GB RAM, 512GB SSD", image: "" },
-    { id: "2", name: "PC", category: "Ultrabook", description: "Intel Core i5, 8GB RAM, 256GB SSD", image: "" },
-    { id: "3", name: "Màn hình", category: "Laptop Gaming", description: "AMD Ryzen 5, 16GB RAM, 1TB HDD", image: "" },
-    { id: "4", name: "Linh kiện máy tính", category: "Laptop 2-in-1", description: "Intel Core i3, 8GB RAM, 256GB SSD", image: "" },
-    { id: "5", name: "Phụ kiện", category: "Laptop 2-in-1", description: "Intel Core i3, 8GB RAM, 256GB SSD", image: "" },
-    { id: "6", name: "Gaming Gear", category: "Laptop 2-in-1", description: "Intel Core i3, 8GB RAM, 256GB SSD", image: "" },
-  ];
+  // Gọi API để lấy danh mục
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/category");
+        const data = await response.json();
+        setCategories(data); // Cập nhật danh mục với dữ liệu từ API
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const totalCategories = categories.length;
   const totalPages = Math.ceil(totalCategories / categoryPerPage);
@@ -39,7 +46,7 @@ const CategoryManagement = () => {
 
   // Cập nhật trạng thái checkbox selectAll khi chuyển trang
   useEffect(() => {
-    const allSelected = currentCategories.every((category) => selectedCategories.includes(category.id));
+    const allSelected = currentCategories.every((category) => selectedCategories.includes(category._id));
     setSelectAll(allSelected);
   }, [page, selectedCategories, currentCategories]);
 
@@ -47,10 +54,10 @@ const CategoryManagement = () => {
   const handleSelectAll = (e) => {
     setSelectAll(e.target.checked);
     if (e.target.checked) {
-      const allIds = currentCategories.map((category) => category.id);
-      setSelectedCategories([...selectedCategories, ...allIds.filter(id => !selectedCategories.includes(id))]);
+      const allIds = currentCategories.map((category) => category._id);
+      setSelectedCategories([...new Set([...selectedCategories, ...allIds])]);
     } else {
-      const remainingIds = selectedCategories.filter(id => !currentCategories.some(category => category.id === id));
+      const remainingIds = selectedCategories.filter(id => !currentCategories.some(category => category._id === id));
       setSelectedCategories(remainingIds);
     }
   };
@@ -123,8 +130,7 @@ const CategoryManagement = () => {
             </th>
             <th className="p-4">id</th>
             <th className="p-4">category name</th>
-            <th className="p-4">image</th>
-            <th className="p-4">description</th>
+            {/* <th className="p-4">description</th> */}
             <th className="p-4">actions</th>
           </tr>
         </thead>
@@ -135,19 +141,17 @@ const CategoryManagement = () => {
                 <input
                   type="checkbox"
                   className="form-checkbox text-blue-600 transition duration-150 ease-in-out border border-gray-300 rounded"
-                  checked={selectedCategories.includes(caterory.id)}
-                  onChange={(e) => handleCheckboxChange(e, caterory.id)}
+                  checked={selectedCategories.includes(caterory._id)}
+                  onChange={(e) => handleCheckboxChange(e, caterory._id)}
                 />
               </td>
-              <td className="p-4 text-sm">{caterory.id}</td>
+              <td className="p-4 text-sm">{caterory._id}</td>
               <td className="p-4">
                 <div className="flex flex-col">
                   <span className="font-semibold text-sm">{caterory.name}</span>
-                  <span className="text-sm text-gray-500">{caterory.category}</span>
+                  {/* <span className="text-sm text-gray-500">{caterory.description}</span> */}
                 </div>
               </td>
-              <td className="p-4 text-sm">{caterory.image}</td>
-              <td className="p-4 text-sm">{caterory.description}</td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">
                   <button 

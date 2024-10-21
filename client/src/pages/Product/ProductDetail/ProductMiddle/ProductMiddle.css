@@ -1,0 +1,11 @@
+.flexBox {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+@media (max-width:768px) {
+  .flexBox {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,27 @@
+.laptop-link::after {
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #fff;
+  border-top: 6px solid transparent;
+  content: "";
+  height: 12px;
+  position: absolute;
+  right: 0;
+  top: calc(50% - 6px);
+  width: 12px;
+  z-index: 2;
+}
+
+/* Ẩn scrollbar trên Chrome, Safari và Edge */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ẩn scrollbar trên Firefox */
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+/* Vẫn giữ tính năng cuộn */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Ẩn scrollbar trên Internet Explorer và Edge cũ */
+}

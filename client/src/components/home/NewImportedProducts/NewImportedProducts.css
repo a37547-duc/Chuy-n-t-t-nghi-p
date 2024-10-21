@@ -1,18 +1,27 @@
-.overflow-hidden.relative.h-full:hover .arrow {
-    visibility: visible;
-  }
   
-  .arrow {
-    width: 2.75rem;
-    height: 2.75rem;  
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    position: absolute;
-    cursor: pointer;
-    visibility: hidden;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(168, 168, 168, 0.46);
+.arrow {
+  width: 2.75rem;
+  height: 2.75rem;  
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(168, 168, 168, 0.46);
+}
+
+.productNewImport {
+  width: calc(20% - 3.7px); /* Kích thước mặc định */
+}
+
+@media (max-width: 540px) {
+  .productNewImport {
+    width: calc(50% - 4px) /* Kích thước cho màn hình nhỏ hơn 540px */
   }
+  .arrow {
+    visibility: visible; /* Hiện nút theo mặc định */
+  }
+}

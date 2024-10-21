@@ -35,66 +35,38 @@ const Taskbar = () => {
 
   const menuItems = [
     {
-      title: "Laptop",
+      name: "Laptop văn phòng",
+      category: "Laptop",
+      usecase: "Office",
       icon: faLaptop,
-      subItems: [
-        { title: "Thương hiệu", subSubItems: ["Dell", "HP", "ABC"] },
-        { title: "Nhu cầu", subSubItems: ["Công việc", "Giải trí", "Gaming"] },
-        { title: "Kích thước", subSubItems: ["Dưới 13 inch", "13-15 inch", "Trên 15 inch", "Cái con cc"] },
-        { title: "Cấu hình", subSubItems: ["Core i5","Core i7", "Core i9", "Ryzen 5","Ryzen 7"] },
-      ],
+      subItems: [],
     },
     {
-      title: "PC",
+      name: "Laptop doanh nhân",
+      category: "Laptop",
+      usecase: "Business",
       icon: faComputer,
-      subItems: [
-        { title: "Thương hiệu", subSubItems: ["Asus", "MSI", "Gigabyte"] },
-        { title: "Nhu cầu sử dụng", subSubItems: ["Gaming", "Office"] },
-        { title: "Giá", subSubItems: ["Dưới 10 triệu", "10-15 triệu", "15-20 triệu", "Trên 20 triệu"] },
-        { title: "Cấu hình", subSubItems: ["Core i3", "Core i5", "Core i7", "Ryzen"] },
-      ],
+      subItems: [],
     },
     {
-      title: "Màn hình",
+      name: "Laptop Gaming",
+      category: "Laptop",
+      usecase: "Gaming",
       icon: faDesktop,
-      subItems: [
-        { title: "Thương hiệu", subSubItems: ["Asus", "MSI", "Gigabyte"] },
-        { title: "Tần số quét", subSubItems: ["60Hz", "75Hz","100Hz","120Hz","144Hz","165Hz","170Hz","180Hz","240Hz"] },
-        { title: "Giá", subSubItems: ["Dưới 3 triệu","3-5 triệu","5-10 triệu","10-15 triệu", "15-20 triệu", "Trên 20 triệu"] },
-        { title: "Kích thước", subSubItems: ["Dưới 19inch", "24 inch", "27 inch", "32 inch","Trên 32 inch"] },
-        { title: "Độ phân giải", subSubItems: ["HD", "Full HD", "2K-QHD", "4K UHD"] },
-      ],
+      subItems: [],
     },
     {
-      title: "Linh kiện máy tính",
+      name: "Laptop sinh viên",
+      category: "Laptop",
+      usecase: "Student",
       icon: faGamepad,
-      subItems: [
-        { title: "Thùng máy tính", subSubItems: ["SAMA", "Phong Vũ","ASUS","GIGABYTE","DELUXE","MSI","ANTEC"] },
-        { title: "Card màn hình", subSubItems: ["ASUS", "GALAX","GIGABYTE","MSI","NVIDIA","VGA GTX 1650","VGA GTX 4070","VGA GTX 4080","VGA GTX 4090","VGA GTX 3060","VGA GTX 3090"] },
-        { title: "Ổ cứng", subSubItems: ["SSD", "HDD","WD","INTEL","Samsung","Adata"] },
-        { title: "CPU", subSubItems: ["CPU-Intel", "Core i3","Core i5","Core i7","Core i9","Ryzen 3","Ryzen 5","Ryzen 7","Ryzen 9"] },
-        { title: "RAM", subSubItems: ["DDR5", "DDR4","16GB","32GB","Adata","Gigabyte","Apacer"] },
-      ],
+      subItems: [],
     },
     {
-      title: "Phụ kiện",
+      name: "Phụ kiện",
       icon: faCogs,
       subItems: [
-        { title: "Chuột", subSubItems: ["ASUS", "Logitech","Razer","HyperX","Dell","Microsoft","Xiaomi","MSI"] },
-        { title: "Bàn phím", subSubItems: ["Logitech", "Microsoft","Dell","MSI","HyperX","ASUS","AKKO","Razer"] },
-        { title: "Lót chuột", subSubItems: ["Logitech", "AKKO","ASUS","MSI","Hyper","Corsair"] },
-        { title: "Phụ kiện Laptop", subSubItems: ["Balo-túi chống sốc", "Dán màn hình","Sạc","Bộ cấp nguồn","Giá đỡ","Ốp lưng","Đế tản nhiệt"] },
-      ],
-    },
-    {
-      title: "Gaming Gear",
-      icon: faGamepad,
-      subItems: [
-        { title: "Bàn phím Gaming", subSubItems: ["Cơ", "Membrane"] },
-        { title: "Chuột Gaming", subSubItems: ["Wired", "Wireless"] },
-        { title: "Tai nghe Gaming", subSubItems: ["Over-ear", "In-ear"] },
-        { title: "Ghế Gaming", subSubItems: ["Over-ear", "In-ear"] },
-        { title: "Tay cầm chơi game", subSubItems: ["Over-ear", "In-ear"] },
+        { name: "Chuột", subSubItems: ["ASUS", "Logitech", "Razer", "HyperX", "Dell", "Microsoft", "Xiaomi", "MSI"] },
       ],
     },
   ];
@@ -109,17 +81,17 @@ const Taskbar = () => {
           onMouseOut={handleMouseOver}
         >
           <FontAwesomeIcon icon={item.icon} className="mr-2" />
-          {item.title}
+          {item.name}
           <FontAwesomeIcon icon={faGreaterThan} className="ml-auto" style={{ fontSize: '12px', color: 'rgba(0, 0, 0, 0.3)'}} />
         </div>
       ))}
 
-      {activeIndex !== null && (
-        <div className="submenu-container block absolute left-full top-0 h-[376px] w-[900px] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md" onMouseLeave={handleMouseLeave}>
+      {activeIndex !== null && menuItems[activeIndex].name === "Phụ kiện" && (
+        <div className="submenu-container block absolute left-full top-0 h-[376px] min-w-[550px] w-auto w-[59vw] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md" onMouseLeave={handleMouseLeave}>
           <div className="submenu flex w-full p-2.5 justify-between">
             {menuItems[activeIndex].subItems.map((subItem, subIndex) => (
               <div key={subIndex} className="submenu-item w-full px-5 text-[#333] cursor-pointer text-left border-l border-[#ddd]">
-                <div className="submenu-title font-bold mb-2.5 text-center">{subItem.title}</div>
+                <div className="submenu-title font-bold mb-2.5 text-center">{subItem.name}</div>
                 {subItem.subSubItems && (
                   <div className="sub-submenu flex flex-col w-full">
                     {subItem.subSubItems.map((subSubItem, subSubIndex) => (

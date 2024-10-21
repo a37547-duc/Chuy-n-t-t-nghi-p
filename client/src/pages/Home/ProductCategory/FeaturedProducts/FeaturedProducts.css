@@ -1,0 +1,17 @@
+.product {
+  width: calc(20% - 1.7px);
+}
+
+.scroll {
+  scroll-margin-top: 100px;
+}
+
+@media (max-width: 540px) {
+  .product {
+    width: calc(50% - 1px) /* Kích thước cho màn hình nhỏ hơn 540px */
+  }
+
+  .scroll {
+    scroll-margin-top: 170px;
+  }
+}

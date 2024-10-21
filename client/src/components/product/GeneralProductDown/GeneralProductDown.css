@@ -1,0 +1,9 @@
+.product {
+  width: calc(20% - 1.7px);
+}
+
+@media (max-width: 540px) {
+  .product {
+    width: calc(50% - 1px) /* Kích thước cho màn hình nhỏ hơn 540px */
+  }
+}

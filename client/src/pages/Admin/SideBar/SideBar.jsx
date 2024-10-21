@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect  } from "react";
 import { FiInbox, FiUsers, FiPackage, FiLock, FiHelpCircle, FiTag, FiGrid, FiBox, FiHome } from "react-icons/fi";
+import { MdOutlineRestoreFromTrash } from "react-icons/md";
 import { Link, useLocation, useNavigate  } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
@@ -110,6 +112,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               >
                 <FiGrid className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Category</span>
+              </li>
+            </Link>
+            <Link to="/admin/restore" className="block" onDragStart={(e) => e.preventDefault()}>
+              <li 
+                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                ${!isOpen ? 'justify-center' : ''} 
+                ${isActive('/admin/restore') ? 'bg-gray-300' : ''}
+                `}
+              >
+                <MdOutlineRestoreFromTrash className="w-5 h-5" />
+                {isOpen && <span>Restore</span>}
               </li>
             </Link>
             <div className="flex items-center justify-between px-4 py-2 border-b">
