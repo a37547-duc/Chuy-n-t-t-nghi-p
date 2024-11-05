@@ -32,11 +32,13 @@ const FeaturedProducts = () => {
             ...(data[0].laptops || []) // Lấy danh sách laptop
           ];
           setProducts(combinedProducts); // Gán sản phẩm đã gộp
+          console.log(data);
         } else {
           console.warn('No products found in the response.');
         }
       })
       .catch(error => console.error('Error fetching data:', error));
+      
   }, []);
 
   // Cập nhật trạng thái màn hình khi kích thước cửa sổ thay đổi

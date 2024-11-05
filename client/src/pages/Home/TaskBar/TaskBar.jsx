@@ -4,7 +4,25 @@ import { faLaptop, faDesktop, faGamepad, faCogs, faComputer } from '@fortawesome
 import { faGreaterThan } from '@fortawesome/free-solid-svg-icons';
 import "./Taskbar.css";
 
+// TEST
+import { useDispatch, useSelector } from "react-redux";
+import { useGetProductsQuery } from "../../../stores/query/productQuery";
+import {
+  setCategory,
+  setUsecase,
+  setBrand,
+} from "../../../stores/slices/producSlice"; // Import từ RTK Query
+
 const Taskbar = () => {
+  const dispatch = useDispatch();
+
+  const handleCategoryChange = ({ category, usecase }) => {
+    dispatch(setCategory(category)); // Cập nhật category dựa trên giá trị truyền vào
+    dispatch(setUsecase(usecase));
+    console.log(category, usecase);
+    console.log("ĐÂY LÀ TASKBAR");
+  };
+
   const [activeIndex, setActiveIndex] = useState(null);
 
   const handleMouseEnter = (index) => {
@@ -79,15 +97,19 @@ const Taskbar = () => {
           className={`menu-item flex items-center px-[20px] py-[10px] text-[#333] cursor-pointer transition-colors duration-300 ${activeIndex === index ? "hover" : ""}`}
           onMouseEnter={() => handleMouseEnter(index)}
           onMouseOut={handleMouseOver}
+          onClick={() =>
+            handleCategoryChange({ category: item.category , usecase: item.usecase })}
         >
-          <FontAwesomeIcon icon={item.icon} className="mr-2" />
+          <FontAwesomeIcon icon={item.icon} className="mr-2"
+           
+          />
           {item.name}
           <FontAwesomeIcon icon={faGreaterThan} className="ml-auto" style={{ fontSize: '12px', color: 'rgba(0, 0, 0, 0.3)'}} />
         </div>
       ))}
 
       {activeIndex !== null && menuItems[activeIndex].name === "Phụ kiện" && (
-        <div className="submenu-container block absolute left-full top-0 h-[376px] min-w-[550px] w-auto w-[59vw] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md" onMouseLeave={handleMouseLeave}>
+        <div className="submenu-container block absolute left-full top-0 h-[376px] min-w-[550px] w-auto w-[58vw] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md" onMouseLeave={handleMouseLeave}>
           <div className="submenu flex w-full p-2.5 justify-between">
             {menuItems[activeIndex].subItems.map((subItem, subIndex) => (
               <div key={subIndex} className="submenu-item w-full px-5 text-[#333] cursor-pointer text-left border-l border-[#ddd]">
@@ -107,6 +129,20 @@ const Taskbar = () => {
         </div>
       )}
     </div>
+
+    // <h1>
+    //   <button
+    //     onClick={() =>
+    //       handleCategoryChange({ category: "mouse", usecase: "gaming" })
+    //     }
+    //   >
+    //     Test MOUSSE
+    //   </button>
+    //   <br />
+    //   <button onClick={() => handleCategoryChange("laptop")}>
+    //     Test LAPTOP
+    //   </button>
+    // </h1>
   );
 };
 

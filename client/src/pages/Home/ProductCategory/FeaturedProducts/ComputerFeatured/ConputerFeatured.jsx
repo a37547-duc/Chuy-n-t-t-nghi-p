@@ -8,8 +8,8 @@ const ComputerFeatured = ({ currentProducts }) => {
   };
   return (
     <div className="flex flex-wrap gap-x-[2px] content-start bg-[#f6f6f6] py-[2px]">
-      {currentProducts.map((product) => (
-        <div key={product._id} className="bg-white mb-[2px] product">
+      {currentProducts.map((product, index) => (
+        <div key={index} className="bg-white mb-[2px] product">
           <div className="relative w-full h-full p-4 flex flex-col bg-white justify-between">
             <a 
               className="no-underline text-transparent cursor-pointer block"
