@@ -8,7 +8,6 @@ const AddProductVariation = ({ onClose, productId }) => {
   const productTypes = {
     LaptopVariant: "LaptopVariant",
     MouseVariant: "MouseVariant",
-    ACCESSORY: "Accessory",
   };
 
   const [newProduct, setNewProduct] = useState({
@@ -58,7 +57,6 @@ const AddProductVariation = ({ onClose, productId }) => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(newProduct);
     e.preventDefault();
     if(newProduct.type === "LaptopVariant") {
       newProduct.price = Number(newProduct.price);

@@ -1,4 +1,6 @@
-const DescriptionProduct = () => {
+/* eslint-disable react/prop-types */
+
+const DescriptionProduct = ({data}) => {
   
   const handleScrollToMiddle = () => {
     const element = document.getElementById("product-detail-middle");
@@ -9,15 +11,17 @@ const DescriptionProduct = () => {
   return (
     <div>
       <div className='p-4 text-[14px] text-[#333]'>
-        - CPU: Intel Core i5-13400 (2.5 GHz - 4.6 GHz/20MB/10 nhân, 16 luồng)
+        - CPU: {data.cpu.name}
         <br />
-        - RAM: 1 x 8GB DDR4 3200MHz (2 Khe cắm, Hỗ trợ tối đa 64GB)
+        - RAM: {data.ram.capacity}
         <br />
-        - Đồ họa: Intel UHD Graphics 730
+        - GPU: {data.gpu.name}
         <br />
-        - Lưu trữ: 256GB M.2 NVMe SSD/1TB HDD 7200RPM
+        - Màu: {data.color}
         <br />
-        - Bàn phím + Chuột
+        - Core: {data.cpu.cores}
+        <br />
+        - Giá: {data.price}
       </div>
 
       <a href="#" onClick={(e) => { e.preventDefault(); handleScrollToMiddle(); }} className='cursor-pointer text-[#1990FF] text-[13px]'>

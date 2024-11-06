@@ -20,8 +20,8 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
     });
   };
 
-  const handleProductClick = (product) => {
-    navigate("/products", { state: { product } });
+  const handleProductClick = (productId) => {
+    navigate(`/products/${productId}`);
   };
 
   // Tính toán giá trị translateX
@@ -41,7 +41,7 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
                 <div className="relative w-full h-full p-4 flex flex-col bg-white justify-between">
                   <a
                     className="no-underline text-inherit cursor-pointer block"
-                    onClick={() => handleProductClick(product)}
+                    onClick={() => handleProductClick(product._id)}
                   >
                     <div className="mb-2 relative">
                       <div className="mb-1 relative">
