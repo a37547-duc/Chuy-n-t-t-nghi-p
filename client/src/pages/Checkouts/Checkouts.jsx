@@ -338,7 +338,7 @@ function Checkout() {
                       <h3 className="font-semibold">{item.name}</h3>
                       <p className="text-sm text-gray-500">Màu: {item.color}</p>
                       <p className="text-sm text-gray-500">Số lượng: {item.quantity}</p>
-                      <p className="text-sm text-gray-500">Giá: ${item.price.toFixed(2)}</p>
+                      <p className="text-sm text-gray-500">Giá: {item.price}đ</p>
                     </div>
                   </div>
                 ))}

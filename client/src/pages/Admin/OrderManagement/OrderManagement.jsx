@@ -11,27 +11,26 @@ const OrderManagement = () => {
   const [page, setPage] = useState(0);
   const [ordersPerPage] = useState(7);
   const [isChangeOrderStatusModalOpen, setIsChangeOrderStatusModalOpen] = useState(false);
-  const [isOrderDetailModalOpen, setIsOrderDetailModalOpen] = useState(false); // State cho modal chi tiết đơn hàng
+  const [isOrderDetailModalOpen, setIsOrderDetailModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [currentOrderStatus, setCurrentOrderStatus] = useState('');
 
   const orders = [
-    { id: "1", customerName: "John Doe", orderDate: "2024-09-20", status: "Pending", totalPrice: "$1499" },
-    { id: "2", customerName: "Jane Smith", orderDate: "2024-09-19", status: "Shipped", totalPrice: "$1299" },
-    { id: "3", customerName: "Sam Green", orderDate: "2024-09-18", status: "Delivered", totalPrice: "$999" },
-    { id: "4", customerName: "Alice Brown", orderDate: "2024-09-17", status: "Pending", totalPrice: "$799" },
-    { id: "5", customerName: "Michael Johnson", orderDate: "2024-09-16", status: "Cancelled", totalPrice: "$599" },
-    { id: "6", customerName: "Emily Davis", orderDate: "2024-09-15", status: "Shipped", totalPrice: "$499" },
-    { id: "7", customerName: "Chris Wilson", orderDate: "2024-09-14", status: "Delivered", totalPrice: "$1099" },
-    { id: "8", customerName: "Sarah Miller", orderDate: "2024-09-13", status: "Pending", totalPrice: "$1199" },
-    { id: "9", customerName: "David Taylor", orderDate: "2024-09-12", status: "Shipped", totalPrice: "$1299" },
-    { id: "10", customerName: "Laura Anderson", orderDate: "2024-09-11", status: "Delivered", totalPrice: "$899" },
-    { id: "11", customerName: "James Thomas", orderDate: "2024-09-10", status: "Pending", totalPrice: "$1499" }
+    { id: "1", customerName: "John Doe", orderDate: "2024-09-20", status: "Pending", totalPrice: "1499" },
+    { id: "2", customerName: "Jane Smith", orderDate: "2024-09-19", status: "Shipped", totalPrice: "1299" },
+    { id: "3", customerName: "Sam Green", orderDate: "2024-09-18", status: "Delivered", totalPrice: "999" },
+    { id: "4", customerName: "Alice Brown", orderDate: "2024-09-17", status: "Pending", totalPrice: "799" },
+    { id: "5", customerName: "Michael Johnson", orderDate: "2024-09-16", status: "Cancelled", totalPrice: "599" },
+    { id: "6", customerName: "Emily Davis", orderDate: "2024-09-15", status: "Shipped", totalPrice: "499" },
+    { id: "7", customerName: "Chris Wilson", orderDate: "2024-09-14", status: "Delivered", totalPrice: "1099" },
+    { id: "8", customerName: "Sarah Miller", orderDate: "2024-09-13", status: "Pending", totalPrice: "1199" },
+    { id: "9", customerName: "David Taylor", orderDate: "2024-09-12", status: "Shipped", totalPrice: "1299" },
+    { id: "10", customerName: "Laura Anderson", orderDate: "2024-09-11", status: "Delivered", totalPrice: "899" },
+    { id: "11", customerName: "James Thomas", orderDate: "2024-09-10", status: "Pending", totalPrice: "1499" }
 ];
 
   const totalOrders = orders.length;
   const totalPages = Math.ceil(totalOrders / ordersPerPage);
-
   const handlePageClick = (data) => {
     setPage(data.selected);
   };
@@ -66,6 +65,9 @@ const OrderManagement = () => {
     console.log(`Order ID: ${orderId}, New Status: ${newStatus}`);
     handleCloseChangeOrderStatusModal();
   };
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -88,11 +90,11 @@ const OrderManagement = () => {
         <thead>
           <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
             <th className="p-4">ID</th>
-            <th className="p-4">Customer Name</th>
-            <th className="p-4">Order Date</th>
-            <th className="p-4">Total Price</th>
-            <th className="p-4">Status</th>
-            <th className="p-4">Actions</th>
+            <th className="p-4">Tên khách hàng</th>
+            <th className="p-4">Ngày đặt hàng</th>
+            <th className="p-4">Tổng tiền</th>
+            <th className="p-4">Trạng thái</th>
+            <th className="p-4"></th>
           </tr>
         </thead>
         <tbody>
@@ -101,7 +103,7 @@ const OrderManagement = () => {
               <td className="p-4 text-sm">{order.id}</td>
               <td className="p-4 text-sm">{order.customerName}</td>
               <td className="p-4 text-sm">{order.orderDate}</td>
-              <td className="p-4 text-sm">{order.totalPrice}</td>
+              <td className="p-4 text-sm">{formatNumber(order.totalPrice)}</td>
               <td className="p-4 text-sm">{order.status}</td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">

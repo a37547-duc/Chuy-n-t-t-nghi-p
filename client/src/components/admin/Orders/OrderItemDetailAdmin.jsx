@@ -7,6 +7,7 @@ const OrderItemDetailAdmin = ({ orderId, onClose }) => {
       firstName: 'Anh',
       address: '1 Main St',
       email: 'example@email.com',
+      phoneNumber: '0123456789', // Thêm số điện thoại
       paymentMethod: 'Chuyển khoản',
     },
     items: [
@@ -74,15 +75,23 @@ const OrderItemDetailAdmin = ({ orderId, onClose }) => {
             />
           </div>
           <div className="w-1/2">
-            <label className="block font-semibold">Phương thức thanh toán:</label>
+            <label className="block font-semibold">Số điện thoại:</label>
             <input
               type="text"
-              value={orderDetails.customer.paymentMethod}
+              value={orderDetails.customer.phoneNumber}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
             />
           </div>
         </div>
+
+        <label className="block font-semibold">Phương thức thanh toán:</label>
+        <input
+          type="text"
+          value={orderDetails.customer.paymentMethod}
+          readOnly
+          className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
+        />
       </div>
       
       <h3 className="text-lg font-semibold mb-2">Chi tiết đơn hàng:</h3>

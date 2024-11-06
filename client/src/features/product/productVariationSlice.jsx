@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from "axios";
+import { api } from "../../api/apiConfig";
 
 // Async Thunk to fetch all product variations
 export const getAllProductVariations = createAsyncThunk(
   'productVariation/getAll',
   async (productId, thunkAPI) => {
     try {
-      const response = await axios.get(`https://laptech4k.onrender.com/api/v1/admin/products/${productId}/variants`);
+      const response = await api.get(`/admin/products/${productId}/variants`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -19,7 +19,7 @@ export const getProductVariationById = createAsyncThunk(
   'productVariation/getById',
   async ({ productId, variationId }, thunkAPI) => {
     try {
-      const response = await axios.get(`https://laptech4k.onrender.com/api/v1/admin/products/${productId}/variants/${variationId}`);
+      const response = await api.get(`/admin/products/${productId}/variants/${variationId}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);

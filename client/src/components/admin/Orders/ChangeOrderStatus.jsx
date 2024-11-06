@@ -15,19 +15,22 @@ const ChangeOrderStatus = ({ orderId, currentStatus, onUpdate, onClose }) => {
 
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">Change Order Status</h2>
+      <h2 className="text-lg font-bold mb-4">Thay đổi trạng thái đơn hàng</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="status" className="block mb-2">Select New Status:</label>
+        <label htmlFor="status" className="block mb-2">Chọn trạng thái mới:</label>
         <select
           id="status"
           value={newStatus}
           onChange={handleChange}
           className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
         >
-          <option value="Pending">Pending</option>
-          <option value="Shipped">Shipped</option>
-          <option value="Delivered">Delivered</option>
-          <option value="Cancelled">Cancelled</option>
+          <option value="Pending">Chờ xác nhận</option>
+          <option value="Confirmed">Đã xác nhận</option>
+          <option value="Packing">Đang đóng gói</option>
+          <option value="Shipping">Đang giao hàng</option>
+          <option value="Delivered">Giao thành công</option>
+          <option value="Completed">Hoàn thành</option>
+          <option value="Cancelled">Đã hủy</option>
         </select>
         <div className="mt-4 flex justify-end">
           <button

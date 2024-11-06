@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { api } from "../../api/apiConfig";
 
 // Thunk để gọi API thêm sản phẩm
 export const addProduct = createAsyncThunk(
   "product/addProduct",
   async (newProduct, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "https://laptech4k.onrender.com/api/v1/admin/products/create",
+      const response = await api.post(
+        "/admin/products/create",
         newProduct
       );
       return response.data;
@@ -26,8 +25,8 @@ export const updateProduct = createAsyncThunk(
   "product/updateProduct",
   async ({ id, updatedProduct }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(
-        `https://laptech4k.onrender.com/api/v1/admin/products/edit/${id}`,
+      const response = await api.patch(
+        `/admin/products/edit/${id}`,
         updatedProduct,
       );
       return response.data;

@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { api } from "../../api/apiConfig";
 
 // Thunk để thêm variation cho sản phẩm
 export const addVariation = createAsyncThunk(
   'variation/addVariation',
   async ({ productId, variationData }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `https://laptech4k.onrender.com/api/v1/admin/products/variants/add/${productId}`,
+      const response = await api.post(
+        `/admin/products/variants/add/${productId}`,
         variationData
       );
       return response.data;

@@ -1,70 +1,13 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 function ShoppingCart() {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: 'Gaming Laptop',
-      brand: 'Alienware',
-      specs: 'Intel Core i9, 32GB RAM, 1TB SSD',
-      price: 2500.0,
-      quantity: 1,
-      inStock: true,
-    },
-    {
-      id: 2,
-      name: 'Ultrabook',
-      brand: 'Dell XPS 13',
-      specs: 'Intel Core i7, 16GB RAM, 512GB',
-      price: 1500.0,
-      quantity: 1,
-      inStock: false,
-    },
-    {
-      id: 3,
-      name: 'Desktop PC',
-      brand: 'Custom Build',
-      specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
-      price: 3000.0,
-      quantity: 1,
-      inStock: true,
-    },
-    {
-      id: 4,
-      name: 'Desktop PC',
-      brand: 'Custom Build',
-      specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
-      price: 3000.0,
-      quantity: 1,
-      inStock: true,
-    },
-    {
-      id: 5,
-      name: 'Desktop PC',
-      brand: 'Custom Build',
-      specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
-      price: 3000.0,
-      quantity: 1,
-      inStock: true,
-    },
-    {
-      id: 6,
-      name: 'Desktop PC',
-      brand: 'Custom Build',
-      specs: 'AMD Ryzen 9, 64GB RAM, 2TB SSD',
-      price: 3000.0,
-      quantity: 1,
-      inStock: true,
-    },
-  ]);
-
   const [orderSummary, setOrderSummary] = useState({
     subtotal: 0,
-    shipping: 50.0,
-    tax: 200.0,
+    shipping: 50000,
+    tax: 20000,
     total: 0,
   });
 
@@ -100,6 +43,10 @@ function ShoppingCart() {
     setOrderSummary({ ...orderSummary, subtotal, total });
   };
 
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+  };
+
   const handleCheckout = () => {
     console.log('Checkout button clicked!');
   };
@@ -127,13 +74,15 @@ function ShoppingCart() {
           </div>
         ) : (
           <>
-            <div className="flex mb-2">
-              <button
-                onClick={handleRemoveAll}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-              >
-                Xóa tất cả
-              </button>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="col-start-2 flex justify-end mb-2">
+                <button
+                  onClick={handleRemoveAll}
+                  className="text-blue-400 hover:text-red-500 text-sm"
+                >
+                  Xóa tất cả
+                </button>
+              </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="md:col-span-2">
@@ -150,10 +99,10 @@ function ShoppingCart() {
                       />
                       <div className="ml-4">
                         <h2 className="text-lg font-medium">{item.name}</h2>
-                        <p className="text-gray-600 overflow-hidden overflow-ellipsis">
+                        <p className="text-gray-600 max-w-xs">
                           {item.brand} - {item.specs}
                         </p>
-                        <p className="text-sm font-bold">${item.price.toFixed(2)}</p>
+                        <p className="text-sm font-bold">{formatNumber(item.price * item.quantity)}</p>
                       </div>
                     </div>
 
@@ -169,7 +118,7 @@ function ShoppingCart() {
                           </button>
                           <input
                             type="text"
-                            className="text-sm text-gray-700 w-6 text-center"
+                            className="text-sm text-gray-700 w-10 text-center mx-1"
                             value={item.quantity}
                             onChange={(e) => handleQuantityChange(item.id, e.target.value)}
                             required
@@ -181,12 +130,6 @@ function ShoppingCart() {
                             <FontAwesomeIcon icon={faPlus} className="text-xs" />
                           </button>
                         </div>
-                      </div>
-
-                      <div className="mt-4">
-                        <span className="text-sm font-bold">
-                          Thành tiền: ${(item.price * item.quantity).toFixed(2)}
-                        </span>
                       </div>
                     </div>
 
@@ -212,40 +155,30 @@ function ShoppingCart() {
                   </div>
                 ))}
               </div>
-              <div className="md:col-span-1 border rounded-md p-4 bg-gray-50 h-80">
+              <div className="md:col-span-1 border rounded-md p-4 bg-gray-50 h-64">
                 <h2 className="text-xl font-bold mb-4">Tổng đơn hàng</h2>
                 <div className="flex justify-between mb-2">
                   <span>Tổng</span>
-                  <span>${orderSummary.subtotal.toFixed(2)}</span>
+                  <span>{formatNumber(orderSummary.subtotal)}</span>
                 </div>
                 <div className="flex justify-between mb-2">
                   <span>Phí vận chuyển</span>
-                  <span>${orderSummary.shipping.toFixed(2)}</span>
+                  <span>{formatNumber(orderSummary.shipping)}</span>
                 </div>
                 <div className="flex justify-between mb-4">
                   <span>Thuế VAT</span>
-                  <span>${orderSummary.tax.toFixed(2)}</span>
+                  <span>{formatNumber(orderSummary.tax)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-bold">Tổng cộng</span>
-                  <span className="font-bold">${orderSummary.total.toFixed(2)}</span>
+                  <span className="font-bold">{formatNumber(orderSummary.total)}</span>
                 </div>
-                <Link to="/checkouts">
-                  <button
-                    onClick={handleCheckout}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-full"
-                  >
-                    Thanh toán
-                  </button>
-                </Link>
-                <Link to="/">
-                  <button
-                    onClick={handleContinueShopping}
-                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2 w-full"
-                  >
-                    Tiếp tục mua sắm
-                  </button>
-                </Link>
+                <button
+                  onClick={handleCheckout}
+                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+                >
+                  Thanh toán
+                </button>
               </div>
             </div>
           </>

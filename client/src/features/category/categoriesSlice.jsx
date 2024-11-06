@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { api } from "../../api/apiConfig";
 
 // Thunk để gọi API lấy danh mục theo ID
 export const getCategoryById = createAsyncThunk(
   "category/getCategoryById",
   async (categoryId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://laptech4k.onrender.com/api/v1/admin/products/category/${categoryId}`);
+      const response = await api.get(`/admin/products/category/${categoryId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -19,7 +19,7 @@ export const getAllCategories = createAsyncThunk(
   "category/getAllCategories",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("https://laptech4k.onrender.com/api/v1/admin/products/category");
+      const response = await api.get("/admin/products/category");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
