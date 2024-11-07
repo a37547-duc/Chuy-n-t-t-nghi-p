@@ -1,16 +1,12 @@
 import ProductDetailTop from "./ProductDetailTop/ProductDetailTop";
 import ProductDetailMiddle from "./ProductMiddle/ProductMiddle";
 import { useParams } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
-
-  // const location = useLocation();
-  // const product = location.state?.product;
 
   useEffect(() => {
     const fetchProduct = async () => {

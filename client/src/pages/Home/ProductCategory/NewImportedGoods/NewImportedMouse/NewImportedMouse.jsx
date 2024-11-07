@@ -45,6 +45,7 @@ const NewImportedMouse = () => {
           </a>
         </div>
         <NewImportedProducts data={products} itemsPerPage={window.innerWidth > 540 ? 5 : 2} />
+        {console.log(products)}
       </div>
     </div>
   );

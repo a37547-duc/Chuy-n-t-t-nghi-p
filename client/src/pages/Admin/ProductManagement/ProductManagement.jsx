@@ -15,7 +15,7 @@ import { addProduct, updateProduct } from "../../../features/Admin/adminProducts
 
 const ProductManagement = () => {
   const dispatch = useDispatch();
-  const { products, loading, error } = useSelector((state) => state.products);
+  const { products, loading, error } = useSelector((state) => state.product);
   const [page, setPage] = useState(0);
   const productsPerPage = 7;
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
