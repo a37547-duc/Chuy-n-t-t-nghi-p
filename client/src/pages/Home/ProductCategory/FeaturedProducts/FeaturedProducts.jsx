@@ -12,6 +12,7 @@ const FeaturedProducts = () => {
   const [page, setPage] = useState(0);
   const [productsPerPage] = useState(10);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   // Trạng thái để xác định màn hình nhỏ
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 540);
@@ -22,25 +23,22 @@ const FeaturedProducts = () => {
   const highlightRef = useRef(null);
 
   useEffect(() => {
-    fetch('https://laptech4k.onrender.com/api/v1/products', { credentials: "include" })
+    fetch('https://laptech4k.onrender.com/api/v1/products', {credentials: "include"})
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-        // Kiểm tra xem dữ liệu có tồn tại và có cấu trúc mong muốn không
-        if (data.mice || data.laptops) {
-          const combinedProducts = [
-            ...(data.mice || []),   // Lấy danh sách chuột
-            ...(data.laptops || []) // Lấy danh sách laptop
-          ];
-          setProducts(combinedProducts); // Gán sản phẩm đã gộp
-        } else {
-          console.warn('No products found in the response.');
-        }
+        const formattedProducts = data.laptops.map(product => {
+          // Kiểm tra nếu product_variants tồn tại và có giá
+          const price = product.product_variants ? product.product_variants.price : null;
+          return {
+            ...product,
+            price: price // Nếu không có giá, sẽ là null
+          };
+        });
+        setProducts(formattedProducts);
+        setLoading(false);
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
-
- 
 
   // Cập nhật trạng thái màn hình khi kích thước cửa sổ thay đổi
   useEffect(() => {
@@ -71,6 +69,10 @@ const FeaturedProducts = () => {
   const handleShowMore = () => {
     setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 10); // Mỗi lần bấm tăng thêm 10 sản phẩm
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const currentVisibleProducts = products.slice(0, visibleProducts);
 

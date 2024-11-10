@@ -30,12 +30,7 @@ const NewImportedLaptop = () => {
 
   return (
     <div className="px-[10px] w-full mx-auto border-none opacity-100 max-w-[1100px] mb-6">
-      <div className="relative min-h-[416px]">
-        <img 
-          alt="Laptop" 
-          src="https://lh3.googleusercontent.com/YsnUSV-cp1QsV45kHixsKnXz6KH4fZVL3_VydiZS-xAUIWZsjnKStrfIZVzWS7m3-6kwTfIgugbETtsfIsFQVprA4lkb7dI=w123"
-          className="w-full h-full absolute top-0"
-        />
+      <div className="relative min-h-[416px] bg-pink-500 rounded-md">
         <div className="relative flex justify-between items-center px-4 h-14 bg-transparent border-b border-white/50">
           <a href="#" className="no-underline text-inherit cursor-pointer">
             <div className="uppercase px-2 m-0 p-0 border-none opacity-100 text-white font-bold no-underline text-[20px] leading-7 overflow-hidden transition-colors duration-300">

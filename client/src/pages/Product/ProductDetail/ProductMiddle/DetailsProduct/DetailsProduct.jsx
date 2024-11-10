@@ -2,8 +2,6 @@
 import { useMemo } from "react";
 
 const DetailsProduct = ({ data, selectedVariant }) => {
-  console.log(data);
-  console.log(selectedVariant);
   const productDetails = useMemo(() => {
     if (!data || !selectedVariant) return {
       brand: "N/A",
