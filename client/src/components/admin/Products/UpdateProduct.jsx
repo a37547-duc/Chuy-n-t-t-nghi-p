@@ -19,7 +19,6 @@ const UpdateProduct = ({ onClose, data }) => {
       category: data?.category?._id || "",
       brand: data?.brand?._id || "",
       description: data?.description || "",
-      // price: data?.price || 0,
       use_case_ids: data?.use_cases?._id || "",
       images: data?.images || [],
     },
@@ -36,8 +35,6 @@ const UpdateProduct = ({ onClose, data }) => {
   }, [dispatch]);
 
   const onSubmit = async (formData) => {
-    console.log(formData)
-    formData.price = Number(formData.price);
     try {
       await dispatch(updateProduct({ id: data._id, updatedProduct: formData })).unwrap();
       setTimeout(() => {
@@ -126,20 +123,6 @@ const UpdateProduct = ({ onClose, data }) => {
           {errors.brand && <p className="text-red-500 text-sm">{errors.brand.message}</p>}
         </div>
       </div>
-
-      {/* <div>
-          <label className="block text-sm font-medium">Giá</label>
-          <input
-            type="number"
-            {...register("price", {
-              required: "Giá sản phẩm là bắt buộc",
-              valueAsNumber: true,
-              min: { value: 0, message: "Giá phải lớn hơn hoặc bằng 0" },
-            })}
-            className={`mt-1 block w-full border ${errors.price ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
-          />
-          {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
-      </div> */}
 
       <div>
         <label className="block text-sm font-medium">Mô tả</label>

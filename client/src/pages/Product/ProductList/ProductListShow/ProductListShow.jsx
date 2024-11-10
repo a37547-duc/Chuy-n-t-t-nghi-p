@@ -2,6 +2,9 @@ import GeneralProductUp from "../../../../components/product/GeneralProductUp/Ge
 import GeneralProductMiddle from "../../../../components/product/GeneralProductMiddle/GeneralProductMiddle";
 import GeneralProductDown from "../../../../components/product/GeneralProductDown/GeneralProductDown";
 
+import { useSelector } from "react-redux";
+import { useGetProductsQuery } from "../../../../stores/query/productQuery";
+
 const ProductListShow = () => {
   const ImageLogo = [
     "https://lh3.googleusercontent.com/IAlZ9kiZsV1CRAQtQezaD4aEXZAZiC6-H9lQ2LxG8FB5TcIWtIkJ41w7ushFEMaaPIHFHUOh5H7he4iYW-D3sSquf-bMpH5d=rw",
@@ -74,6 +77,21 @@ const ProductListShow = () => {
     {id: "32", name: "Lenovo32", image: "https://lh3.googleusercontent.com/8ttuQnKtU6_t5GiYhsPjTrXfwHoDR3d9ioCj3hLJ1jevt8FycbP7zv2-7p4EBx7zK-gCHGTMMOTO6kjo91_TOskN9Y8ZSKhrtQ=w230-rw", description: "Laptop gaming Lenovo LOQ 15IAX9 - 83GS004BVN (i5-12450HX/RAM 12GB/GeForce RTX 3050/512GB SSD/ Windows 11)", price: "24.900.000", oldPrice: "29.000.000", discount: "10.21", save: "2.500.000"},
     {id: "33", name: "Lenovo33", image: "https://lh3.googleusercontent.com/8ttuQnKtU6_t5GiYhsPjTrXfwHoDR3d9ioCj3hLJ1jevt8FycbP7zv2-7p4EBx7zK-gCHGTMMOTO6kjo91_TOskN9Y8ZSKhrtQ=w230-rw", description: "Laptop gaming Lenovo LOQ 15IAX9 - 83GS004BVN (i5-12450HX/RAM 12GB/GeForce RTX 3050/512GB SSD/ Windows 11)", price: "24.900.000", oldPrice: "29.000.000", discount: "10.21", save: "2.500.000"},
   ];
+
+  const category = useSelector((state) => state.query.category);
+  const brand = useSelector((state) => state.query.brand);
+  const usecase = useSelector((state) => state.query.usecase);
+
+  const { data, error, isLoading } = useGetProductsQuery({
+    category,
+    brand,
+    usecase,
+  });
+
+  console.log("ĐÂY LÀ THƯƠNG HIỆU", brand);
+  console.log("ĐÂY LÀ CATEGORY", category);
+  console.log("ĐÂY LÀ USECASE", usecase);
+  console.log("ĐÂY LÀ DANH SÁCH COLLECTIONS", data);
 
   return (
     <div>

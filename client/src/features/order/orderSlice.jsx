@@ -1,63 +1,27 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { api } from "../../api/apiConfig";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const ORDER_API_URL = "https://laptech4k.onrender.com/api/v1/orders";
-const ORDER_ITEM_API_URL = "https://laptech4k.onrender.com/api/v1/orderItems";
-
-// Tạo đơn hàng mới
-export const createOrder = createAsyncThunk(
-  "order/createOrder",
-  async ({ orderData, items }, { rejectWithValue }) => {
-    try {
-      const orderResponse = await axios.post(ORDER_API_URL, orderData);
-      const orderId = orderResponse.data._id;
-
-      // Tạo các OrderItem liên kết với orderId
-      const itemResponses = await Promise.all(
-        items.map(item => axios.post(ORDER_ITEM_API_URL, { ...item, orderId }))
-      );
-
-      return { order: orderResponse.data, items: itemResponses.map(res => res.data) };
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-// Lấy danh sách tất cả đơn hàng và các OrderItem
-export const fetchOrdersWithItems = createAsyncThunk(
-  "order/fetchOrdersWithItems",
+// Thunk to get all orders
+export const getAllOrders = createAsyncThunk(
+  'order/getAllOrders',
   async (_, { rejectWithValue }) => {
     try {
-      const orderResponse = await axios.get(ORDER_API_URL);
-      const orders = orderResponse.data;
-
-      // Lấy danh sách OrderItem cho từng Order
-      const itemResponses = await Promise.all(
-        orders.map(order =>
-          axios.get(`${ORDER_ITEM_API_URL}?orderId=${order._id}`)
-        )
-      );
-
-      // Gắn các OrderItem vào đơn hàng tương ứng
-      const ordersWithItems = orders.map((order, index) => ({
-        ...order,
-        items: itemResponses[index].data,
-      }));
-
-      return ordersWithItems;
+      const response = await api.get('/order');
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
 
-// Cập nhật trạng thái đơn hàng
-export const updateOrderStatus = createAsyncThunk(
-  "order/updateOrderStatus",
-  async ({ orderId, status }, { rejectWithValue }) => {
+// Thunk to change the order status
+export const changeOrderStatus = createAsyncThunk(
+  'order/changeOrderStatus',
+  async ({ orderId, newStatus }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${ORDER_API_URL}/${orderId}`, { status });
+      const response = await api.patch(`/order/${orderId}`, { orderStatus: newStatus });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -65,65 +29,79 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
+// Thunk to submit a new order
+export const submitOrder = createAsyncThunk(
+  'order/submitOrder',
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/order', orderData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to submit order");
+    }
+  }
+);
+
+const initialState =  {
+  orders: [],
+  orderInfo: null,
+  orderStatus: null,
+  loading: false,
+  error: null, 
+}
+
 const orderSlice = createSlice({
-  name: "order",
-  initialState: {
-    orders: [],
-    order: null,
-    loading: false,
-    error: null,
-  },
+  name: 'order',
+  initialState,
   reducers: {
-    resetOrderState: (state) => {
-      state.order = null;
-      state.error = null;
-    },
-  },
+},
   extraReducers: (builder) => {
     builder
-      .addCase(createOrder.pending, (state) => {
+      .addCase(submitOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(createOrder.fulfilled, (state, action) => {
+      .addCase(submitOrder.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders.push(action.payload);
+        state.orderInfo = action.payload;
+        toast.success("Đặt hàng thành công");
       })
-      .addCase(createOrder.rejected, (state, action) => {
+      .addCase(submitOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        toast.error("Đặt hàng không thành công");
       })
-      
-      .addCase(fetchOrdersWithItems.pending, (state) => {
+      .addCase(getAllOrders.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchOrdersWithItems.fulfilled, (state, action) => {
-        state.loading = false;
+      .addCase(getAllOrders.fulfilled, (state, action) => {
         state.orders = action.payload;
+        state.loading = false;
+        state.error = null;
       })
-      .addCase(fetchOrdersWithItems.rejected, (state, action) => {
+      .addCase(getAllOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-
-      .addCase(updateOrderStatus.pending, (state) => {
+      .addCase(changeOrderStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+      .addCase(changeOrderStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.orders.findIndex(order => order._id === action.payload._id);
-        if (index !== -1) {
-          state.orders[index] = action.payload;
-        }
+        const updatedOrder = action.payload;
+        state.orders = state.orders.map(order =>
+          order._id === updatedOrder._id ? updatedOrder : order
+        );
+        state.orderStatus = updatedOrder.status;
+        toast.success("Cập nhật trạng thái đơn hàng thành công");
       })
-      .addCase(updateOrderStatus.rejected, (state, action) => {
+      .addCase(changeOrderStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+        toast.error("Cập nhập trạng thái đơn hàng thất bại");
+      });  
   },
 });
-
-export const { resetOrderState } = orderSlice.actions;
 export default orderSlice.reducer;

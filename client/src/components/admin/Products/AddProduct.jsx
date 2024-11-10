@@ -13,7 +13,6 @@ const AddProduct = ({ onClose }) => {
     category: "",
     brand: "",
     description: "",
-    price:"",
     use_case_ids: "",
     images: [],
   });
@@ -51,14 +50,12 @@ const AddProduct = ({ onClose }) => {
     if (!newProduct.brand) newErrors.brand = "Thương hiệu không được để trống.";
     if (!newProduct.images.length) newErrors.images = "Hình ảnh không được để trống.";
     if (!newProduct.use_case_ids) newErrors.use_case_ids = "Nhu cầu sử dụng không được để trống.";
-    if (!newProduct.price) newErrors.price = "Giá không được để trống.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    newProduct.price = Number(newProduct.price);
     console.log(newProduct);
     if (validateForm()) {
       dispatch(addProduct(newProduct))
@@ -160,18 +157,6 @@ const AddProduct = ({ onClose }) => {
           </select>
           {errors.use_case_ids && <p className="text-red-500 text-sm">{errors.use_case_ids}</p>}
         </div>
-      </div>
-      <div>
-        <label className="block text-sm font-medium">Giá</label>
-        <input
-          type="number"
-          name="price"
-          value={newProduct.price}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-          required
-        />
-        {errors.price && <p className="text-red-500 text-sm">{errors.price}</p>}
       </div>
 
       <div>

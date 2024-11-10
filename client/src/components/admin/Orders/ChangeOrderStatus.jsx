@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeOrderStatus, getAllOrders } from '../../../features/order/orderSlice';
 
-const ChangeOrderStatus = ({ orderId, currentStatus, onUpdate, onClose }) => {
-  const [newStatus, setNewStatus] = useState(currentStatus);
+const ChangeOrderStatus = ({ data, onClose }) => {
+  const dispatch = useDispatch();
+  const [newStatus, setNewStatus] = useState(data.orderStatus);
 
   const handleChange = (e) => {
     setNewStatus(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onUpdate(orderId, newStatus);
-    onClose(); // Đóng modal sau khi cập nhật
+    try {
+      await dispatch(changeOrderStatus({ orderId: data._id, newStatus })).unwrap();
+      console.log(newStatus);
+      setTimeout(() => {
+        dispatch(getAllOrders());
+      }, 1000);
+      onClose();
+    } catch (error) {
+      console.error("Error updating order:", error);
+    }
   };
 
   return (
@@ -24,13 +35,12 @@ const ChangeOrderStatus = ({ orderId, currentStatus, onUpdate, onClose }) => {
           onChange={handleChange}
           className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
         >
-          <option value="Pending">Chờ xác nhận</option>
-          <option value="Confirmed">Đã xác nhận</option>
-          <option value="Packing">Đang đóng gói</option>
-          <option value="Shipping">Đang giao hàng</option>
-          <option value="Delivered">Giao thành công</option>
-          <option value="Completed">Hoàn thành</option>
-          <option value="Cancelled">Đã hủy</option>
+          <option value={data.orderStatus}>{data.orderStatus}</option>
+          <option value="Chờ xác nhận">Chờ xác nhận</option>
+          <option value="Đã xác nhận">Đã xác nhận</option>
+          <option value="Đã giao hàng">Đã giao hàng</option>
+          <option value="Giao hàng thành công">Giao hàng thành công</option>
+          <option value="Đã hủy">Đã hủy</option>
         </select>
         <div className="mt-4 flex justify-end">
           <button

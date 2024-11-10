@@ -7,10 +7,18 @@ const NewImportedLaptop = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://laptech4k.onrender.com/api/v1/products?category=laptop')
+    fetch('https://laptech4k.onrender.com/api/v1/products', {credentials: "include"})
       .then(response => response.json())
       .then(data => {
-        setProducts(data[0].laptops); // Sử dụng data[0].laptops để lấy dữ liệu laptop
+        const formattedProducts = data.laptops.map(product => {
+          // Kiểm tra nếu product_variants tồn tại và có giá
+          const price = product.product_variants ? product.product_variants.price : null;
+          return {
+            ...product,
+            price: price // Nếu không có giá, sẽ là null
+          };
+        });
+        setProducts(formattedProducts);
         setLoading(false);
       })
       .catch(error => console.error('Error fetching data:', error));

@@ -70,7 +70,7 @@ export default function SearchBar() {
           {dataSearch?.length > 0 ? (
             <div className="overflow-y-auto rounded-lg max-h-[50vh] bg-gray-200">
               {dataSearch.slice(0, 5).map((i) => (
-                <Link to={`/product/${i._id}`} key={i._id}>
+                <Link to={`/products/${i._id}`} key={i._id}>
                   <div className="flex px-4 py-2 hover:bg-white hover:cursor-pointer">
                     <img className="w-12 h-12 mr-2 rounded-lg object-cover" src={i.images[0]} />
                     <div>{i?.name}</div>

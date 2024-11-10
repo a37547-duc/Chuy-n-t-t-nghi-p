@@ -165,7 +165,7 @@ const ImageModal = ({ isOpen, onClose, images, currentImage, setCurrentImage }) 
           </div>
         </div>
 
-        <div className="relative flex h-full w-full overflow-hidden">
+        <div className="relative justify-center flex h-full w-full overflow-hidden">
           <button 
             onClick={handlePrevImage} 
             className={`absolute left-5 top-1/2 transform -translate-y-1/2 z-20 bg-black ${currentIndex === 0 ? 'opacity-25 cursor-not-allowed' : 'opacity-50 hover:opacity-100'} p-2 rounded-full transition-transform duration-300 ${showControls || isHovered ? 'translate-x-0' : '-translate-x-20'}`}

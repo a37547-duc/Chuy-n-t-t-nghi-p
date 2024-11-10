@@ -263,19 +263,11 @@ const ProductVariation = () => {
         onRequestClose={handleCloseAddModal}
         title={`Thêm biến thể sản phẩm`}
       >
-        {productType === 'LaptopVariant' && (
           <AddLaptopVariation
             productId={productId} 
             onClose={handleCloseAddModal} 
           />
-        )}
         
-        {productType === 'MouseVariant' && (
-          <AddMouseVariation 
-            productId={productId} 
-            onClose={handleCloseAddModal} 
-          />
-        )}
       </BasicModal>
       
       {/* <BasicModal

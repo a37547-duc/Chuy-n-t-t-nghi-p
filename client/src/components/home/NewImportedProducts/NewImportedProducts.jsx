@@ -20,8 +20,8 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
     });
   };
 
-  const handleProductClick = (product) => {
-    navigate("/products", { state: { product } });
+  const handleProductClick = (productId) => {
+    navigate(`/products/${productId}`);
   };
 
   // Tính toán giá trị translateX
@@ -35,13 +35,13 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
           className={`flex flex-nowrap m-0 p-0 whitespace-nowrap h-full relative transition-transform duration-[400ms] ease-out`}
           style={{ transform: `translateX(${translateX}%)` }}
         >
-          {data.map((product) => (
-            <div key={product._id} className="h-auto mr-1 productNewImport flex-shrink-0 box-border whitespace-normal">
+          {data.map((product, index) => (
+            <div key={index} className="h-auto mr-1 productNewImport flex-shrink-0 box-border whitespace-normal">
               <div className="bg-white rounded-md h-full block">
                 <div className="relative w-full h-full p-4 flex flex-col bg-white justify-between">
                   <a
                     className="no-underline text-inherit cursor-pointer block"
-                    onClick={() => handleProductClick(product)}
+                    onClick={() => handleProductClick(product._id)}
                   >
                     <div className="mb-2 relative">
                       <div className="mb-1 relative">

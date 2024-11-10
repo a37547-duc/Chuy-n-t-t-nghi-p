@@ -1,36 +1,45 @@
-import { useState } from "react";
-const DetailsProduct = () => {
-  const [productDetails, setProductDetails] = useState({
-    brand: "Apple",
-    warranty: "12 months",
-    color: "Silver",
-    usage: "Business",
-    cpu: "Intel Core i7",
-    ram: "16GB",
-    screen: "15.6 inch Retina",
-    abb: "CCCC"
-  });
+/* eslint-disable react/prop-types */
+import { useMemo } from "react";
+
+const DetailsProduct = ({ data, selectedVariant }) => {
+  console.log(data);
+  console.log(selectedVariant);
+  const productDetails = useMemo(() => {
+    if (!data || !selectedVariant) return {
+      brand: "N/A",
+      color: "N/A",
+      cpu: "N/A",
+      gpu: "N/A",
+      ram: "N/A",
+      storage: "N/A",
+    };
+
+    return {
+      brand: data.product?.brand?.name || "N/A",
+      color: selectedVariant.color || "N/A",
+      cpu: selectedVariant.cpu?.name || "N/A",
+      gpu: selectedVariant.gpu?.name || "N/A",
+      ram: selectedVariant.ram?.capacity || "N/A",
+      storage: selectedVariant.storage || "N/A",
+    };
+  }, [data, selectedVariant]);
 
   const labels = [
     "Thương hiệu",
-    "Bảo hành",
     "Màu sắc",
-    "Nhu cầu",
     "CPU",
+    "GPU",
     "RAM",
-    "Màn hình",
-    "Abb"
+    "Bộ nhớ",
   ];
 
   const values = [
     productDetails.brand,
-    productDetails.warranty,
     productDetails.color,
-    productDetails.usage,
     productDetails.cpu,
+    productDetails.gpu,
     productDetails.ram,
-    productDetails.screen,
-    productDetails.abb,
+    productDetails.storage,
   ];
 
   return (
@@ -56,7 +65,7 @@ const DetailsProduct = () => {
               <div className="h-[70%] flex-grow-3 flex-shrink-1 basis-0">{values[index]}</div>
             </div>
 
-            {index === 5 && (
+            {index === 3 && (
               <div className="text-[13px] w-full bg-blue-100 text-center py-2 px-4 font-bold">
                 Cấu hình chi tiết
               </div>
@@ -66,6 +75,6 @@ const DetailsProduct = () => {
       </div>
     </div>
   );
-}
+};
 
 export default DetailsProduct;

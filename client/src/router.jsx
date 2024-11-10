@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Root from "./pages/Root";
+import App from "./App";
+// import Root from "./pages/Root";
 import ProductDetail from "./pages/Product/ProductDetail/ProductDetail";
 import ProductList from "./pages/Product/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
@@ -23,17 +24,17 @@ import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManage
 import RestoreManagement from "./pages/Admin/RestoreManagement/RestoreManagement";
 import EmptyPageDelivery from "./pages/Account/AccountComputer/AccountOrder/EmptyPage/EmptyPageDelivery";
 import EmptyPageCompleted from "./pages/Account/AccountComputer/AccountOrder/EmptyPage/EmptyPageCompleted";
+import ProductVariation from "./pages/Admin/ProductManagement/ProductVariation";
+
 import AccountChangePassword from "./pages/Account/AccountComputer/AccountChangePassword/AccountChangePassword";
 import InformationUser from "./pages/Account/AccountMobile/InformationUser/InformationUser";
 import PurchaseHistoryUser from "./pages/Account/AccountMobile/PurchaseHistoryUser/PurchaseHistoryUser";
 import ChangePasswordMobile from "./pages/Account/AccountMobile/ChangePasswordMobile/ChangePasswordMobile";
 import ProductOneBrand from "./pages/Product/ProductOneBrand/ProductOneBrand";
-import ProductVariation from "./pages/Admin/ProductManagement/ProductVariation";
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root></Root>,
+    element: <App />,
 
     children: [
       {
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
         index: true,
       },
       {
-        path: "/products",
+        path: "/products/:id",
         element: <ProductDetail></ProductDetail>,
       },
       {
@@ -61,7 +62,10 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Cart></Cart>,
       },
-
+      {
+        path: "checkouts",
+        element: <Checkouts></Checkouts>,
+      },
       {
         path: "/login",
         element: <Login></Login>
@@ -123,12 +127,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "checkouts",
-    element: <Checkouts></Checkouts>,
-  },
-
-  
   {
     path: "admin",
     element: <AdminLayout></AdminLayout>,

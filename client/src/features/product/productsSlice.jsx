@@ -20,6 +20,7 @@ export const getAllProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/admin/products");
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -31,7 +32,7 @@ const initialState ={
   products: [],
   product: null,
   loading: false,
-  error: null,
+  error: false,
 }
 
 const productSlice = createSlice({

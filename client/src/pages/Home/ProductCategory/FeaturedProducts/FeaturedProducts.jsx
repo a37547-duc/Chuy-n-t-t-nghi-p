@@ -22,14 +22,15 @@ const FeaturedProducts = () => {
   const highlightRef = useRef(null);
 
   useEffect(() => {
-    fetch('https://laptech4k.onrender.com/api/v1/products') // Đảm bảo URL này trả về đúng cấu trúc dữ liệu
+    fetch('https://laptech4k.onrender.com/api/v1/products', { credentials: "include" })
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         // Kiểm tra xem dữ liệu có tồn tại và có cấu trúc mong muốn không
-        if (data.length > 0) {
+        if (data.mice || data.laptops) {
           const combinedProducts = [
-            ...(data[0].mice || []),   // Lấy danh sách chuột
-            ...(data[0].laptops || []) // Lấy danh sách laptop
+            ...(data.mice || []),   // Lấy danh sách chuột
+            ...(data.laptops || []) // Lấy danh sách laptop
           ];
           setProducts(combinedProducts); // Gán sản phẩm đã gộp
         } else {
@@ -38,6 +39,8 @@ const FeaturedProducts = () => {
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+ 
 
   // Cập nhật trạng thái màn hình khi kích thước cửa sổ thay đổi
   useEffect(() => {

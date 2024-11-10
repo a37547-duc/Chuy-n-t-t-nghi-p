@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import DetailsProduct from "./DetailsProduct/DetailsProduct";
 import "./ProductMiddle.css";
 
-export default function ProductDetailMiddle() {
-
+const ProductDetailMiddle = ({product, selectedVariant}) => {
+  
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const handleResize = () => {
@@ -47,10 +48,12 @@ export default function ProductDetailMiddle() {
             </div>
 
             {/* Phần chi tiết sản phẩm ở dưới */}
-            <DetailsProduct />
+            <DetailsProduct data={product} selectedVariant={selectedVariant}/>
           </>
         )}
       </div>
     </div>
   );
 }
+
+export default ProductDetailMiddle;

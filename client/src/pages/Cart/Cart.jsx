@@ -1,58 +1,47 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { updateCartItem, removeItemFromCart, clearCart } from '../../features/cart/cartSlice';
 
 function ShoppingCart() {
-  const [orderSummary, setOrderSummary] = useState({
-    subtotal: 0,
-    shipping: 50000,
-    tax: 20000,
-    total: 0,
-  });
-
-  useEffect(() => {
-    updateOrderSummary();
-  }, [items]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const items = useSelector(state => state.cart.items);
+  const totalAmount = useSelector(state => state.cart.totalAmount)
+  
+  // const handleQuantityChange = (itemId, newQuantity) => {
+  //   const quantity = Math.min(99, Math.max(1, Number(newQuantity) || 1));
+  //   const updatedItems = items.map((item) =>
+  //     item.id === itemId
+  //       ? { ...item, quantity }
+  //       : item
+  //   );
+  //   setItems(updatedItems);
+  // };
+  const handleCheckout = () => {
+    navigate('/checkouts', {
+      state: { items, totalAmount }
+    });
+  };
 
   const handleQuantityChange = (itemId, newQuantity) => {
     const quantity = Math.min(99, Math.max(1, Number(newQuantity) || 1));
-    const updatedItems = items.map((item) =>
-      item.id === itemId
-        ? { ...item, quantity }
-        : item
-    );
-    setItems(updatedItems);
+    dispatch(updateCartItem({ id: itemId, quantity }));
   };
 
   const handleRemoveItem = (itemId) => {
-    const updatedItems = items.filter((item) => item.id !== itemId);
-    setItems(updatedItems);
+    dispatch(removeItemFromCart(itemId));
   };
 
   const handleRemoveAll = () => {
-    setItems([]);
-  };
-
-  const updateOrderSummary = () => {
-    const subtotal = items.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-    const total = subtotal + orderSummary.shipping + orderSummary.tax;
-    setOrderSummary({ ...orderSummary, subtotal, total });
+    dispatch(clearCart());
   };
 
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
-  };
-
-  const handleCheckout = () => {
-    console.log('Checkout button clicked!');
-  };
-
-  const handleContinueShopping = () => {
-    console.log('Continue Shopping button clicked!');
   };
 
   return (
@@ -65,7 +54,7 @@ function ShoppingCart() {
             <p className="text-gray-600 mb-4">Giỏ hàng của bạn trống.</p>
             <Link to="/">
               <button
-                onClick={handleContinueShopping}
+                // onClick={handleContinueShopping}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 Quay lại mua hàng
@@ -88,19 +77,19 @@ function ShoppingCart() {
               <div className="md:col-span-2">
                 {items.map((item) => (
                   <div
-                    key={item.id}
+                    key={item._id}
                     className="border rounded-md p-4 mb-4 flex justify-between items-start"
                   >
                     <div className="flex">
                       <img
-                        src={`https://via.placeholder.com/100?text=${item.name}`}
+                        src={item.image}
                         alt={item.name}
                         className="w-16 h-16 rounded-md"
                       />
                       <div className="ml-4">
-                        <h2 className="text-lg font-medium">{item.name}</h2>
-                        <p className="text-gray-600 max-w-xs">
-                          {item.brand} - {item.specs}
+                        <h2 className="text-sm font-medium">{item.name}</h2>
+                        <p className="text-gray-600 max-w-xs text-xs">
+                          {item.cpu.name}/RAM {item.ram.capacity}/ GPU {item.gpu.name}/{item.storage}
                         </p>
                         <p className="text-sm font-bold">{formatNumber(item.price * item.quantity)}</p>
                       </div>
@@ -111,7 +100,7 @@ function ShoppingCart() {
                         <span className="mr-2 text-sm">Số lượng:</span>
                         <div className="flex items-center border rounded-lg bg-gray-50">
                           <button
-                            onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                            onClick={() => handleQuantityChange(item._id, item.quantity - 1)}
                             className="bg-transparent px-1 py-1 text-gray-700 hover:text-gray-900 text-xs"
                           >
                             <FontAwesomeIcon icon={faMinus} className="text-xs" />
@@ -120,11 +109,11 @@ function ShoppingCart() {
                             type="text"
                             className="text-sm text-gray-700 w-10 text-center mx-1"
                             value={item.quantity}
-                            onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                            onChange={(e) => handleQuantityChange(item._id, e.target.value)}
                             required
                           />
                           <button
-                            onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                            onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
                             className="bg-transparent px-1 py-1 text-gray-700 hover:text-gray-900 text-xs"
                           >
                             <FontAwesomeIcon icon={faPlus} className="text-xs" />
@@ -134,7 +123,7 @@ function ShoppingCart() {
                     </div>
 
                     <button
-                      onClick={() => handleRemoveItem(item.id)}
+                      onClick={() => handleRemoveItem(item._id)}
                       className="text-red-500 hover:text-red-700 ml-4"
                     >
                       <svg
@@ -158,24 +147,19 @@ function ShoppingCart() {
               <div className="md:col-span-1 border rounded-md p-4 bg-gray-50 h-64">
                 <h2 className="text-xl font-bold mb-4">Tổng đơn hàng</h2>
                 <div className="flex justify-between mb-2">
-                  <span>Tổng</span>
-                  <span>{formatNumber(orderSummary.subtotal)}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Phí vận chuyển</span>
-                  <span>{formatNumber(orderSummary.shipping)}</span>
-                </div>
-                <div className="flex justify-between mb-4">
-                  <span>Thuế VAT</span>
-                  <span>{formatNumber(orderSummary.tax)}</span>
+                  <span>Tổng tạm tính</span>
+                  <span>{formatNumber(totalAmount)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="font-bold">Tổng cộng</span>
-                  <span className="font-bold">{formatNumber(orderSummary.total)}</span>
+                  <span className="">Thành tiền</span>
+                  <span className="font-bold text-blue-800">{formatNumber(totalAmount)}</span>
+                </div>
+                <div className="flex justify-end">
+                  <span className="text-xs font-bold text-gray-500">(Đã bao gồm VAT)</span>
                 </div>
                 <button
                   onClick={handleCheckout}
-                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+                  className="mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
                 >
                   Thanh toán
                 </button>
