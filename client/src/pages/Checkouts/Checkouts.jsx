@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useLocation, useNavigate} from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
-import {submitOrder} from "../../features/order/orderSlice";
+import {submitOrderPayment, submitOrderCod} from "../../features/order/orderSlice";
 import { Link } from 'react-router-dom';
 
 function Checkout() {
@@ -9,11 +9,6 @@ function Checkout() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { items, totalAmount } = location.state || { items: [], totalAmount: 0 };
-  useEffect(() => {
-    if (items.length === 0) {
-      navigate('/cart');
-    }
-  }, [items, navigate]);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
@@ -160,16 +155,23 @@ function Checkout() {
 
     setErrors({});
 
-    console.log(orderData)
-
-    dispatch(submitOrder(orderData))
-      .then((result) => {
-        console.log("Product added successfully", result);
-        navigate(`/`)
-      })
-      .catch((error) => {
-        console.error("Error adding product:", error);
-      });
+    if (formData.payment === "MoMo") {
+      dispatch(submitOrderPayment(orderData))
+        .then((result) => {
+          console.log("Đặt hàng thành công qua MoMo", result);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi đặt hàng qua MoMo:", error);
+        });
+    } else if (formData.payment === "Thanh toán khi nhận hàng") {
+      dispatch(submitOrderCod(orderData))
+        .then((result) => {
+          console.log("Đặt hàng thành công với thanh toán khi nhận hàng", result);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi đặt hàng với thanh toán khi nhận hàng:", error);
+        });
+    }
   };
 
   const formatNumber = (num) => {
@@ -275,7 +277,7 @@ function Checkout() {
                   <select
                     name="ward"
                     className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
-                    value={selectedWard}
+                    value={choosedWard}
                     onChange={(e) => {
                       const data = e.target.value;;
                       const value = JSON.parse(e.target.value);

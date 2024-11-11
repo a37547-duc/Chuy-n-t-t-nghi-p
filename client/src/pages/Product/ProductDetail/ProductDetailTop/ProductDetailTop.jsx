@@ -19,8 +19,6 @@ const ProductDetailTop = ({ product, onVariantChange }) => {
     setIsMobileView(window.innerWidth <= 768);
   };
 
-  
-
   useEffect(() => {
     // Add event listener to handle window resize
     window.addEventListener('resize', handleResize);

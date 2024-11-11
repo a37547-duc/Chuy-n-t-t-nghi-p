@@ -1,6 +1,6 @@
 export default function BottomFooter() {
   return (
-    <footer className="bg-white dark:bg-gray-900 border-t border-blue-500 dark:border-gray-700 mt-10">
+    <footer className="bg-white dark:bg-gray-900 border-t border-blue-500 dark:border-gray-700">
       <div className="w-full">
         <div className="mx-auto max-w-screen-lg px-4">
           <div className="grid grid-cols-2 gap-8 py-8 lg:grid-cols-4">

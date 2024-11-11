@@ -30,14 +30,26 @@ export const changeOrderStatus = createAsyncThunk(
 );
 
 // Thunk to submit a new order
-export const submitOrder = createAsyncThunk(
+export const submitOrderPayment = createAsyncThunk(
   'order/submitOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/order', orderData);
+      const response = await api.post('/order-payment', orderData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to submit order");
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const submitOrderCod = createAsyncThunk(
+  'order/submitOrderCod',
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/order-payment', orderData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -57,16 +69,32 @@ const orderSlice = createSlice({
 },
   extraReducers: (builder) => {
     builder
-      .addCase(submitOrder.pending, (state) => {
+      .addCase(submitOrderPayment.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(submitOrder.fulfilled, (state, action) => {
+      .addCase(submitOrderPayment.fulfilled, (state, action) => {
         state.loading = false;
-        state.orderInfo = action.payload;
+        state.orderInfo = action.payload.data.payUrl;
         toast.success("Đặt hàng thành công");
+        window.location.href = state.orderInfo;
       })
-      .addCase(submitOrder.rejected, (state, action) => {
+      .addCase(submitOrderPayment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Đặt hàng không thành công");
+      })
+      .addCase(submitOrderCod.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(submitOrderCod.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orderInfo = action.payload.data.payUrl;
+        toast.success("Đặt hàng thành công");
+        window.location.href = `/`
+      })
+      .addCase(submitOrderCod.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
         toast.error("Đặt hàng không thành công");

@@ -12,7 +12,6 @@ const data = [
   { name: 'Jun', Sales: 2390, Visitors: 2500 },
   { name: 'Jul', Sales: 3490, Visitors: 2100 },
 ];
-
 const DashBoard = () => {
   return (
     <div>
