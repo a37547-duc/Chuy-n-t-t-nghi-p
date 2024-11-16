@@ -3,7 +3,6 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 // Thunk để gọi API thêm sản phẩm
 export const addProduct = createAsyncThunk(
   "product/addProduct",
@@ -19,7 +18,6 @@ export const addProduct = createAsyncThunk(
     }
   }
 );
-
 
 // Thunk để gọi API cập nhật sản phẩm
 export const updateProduct = createAsyncThunk(

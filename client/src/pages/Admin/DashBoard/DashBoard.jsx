@@ -15,7 +15,7 @@ const data = [
 
 const DashBoard = () => {
   return (
-    <div>
+    <div className="p-4">
       <div className="grid grid-cols-4 gap-4 p-4">
         {/* Item Sales Card */}
         <div className="bg-white p-6 rounded-lg shadow-md">
