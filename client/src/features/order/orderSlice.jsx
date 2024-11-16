@@ -29,7 +29,7 @@ export const changeOrderStatus = createAsyncThunk(
   }
 );
 
-// Thunk to submit a new order
+// Thunk to submit a new order payment
 export const submitOrderPayment = createAsyncThunk(
   'order/submitOrder',
   async (orderData, { rejectWithValue }) => {
@@ -41,7 +41,7 @@ export const submitOrderPayment = createAsyncThunk(
     }
   }
 );
-
+// Thunk to submit a new order payment cod
 export const submitOrderCod = createAsyncThunk(
   'order/submitOrderCod',
   async (orderData, { rejectWithValue }) => {
@@ -90,7 +90,7 @@ const orderSlice = createSlice({
       })
       .addCase(submitOrderCod.fulfilled, (state, action) => {
         state.loading = false;
-        state.orderInfo = action.payload.data.payUrl;
+        state.orderInfo = action.payload
         toast.success("Đặt hàng thành công");
         window.location.href = `/`
       })

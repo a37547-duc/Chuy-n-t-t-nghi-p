@@ -87,7 +87,10 @@ function ShoppingCart() {
                         className="w-16 h-16 rounded-md"
                       />
                       <div className="ml-4">
-                        <h2 className="text-sm font-medium">{item.name}</h2>
+                        <Link to={`/products/${item.productId}`}>
+                          <h2 className="text-sm font-medium hover:text-blue-500">{item.name}</h2>
+                        </Link>
+
                         <p className="text-gray-600 max-w-xs text-xs">
                           {item.cpu.name}/RAM {item.ram.capacity}/ GPU {item.gpu.name}/{item.storage}
                         </p>

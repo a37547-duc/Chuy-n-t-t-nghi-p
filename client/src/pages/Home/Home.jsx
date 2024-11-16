@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Carousel from "./Carousel/Carousel";
 import BestSeller from "./BestSeller/BestSeller";
 import ProductCategory from "./ProductCategory/ProductCategory";
 import LogonButtonComputer from "./LogoButton/LogoButtonComputer/LogoButton";
@@ -36,7 +35,6 @@ export default function Home() {
         <div className="max-w-[1100px] mx-auto">
           <ProductCategory />
           <BestSeller />
-          <Carousel />
         </div>
       </div>
     </div>

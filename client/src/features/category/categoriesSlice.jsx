@@ -14,6 +14,20 @@ export const getCategoryById = createAsyncThunk(
   }
 );
 
+
+// Thunk để gọi API lấy tất cả danh mục
+export const createCategories = createAsyncThunk(
+  "category/getAllCategories",
+  async (_,  { rejectWithValue }) => {
+    try {
+      const response = await api.post("/admin/products/categor");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // Thunk để gọi API lấy tất cả danh mục
 export const getAllCategories = createAsyncThunk(
   "category/getAllCategories",
@@ -51,7 +65,7 @@ const categorySlice = createSlice({
       .addCase(getAllCategories.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      }); 
   },
 });
 

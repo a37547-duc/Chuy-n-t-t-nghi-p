@@ -1,4 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
+import ProtectedRouter from "./components/protected/ProtectedRouter";
+
 import Home from "./pages/Home/Home";
 import App from "./App";
 // import Root from "./pages/Root";

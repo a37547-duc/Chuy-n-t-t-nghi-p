@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FaEdit, FaEye } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faUpLong, faDownLong } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import BasicModal from "../../../components/Modal/BasicModal";
@@ -19,6 +19,7 @@ const OrderManagement = () => {
   const [isChangeOrderStatusModalOpen, setIsChangeOrderStatusModalOpen] = useState(false);
   const [isOrderDetailModalOpen, setIsOrderDetailModalOpen] = useState(false);
   const [initOrder, setInitOrder] = useState()
+  const [sortStatus, setSortStatus] = useState(null);
   useEffect(() => {
     dispatch(getAllOrders());
   }, [dispatch]);
@@ -31,7 +32,16 @@ const OrderManagement = () => {
 
   const indexOfLastOrder = (page + 1) * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  
+  const displayedOrders = useMemo(() => {
+    if (sortStatus === "asc") {
+      return [...orders].sort((a, b) => a.totalAmount - b.totalAmount);
+    } else if (sortStatus === "desc") {
+      return [...orders].sort((a, b) => b.totalAmount - a.totalAmount);
+    }
+    return orders;
+  }, [orders, sortStatus]);
+  const currentOrders = displayedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   const handleOpenChangeOrderStatusModal = () => {
     setIsChangeOrderStatusModalOpen(true);
@@ -51,6 +61,15 @@ const OrderManagement = () => {
 
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+  };
+
+  const handleSortByPrice = () => {
+    // Chuyển đổi trạng thái sắp xếp giữa null, asc và desc
+    setSortStatus((prevStatus) => {
+      if (prevStatus === "asc") return "desc";
+      if (prevStatus === "desc") return null;
+      return "asc";
+    });
   };
 
   return (
@@ -104,7 +123,16 @@ const OrderManagement = () => {
               <th className="p-4">ID</th>
               <th className="p-4">Tên khách hàng</th>
               <th className="p-4">Ngày đặt hàng</th>
-              <th className="p-4">Tổng tiền</th>
+              <th className="p-4 cursor-pointer" onClick={handleSortByPrice}>Tổng tiền
+                <FontAwesomeIcon
+                  icon={faUpLong}
+                  className={`ml-2 text-xs ${sortStatus === "asc" ? "text-black" : "text-gray-300"}`}
+                />
+                <FontAwesomeIcon
+                  icon={faDownLong}
+                  className={`ml-1 text-xs ${sortStatus === "desc" ? "text-black" : "text-gray-300"}`}
+                />
+              </th>
               <th className="p-4">Trạng thái</th>
               <th className="p-4"></th>
             </tr>
@@ -115,7 +143,7 @@ const OrderManagement = () => {
                 <td className="p-4 text-sm">{order._id}</td>
                 <td className="p-4 text-sm">{order.shippingInfo.fullName}</td>
                 <td className="p-4 text-sm">{order.orderDate}</td>
-                <td className="p-4 text-sm">{formatNumber(order.totalAmount)}</td>
+                <td className="p-4 text-sm truncate max-w-[120px]">{formatNumber(order.totalAmount)}</td>
                 <td className="p-4 text-sm">{order.orderStatus}</td>
                 <td className="p-4 text-sm">
                   <div className="flex space-x-2">

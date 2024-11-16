@@ -2,13 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Load cart from localStorage
+const loadCartFromLocalStorage = () => {
+  const cart = localStorage.getItem("cart");
+  return cart ? JSON.parse(cart) : { items: [], cartTotalQuantity: 0, totalAmount: 0 };
+};
+
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: {
-    items: [],
-    cartTotalQuantity: 0,
-    totalAmount: 0,
-  },
+  initialState: loadCartFromLocalStorage(),
   reducers: {
     // Add item to cart
     addItemToCart(state, action) {
@@ -22,8 +24,9 @@ const cartSlice = createSlice({
       }
       state.totalAmount += action.payload.price * action.payload.quantity;
       state.cartTotalQuantity += action.payload.quantity;
+
+      localStorage.setItem("cart", JSON.stringify(state));
     },
-    // Update item quantity in cart
     updateCartItem(state, action) {
       const { id, quantity } = action.payload;
       const existingItem = state.items.find(item => item._id === id);
@@ -33,9 +36,10 @@ const cartSlice = createSlice({
         existingItem.quantity = quantity;
         state.totalAmount += priceDifference;
         toast.success("Cập nhập sản phẩm thành công");
+
+        localStorage.setItem("cart", JSON.stringify(state));
       }
     },
-    // Remove item from cart
     removeItemFromCart(state, action) {
       const itemId = action.payload;
       const existingItem = state.items.find(item => item._id === itemId);
@@ -43,13 +47,15 @@ const cartSlice = createSlice({
         state.totalAmount -= existingItem.price * existingItem.quantity;
         state.cartTotalQuantity -= existingItem.quantity;
         state.items = state.items.filter(item => item._id !== itemId);
+
+        localStorage.setItem("cart", JSON.stringify(state));
       }
     },
-    // Clear cart
     clearCart(state) {
       state.items = [];
       state.totalAmount = 0;
       state.cartTotalQuantity = 0;
+      localStorage.removeItem("cart");
     },
   },
 });

@@ -8,6 +8,7 @@ import productVariationReducer from "../features/product/productVariationSlice";
 import adminVariationReducer from "../features/Admin/adminVariationsSlice"
 import cartReducer from "../features/cart/cartSlice";
 import orderReducer from "../features/order/orderSlice";
+import authReducer from "../features/Auth/authSlice"
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     order: orderReducer,
     adminProduct: adminProductReducer,
     adminVariation: adminVariationReducer,
+    auth: authReducer,
   },
 });
 

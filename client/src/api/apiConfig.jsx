@@ -11,15 +11,34 @@ export const api = axios.create({
 
 // export const getTokenFromLocalStorage = () => {
 //     if (typeof window !== "undefined") {
-//       return localStorage.getItem("userToken") || "";
+//       return localStorage.getItem("access_token") || "";
 //     }
 //     return "";
 // };
 
-// api.interceptors.request.use((config) => {
-//     const user = JSON.parse(getTokenFromLocalStorage());
-//     if (user) {
-//       config.headers.Authorization = `Bearer ${user}`;
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+// api.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("access_token");
+
+//     console.log("LẤY TOKEN TỪ LOCALSTORAGE: ", token);
+
+//     if (token) {
+//       config.headers.Authorization = `bearer ${token}`;
 //     }
+
 //     return config;
-// });
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );

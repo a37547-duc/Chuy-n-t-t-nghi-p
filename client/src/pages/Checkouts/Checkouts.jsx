@@ -3,12 +3,14 @@ import {useLocation, useNavigate} from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import {submitOrderPayment, submitOrderCod} from "../../features/order/orderSlice";
 import { Link } from 'react-router-dom';
+import { clearCart } from "../../features/cart/cartSlice"
 
 function Checkout() {
+  const navigate = useNavigate()
   const location = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
   const { items, totalAmount } = location.state || { items: [], totalAmount: 0 };
+  const cartItems = useSelector((state) => state.cart.items)
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
@@ -18,7 +20,9 @@ function Checkout() {
   const [choosedProvince, setChoosedProvince] = useState('');
   const [choosedDistrict, setChoosedDistrict] = useState('');
   const [choosedWard, setChoosededWard] = useState('');
-
+  if (items.length === 0) {
+    navigate("/cart")
+  }
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
@@ -159,6 +163,7 @@ function Checkout() {
       dispatch(submitOrderPayment(orderData))
         .then((result) => {
           console.log("Đặt hàng thành công qua MoMo", result);
+          dispatch(clearCart());
         })
         .catch((error) => {
           console.error("Lỗi khi đặt hàng qua MoMo:", error);
@@ -166,7 +171,7 @@ function Checkout() {
     } else if (formData.payment === "Thanh toán khi nhận hàng") {
       dispatch(submitOrderCod(orderData))
         .then((result) => {
-          console.log("Đặt hàng thành công với thanh toán khi nhận hàng", result);
+          dispatch(clearCart());
         })
         .catch((error) => {
           console.error("Lỗi khi đặt hàng với thanh toán khi nhận hàng:", error);

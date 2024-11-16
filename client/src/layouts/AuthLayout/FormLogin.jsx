@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../features/Auth/authSlice';
 
 function FormLogin() {
+  const dispatch = useDispatch();
+  const { loginLoading, error } = useSelector((state) => state.auth);
+  
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -42,7 +47,7 @@ function FormLogin() {
       setErrors(newErrors);
     } else {
       setErrors({});
-      console.log('Dữ liệu hợp lệ, đăng nhập:', formData);
+      dispatch(loginUser(formData));
     }
   };
 
@@ -95,12 +100,17 @@ function FormLogin() {
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
           <div>
             <button
               type="submit"
-              className="w-full py-3 px-4 text-white bg-indigo-600 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-lg transition transform hover:scale-105"
+              disabled={loginLoading}
+              className={`w-full py-3 px-4 text-white bg-indigo-600 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-lg transition transform hover:scale-105 ${
+                loginLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Đăng nhập
+              {loginLoading ? "Đang đăng nhập..." : "Đăng nhập"}
             </button>
           </div>
         </form>
