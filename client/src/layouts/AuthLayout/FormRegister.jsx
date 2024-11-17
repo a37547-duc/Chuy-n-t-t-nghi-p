@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { registerUser } from "../../features/Auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function FormRegister() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { registerLoading } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    username: "",
+    email: "",
+    password: "",
+    authType: "local",
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -18,7 +25,7 @@ function FormRegister() {
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: '', // Xóa lỗi khi người dùng nhập liệu
+      [name]: "",
     }));
   };
 
@@ -41,15 +48,27 @@ function FormRegister() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-    } else {
-      setErrors({});
-      console.log('Dữ liệu hợp lệ, đăng ký:', formData);
-      // Xử lý đăng ký người dùng hoặc gọi API
+      return;
+    }
+
+    const userData = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      authType: formData.authType,
+    };
+
+    try {
+      await dispatch(registerUser(userData)).unwrap();
+      navigate("/login");
+    } catch (error) {
+      setErrors({ apiError: "Đăng ký thất bại. Vui lòng thử lại!" });
+      console.error("Đăng ký thất bại:", error);
     }
   };
 
@@ -60,6 +79,7 @@ function FormRegister() {
           <h2 className="text-center text-4xl font-bold text-gray-900">Đăng ký</h2>
         </div>
         <form className="space-y-6" onSubmit={handleSubmit}>
+          {errors.apiError && <p className="text-red-500 text-sm">{errors.apiError}</p>}
           <div>
             <label htmlFor="username" className="block text-sm font-semibold text-gray-700">
               Tên người dùng
@@ -131,15 +151,18 @@ function FormRegister() {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200"
+              disabled={registerLoading}
+              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-white ${
+                registerLoading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200`}
             >
-              Đăng ký
+              {registerLoading ? "Đang xử lý..." : "Đăng ký"}
             </button>
           </div>
         </form>
         <div className="text-sm text-center">
           <p>
-            Đã có tài khoản?{' '}
+            Đã có tài khoản?{" "}
             <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
               Đăng nhập
             </Link>

@@ -135,6 +135,7 @@ function Checkout() {
       products: items.map(item => ({
         productId: item._id,
         quantity: item.quantity,
+        name:  item.name,
         image: item.image,
         price: item.price,
       })),

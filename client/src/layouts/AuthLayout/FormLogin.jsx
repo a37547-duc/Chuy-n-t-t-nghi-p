@@ -7,7 +7,6 @@ import { loginUser } from '../../features/Auth/authSlice';
 function FormLogin() {
   const dispatch = useDispatch();
   const { loginLoading, error } = useSelector((state) => state.auth);
-  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
