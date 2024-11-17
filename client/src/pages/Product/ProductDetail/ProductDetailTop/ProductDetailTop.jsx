@@ -30,12 +30,12 @@ const ProductDetailTop = ({ product, onVariantChange }) => {
   }, []);
 
   useEffect(() => {
-    onVariantChange(selectedVariant); // Đẩy variant được chọn ra ngoài khi khởi tạo
+    onVariantChange(selectedVariant);
   }, [selectedVariant]);
 
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
-    onVariantChange(variant); // Gọi callback để cập nhật variant khi thay đổi
+    onVariantChange(variant);
   };
 
   return (
@@ -59,7 +59,7 @@ const ProductDetailTop = ({ product, onVariantChange }) => {
             <>
               <OverviewProduct data={product} onVariantChange={handleVariantChange}/>
               <PromotionProduct />
-              <ButtonBuyProduct />
+              <ButtonBuyProduct product={product} variant={selectedVariant}/>
             </>
           )}
         </div>

@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function Cart() {
+  const cartTotalQuantity = useSelector((state) => state.cart.cartTotalQuantity);
   return (
     <div className="flex items-center lg:order-2">
       <Link to="/cart">
@@ -19,7 +21,7 @@ export default function Cart() {
               ></path>
             </svg>
             <span className="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
-              0
+              {cartTotalQuantity}
             </span>
           </span>
         </div>

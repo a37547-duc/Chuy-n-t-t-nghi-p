@@ -1,16 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { api } from "../../api/apiConfig";
 
 // Thunk để gọi API lấy sản phẩm theo ID
 export const getProductById = createAsyncThunk(
   "product/getProductById",
   async (productId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://laptech4k.onrender.com/api/v1/admin/products/detail/${productId}`);
-      // const productData = response.data
-      // if(response.data) {
-      //   localStorage.setItem("productData", JSON.stringify(productData));
-      // }
+      const response = await api.get(`/admin/products/detail/${productId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -23,7 +19,8 @@ export const getAllProducts = createAsyncThunk(
   "product/getAllProducts",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("https://laptech4k.onrender.com/api/v1/admin/products");
+      const response = await api.get("/admin/products");
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -35,7 +32,7 @@ const initialState ={
   products: [],
   product: null,
   loading: false,
-  error: null,
+  error: false,
 }
 
 const productSlice = createSlice({

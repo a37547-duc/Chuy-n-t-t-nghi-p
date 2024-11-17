@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { api } from "../../api/apiConfig";
 
 // Thunk để gọi API lấy thương hiệu theo ID
 export const getBrandById = createAsyncThunk(
   "brand/getBrandById",
   async (brandId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://laptech4k.onrender.com/api/v1/admin/products/brand/${brandId}`);
+      const response = await api.get(`/admin/products/brand/${brandId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -19,7 +19,7 @@ export const getAllBrands = createAsyncThunk(
   "brand/getAllBrands",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("https://laptech4k.onrender.com/api/v1/admin/products/brand");
+      const response = await api.get("/admin/products/brand");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

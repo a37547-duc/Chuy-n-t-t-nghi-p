@@ -1,42 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getUserProfile, updateUserProfile } from "../../../../features/Auth/authProfileSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const AccountInformation = () => {
-  const initialUser = {
-    id: "1",
-    name: "THANH NGUYEN",
-    email: "ABC@gmail.com",
-    phone: "0123456789",
-    DateOfBirth: "",
-    sex: "", // Khởi tạo với giá trị trống
-    TotalPurchasePrice: "9.600.000đ",
-  };
+  const dispatch = useDispatch();
+  const { useProfile, loading, error } = useSelector((state) => state.profile);
 
-  const [user, setUser] = useState(initialUser);
+  // State để lưu thông tin user
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    phoneNumber: "",
+    gender: "",
+  });
+
   const [isChanged, setIsChanged] = useState(false);
+
+  // Lấy thông tin người dùng từ Redux store khi component mount
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, [dispatch]);
+
+  // Cập nhật state `user` khi `useProfile` thay đổi
+  useEffect(() => {
+    if (useProfile) {
+      setUser({
+        username: useProfile.data.username || "",
+        email: useProfile.data.email || "",
+        phoneNumber: useProfile.data.phoneNumber || "",
+        gender: useProfile.data.gender || "",
+      });
+    }
+  }, [useProfile]);
 
   // Hàm kiểm tra xem thông tin có thay đổi không
   const checkIfChanged = (newUser) => {
-    return JSON.stringify(newUser) !== JSON.stringify(initialUser);
+    return JSON.stringify(newUser) !== JSON.stringify({
+      username: useProfile?.data.username || "",
+      email: useProfile?.data.email || "",
+      phoneNumber: useProfile?.data.phoneNumber || "",
+      gender: useProfile?.data.gender || "",
+    });
   };
 
-  // Hàm xử lý thay đổi thông tin người dùng
+  // Hàm xử lý thay đổi giá trị trong form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    
+    // Cập nhật giá trị mới cho các trường nhập liệu, đảm bảo không có giá trị undefined
     setUser((prevUser) => {
-      const newUser = { ...prevUser, [name]: value };
-      setIsChanged(checkIfChanged(newUser));
+      const newUser = { 
+        ...prevUser, 
+        [name]: value !== undefined ? value : "" // Tránh giá trị undefined, thay bằng chuỗi rỗng
+      };
+      setIsChanged(checkIfChanged(newUser)); // Kiểm tra xem thông tin có thay đổi không
       return newUser;
     });
   };
 
-  // Hàm xử lý sự kiện thay đổi radio button
+  // Hàm xử lý thay đổi radio button
   const handleRadioChange = (e) => {
     const { value } = e.target;
     setUser((prevUser) => {
-      const newUser = { ...prevUser, sex: value };
+      const newUser = { ...prevUser, gender: value };
       setIsChanged(checkIfChanged(newUser));
       return newUser;
     });
+  };
+
+  // Hàm xử lý gửi form
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Gửi yêu cầu cập nhật thông tin người dùng
+    dispatch(updateUserProfile(user))
+      .then(() => {
+        // Sau khi cập nhật thành công, lấy lại thông tin mới nhất
+        dispatch(getUserProfile());
+      })
+      .catch((error) => {
+        console.log("Có lỗi xảy ra khi cập nhật thông tin:", error);
+      });
+
+    console.log("Dữ liệu gửi: ", user);
   };
 
   return (
@@ -45,13 +91,13 @@ const AccountInformation = () => {
         Thông tin tài khoản
       </div>
 
-      <form className="border p-4 rounded-lg space-y-4">
+      <form onSubmit={handleSubmit} className="border p-4 rounded-lg space-y-4">
         <div>
           <label className="text-[13px] block mb-1">Họ Tên:</label>
           <input
             type="text"
-            name="name"
-            value={user.name}
+            name="username" // sửa lại thành "username"
+            value={user.username}
             onChange={handleInputChange}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
           />
@@ -72,8 +118,8 @@ const AccountInformation = () => {
           <label className="text-[13px] block mb-1 ">Số điện thoại:</label>
           <input
             type="tel"
-            name="phone"
-            value={user.phone}
+            name="phoneNumber" // sửa lại thành "phoneNumber"
+            value={user.phoneNumber}
             onChange={handleInputChange}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
           />
@@ -84,7 +130,7 @@ const AccountInformation = () => {
           <input
             type="date"
             name="DateOfBirth"
-            value={user.DateOfBirth}
+            value={user.DateOfBirth || ""} // Giữ giá trị hợp lệ, tránh undefined
             onChange={handleInputChange}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
           />
@@ -96,9 +142,9 @@ const AccountInformation = () => {
             <label className="text-[13px] inline-flex items-center">
               <input
                 type="radio"
-                name="sex"
+                name="gender" // sửa lại thành "gender"
                 value="Nam"
-                checked={user.sex === "Nam"}
+                checked={user.gender === "Nam"}
                 onChange={handleRadioChange}
                 className="form-radio text-blue-500"
               />
@@ -108,9 +154,9 @@ const AccountInformation = () => {
             <label className="text-[13px] inline-flex items-center">
               <input
                 type="radio"
-                name="sex"
+                name="gender" // sửa lại thành "gender"
                 value="Nữ"
-                checked={user.sex === "Nữ"}
+                checked={user.gender === "Nữ"}
                 onChange={handleRadioChange}
                 className="form-radio text-blue-500"
               />
@@ -120,9 +166,9 @@ const AccountInformation = () => {
             <label className="text-[13px] inline-flex items-center">
               <input
                 type="radio"
-                name="sex"
+                name="gender" // sửa lại thành "gender"
                 value="Khác"
-                checked={user.sex === "Khác"}
+                checked={user.gender === "Khác"}
                 onChange={handleRadioChange}
                 className="form-radio text-blue-500"
               />
@@ -131,17 +177,17 @@ const AccountInformation = () => {
           </div>
         </div>
 
-        <div className="">
+        <div>
           <label className="text-[13px] block mb-1">Số tiền tích lũy:</label>
           <span
             className="w-full px-3 py-2 min-h-[16px] h-[40px] text-red-700 font-bold"
           >
-            {user.TotalPurchasePrice}
+            {user.TotalPurchasePrice || "0 VND"}
           </span>
         </div>
 
         <button
-          type="button"
+          type="submit"
           disabled={!isChanged}
           className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ${!isChanged ? "opacity-50 cursor-not-allowed" : ""}`}
         >

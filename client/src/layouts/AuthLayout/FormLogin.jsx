@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../features/Auth/authSlice';
 
 function FormLogin() {
+  const dispatch = useDispatch();
+  const { loginLoading, error } = useSelector((state) => state.auth);
+  
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -41,59 +47,70 @@ function FormLogin() {
       setErrors(newErrors);
     } else {
       setErrors({});
-      console.log('Dữ liệu hợp lệ, đăng nhập:', formData);
-      // Gọi API đăng nhập hoặc xử lý dữ liệu hợp lệ
+      dispatch(loginUser(formData));
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md space-y-8">
-        <div>
-          <h2 className="text-center text-3xl font-bold text-gray-800">Đăng nhập</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-indigo-600">
+      <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h2 className="text-4xl font-bold text-gray-800 mb-2">Đăng nhập</h2>
+          <p className="text-gray-600">Chào mừng trở lại! Hãy đăng nhập để tiếp tục</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
+          <div className="relative">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Nhập email của bạn"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
-            />
+            <div className="flex items-center mt-1">
+              <FaEnvelope className="absolute text-gray-400 ml-3" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Nhập email của bạn"
+                required
+                className="pl-10 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md transition"
+              />
+            </div>
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
 
-          <div>
+          <div className="relative">
             <div className="flex justify-between items-center">
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
               <Link to="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500">
                 Quên mật khẩu?
               </Link>
             </div>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Nhập mật khẩu"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
-            />
+            <div className="flex items-center mt-1">
+              <FaLock className="absolute text-gray-400 ml-3" />
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Nhập mật khẩu"
+                required
+                className="pl-10 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md transition"
+              />
+            </div>
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
+
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
           <div>
             <button
               type="submit"
-              className="w-full py-3 px-4 text-white bg-indigo-600 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md transition"
+              disabled={loginLoading}
+              className={`w-full py-3 px-4 text-white bg-indigo-600 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-lg transition transform hover:scale-105 ${
+                loginLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Đăng nhập
+              {loginLoading ? "Đang đăng nhập..." : "Đăng nhập"}
             </button>
           </div>
         </form>

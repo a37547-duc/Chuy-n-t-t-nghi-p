@@ -35,7 +35,6 @@ const UpdateProduct = ({ onClose, data }) => {
   }, [dispatch]);
 
   const onSubmit = async (formData) => {
-    console.log(formData)
     try {
       await dispatch(updateProduct({ id: data._id, updatedProduct: formData })).unwrap();
       setTimeout(() => {

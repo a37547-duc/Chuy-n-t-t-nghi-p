@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./SearchBar.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 // Convert data
 function convertDataToUnsigned(string) {
@@ -15,13 +16,15 @@ export default function SearchBar() {
   const [search, setSearch] = useState("");
   const [dataSearch, setDataSearch] = useState([]);
   const [showList, setShowList] = useState(false);
-
+  const handleProductClick = (product) => {
+    navigate("/products", { state: { product } });
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          "https://66b9caecfa763ff550f9873b.mockapi.io/products/products"
+          "https://laptech4k.onrender.com/api/v1/admin/products"
         );
         const data = await response.json();
         setProducts(data);
@@ -63,16 +66,16 @@ export default function SearchBar() {
         </svg>
       </div>
       {showList && (
-        <div className="search-list absolute z-[80] w-96 rounded-lg top-full">
+        <div className="search-list absolute z-[80] w-96 rounded-lg top-full text-xs">
           {dataSearch?.length > 0 ? (
             <div className="overflow-y-auto rounded-lg max-h-[50vh] bg-gray-200">
               {dataSearch.slice(0, 5).map((i) => (
-                <div key={i.id} className="hover:cursor-pointer">
-                  <div className="flex px-4 py-2 hover:bg-white">
-                    <img className="w-12 h-12 mr-2" src={i.image} />
+                <Link to={`/products/${i._id}`} key={i._id}>
+                  <div className="flex px-4 py-2 hover:bg-white hover:cursor-pointer">
+                    <img className="w-12 h-12 mr-2 rounded-lg object-cover" src={i.images[0]} />
                     <div>{i?.name}</div>
                   </div>
-                </div>
+                </Link>
               ))}
               {dataSearch.length > 5 && (
                 <div className="px-4 py-2 text-gray-600 justify-center text-center hover:cursor-pointer">
@@ -81,7 +84,7 @@ export default function SearchBar() {
               )}
             </div>
           ) : (
-            <div className="no-results bg-red-200">
+            <div className="no-results bg-red-100 text-red-600 text-center p-4 rounded-lg">
               Không tìm thấy sản phẩm...
             </div>
           )}

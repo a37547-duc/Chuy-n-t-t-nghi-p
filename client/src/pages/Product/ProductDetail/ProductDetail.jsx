@@ -14,12 +14,11 @@ const ProductDetail = () => {
         const response = await fetch(`https://laptech4k.onrender.com/api/v1/products/${id}`);
         const data = await response.json();
         setProduct(data);
-        setSelectedVariant(data.variants[0]); // Chọn variant mặc định
+        setSelectedVariant(data.variants[0]);
       } catch (error) {
         console.error("Lỗi khi tải dữ liệu sản phẩm:", error);
       }
     };
-
     fetchProduct();
     window.scrollTo(0, 0);
   }, [id]);

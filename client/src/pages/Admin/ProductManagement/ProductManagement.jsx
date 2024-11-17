@@ -79,26 +79,10 @@ const ProductManagement = () => {
   const hanleOpenUpdateModal = () => setIsUpdateModalOpen(true);
   const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
 
-  // const handleSaveProduct = (newProduct) => {
-  //   dispatch(addProduct(newProduct))
-  //     .unwrap()
-  //     .then(() => {
-  //       dispatch(getAllProducts());
-  //     })
-  //     .catch((error) => {
-  //       console.log("Lỗi khi thêm sản phẩm:", error);
-  //     });
-  
-  //   handleCloseAddModal();
-  // };
   const handleDeleteProduct = () => {
     console.log("Product deleted:", selectedProducts);
     handleCloseDeleteModal();
   };
-  // const handleUpdateProduct = (updatedProduct) => {
-  //   console.log("Product updated:", updatedProduct);
-  //   handleCloseUpdateModal();
-  // };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -175,12 +159,12 @@ const ProductManagement = () => {
                   onChange={handleSelectAll}
               />
             </th>
-            <th className="p-4">id</th>
-            <th className="p-4">tên sản phẩm</th>
-            <th className="p-4">ảnh sản phẩm</th>
-            <th className="p-4">danh mục</th>
-            <th className="p-4">thương hiệu</th>
-            <th className="p-4"></th>
+            <th className="p-4 w-1/12">ID</th>
+          <th className="p-4 w-3/12">Tên sản phẩm</th>
+          <th className="p-4 w-2/12">Ảnh sản phẩm</th>
+          <th className="p-4 w-2/12">Danh mục</th>
+          <th className="p-4 w-2/12">Thương hiệu</th>
+          <th className="p-4 w-2/12"></th>
           </tr>
         </thead>
         <tbody>
@@ -197,11 +181,11 @@ const ProductManagement = () => {
               <td className="p-4 text-sm">{products._id}</td>
               <td className="p-4">
                 <div className="flex flex-col">
-                  <span className="font-semibold text-sm">{products.name}</span>
+                  <span className="font-semibold text-sm truncate max-w-xs">{products.name}</span>
                 </div>
               </td>
-              <td className="text-sm py-4">
-                <img src={products.images[0]} alt={products.name} className="w-16 h-16 object-cover pl-4" />
+              <td className="text-sm py-4 flex">
+                <img src={products.images[0]} alt={products.name} className="w-16 h-16 object-cover" />
               </td>
               <td className="p-4 text-sm">{products.category.name}</td>
               <td className="p-4 text-sm">{products.brand.name}</td>

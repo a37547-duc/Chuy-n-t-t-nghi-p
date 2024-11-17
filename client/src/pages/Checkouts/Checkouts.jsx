@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import {useLocation, useNavigate} from "react-router-dom"
+import { useSelector, useDispatch } from 'react-redux';
+import {submitOrderPayment, submitOrderCod} from "../../features/order/orderSlice";
+import { Link } from 'react-router-dom';
+import { clearCart } from "../../features/cart/cartSlice"
 
 function Checkout() {
+  const navigate = useNavigate()
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { items, totalAmount } = location.state || { items: [], totalAmount: 0 };
+  const cartItems = useSelector((state) => state.cart.items)
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedWard, setSelectedWard] = useState('');
-
+  const [choosedProvince, setChoosedProvince] = useState('');
+  const [choosedDistrict, setChoosedDistrict] = useState('');
+  const [choosedWard, setChoosededWard] = useState('');
+  if (items.length === 0) {
+    navigate("/cart")
+  }
   const [formData, setFormData] = useState({
     email: "",
-    firstName: "",
-    lastName: "",
+    fullName: "",
     address: "",
     province: "",
     district: "",
@@ -21,27 +35,11 @@ function Checkout() {
     payment: "",
   });
 
-  const [errors, setErrors] = useState({});
+  
 
-  // Dữ liệu mock cho sản phẩm trong tóm tắt đơn hàng
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Laptop Dell Inspiron 15',
-      color: 'Màu đen',
-      price: 800.00,
-      quantity: 1,
-      imageUrl: 'https://via.placeholder.com/50',
-    },
-    {
-      id: 2,
-      name: 'Apple MacBook Air',
-      color: 'Màu bạc',
-      price: 1200.00,
-      quantity: 1,
-      imageUrl: 'https://via.placeholder.com/50',
-    },
-  ]);
+  console.log(formData)
+
+  const [errors, setErrors] = useState({});
 
   // Gọi API để lấy danh sách tỉnh/thành phố
   useEffect(() => {
@@ -93,12 +91,8 @@ function Checkout() {
       }
     }
 
-    if (formData.firstName.trim() === "") {
-      newErrors.firstName = "Tên không được để trống";
-    }
-
-    if (formData.lastName.trim() === "") {
-      newErrors.lastName = "Họ không được để trống";
+    if (formData.fullName.trim() === "") {
+      newErrors.fullName = "Họ và tên không được để trống";
     }
 
     if (formData.address.trim() === "") {
@@ -125,21 +119,36 @@ function Checkout() {
         newErrors.phone = "Số điện thoại không đúng định dạng";
       }
     }
-
-    if (!formData.delivery) {
-      newErrors.delivery = "Vui lòng chọn phương thức giao hàng";
-    }
-
     if (!formData.payment) {
       newErrors.payment = "Vui lòng chọn phương thức thanh toán";
     }
 
     return newErrors;
+
   };
 
   // Hàm handleSubmit để xử lý khi người dùng nhấn "Đặt hàng"
   const handleSubmit = (e) => {
     e.preventDefault();
+    const orderData = {
+      email: formData.email,
+      products: items.map(item => ({
+        productId: item._id,
+        quantity: item.quantity,
+        image: item.image,
+        price: item.price,
+      })),
+      totalAmount: totalAmount,
+      shippingInfo: {
+        fullName: formData.fullName,
+        phone: formData.phone,
+        district: formData.district,
+        city: formData.province,
+        ward: formData.ward,
+        address: formData.address
+      },
+      paymentMethod: formData.payment, 
+    }
 
     const newErrors = validateForm();
 
@@ -149,18 +158,34 @@ function Checkout() {
     }
 
     setErrors({});
-    // Xử lý tiếp tục khi dữ liệu hợp lệ, ví dụ như gọi API đặt hàng
-    console.log("Dữ liệu hợp lệ, xử lý đặt hàng:", formData);
+
+    if (formData.payment === "MoMo") {
+      dispatch(submitOrderPayment(orderData))
+        .then((result) => {
+          console.log("Đặt hàng thành công qua MoMo", result);
+          dispatch(clearCart());
+        })
+        .catch((error) => {
+          console.error("Lỗi khi đặt hàng qua MoMo:", error);
+        });
+    } else if (formData.payment === "Thanh toán khi nhận hàng") {
+      dispatch(submitOrderCod(orderData))
+        .then((result) => {
+          dispatch(clearCart());
+        })
+        .catch((error) => {
+          console.error("Lỗi khi đặt hàng với thanh toán khi nhận hàng:", error);
+        });
+    }
   };
 
-  // Tính tổng tiền đơn hàng
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
   };
 
   return (
     <div className="bg-gray-100 min-h-screen py-12 px-4">
-      <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <div className="container mx-auto max-w-screen-lg p-6 bg-white shadow-lg rounded-lg">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Thông tin liên hệ và giao hàng */}
           <div className="space-y-6">
@@ -183,25 +208,13 @@ function Checkout() {
                 <div className="flex-1">
                   <input
                     type="text"
-                    name="firstName"
-                    value={formData.firstName}
+                    name="fullName"
+                    value={formData.fullName}
                     onChange={handleInputChange}
-                    placeholder="Tên"
+                    placeholder="Vui lòng nhập họ tên người nhận"
                     className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
                   />
-                  {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
-                </div>
-
-                <div className="flex-1">
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    placeholder="Họ"
-                    className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
-                  />
-                  {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                  {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName}</p>}
                 </div>
               </div>
               <input
@@ -219,18 +232,20 @@ function Checkout() {
                   <select
                     name="province"
                     className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
-                    value={selectedProvince}
+                    value={choosedProvince}
                     onChange={(e) => {
-                      const value = e.target.value;
-                      setSelectedProvince(value);
-                      setFormData((prevData) => ({ ...prevData, province: value }));
+                      const data = e.target.value;
+                      const value = JSON.parse(e.target.value);
+                      setChoosedProvince(data);
+                      setSelectedProvince(value.code);
+                      setFormData((prevData) => ({ ...prevData, province: value.name }));
                       setSelectedDistrict(''); 
                       setWards([]);
                     }}
                   >
                     <option value="">Chọn Tỉnh / Thành phố</option>
                     {provinces.map(province => (
-                      <option key={province.code} value={province.code}>
+                      <option key={province.code} value={JSON.stringify({ code: province.code, name: province.name })}>
                         {province.name}
                       </option>
                     ))}
@@ -242,18 +257,20 @@ function Checkout() {
                   <select
                     name="district"
                     className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
-                    value={selectedDistrict}
+                    value={choosedDistrict}
                     onChange={(e) => {
-                      const value = e.target.value;
-                      setSelectedDistrict(value);
-                      setFormData((prevData) => ({ ...prevData, district: value }));
+                      const data = e.target.value;
+                      const value = JSON.parse(e.target.value);
+                      setChoosedDistrict(data)
+                      setSelectedDistrict(value.code);
+                      setFormData((prevData) => ({ ...prevData, district: value.name }));
                       setSelectedWard('');
                     }}
                     disabled={!selectedProvince}
                   >
                     <option value="">Chọn Quận / Huyện</option>
                     {districts.map(district => (
-                      <option key={district.code} value={district.code}>
+                      <option key={district.code} value={JSON.stringify({ code: district.code, name: district.name })}>
                         {district.name}
                       </option>
                     ))}
@@ -265,17 +282,19 @@ function Checkout() {
                   <select
                     name="ward"
                     className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
-                    value={selectedWard}
+                    value={choosedWard}
                     onChange={(e) => {
-                      const value = e.target.value;
-                      setSelectedWard(value);
-                      setFormData((prevData) => ({ ...prevData, ward: value }));
+                      const data = e.target.value;;
+                      const value = JSON.parse(e.target.value);
+                      setChoosededWard(data)
+                      setSelectedWard(value.code);
+                      setFormData((prevData) => ({ ...prevData, ward: value.name }));
                     }}
                     disabled={!selectedDistrict}
                   >
                     <option value="">Chọn Xã / Phường</option>
                     {wards.map(ward => (
-                      <option key={ward.code} value={ward.code}>
+                      <option key={ward.code} value={JSON.stringify({code: ward.code, name: ward.name })}>
                         {ward.name}
                       </option>
                     ))}
@@ -294,22 +313,6 @@ function Checkout() {
               />
               {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
             </div>
-
-            <div className="bg-white p-6 shadow rounded-lg">
-              <h2 className="text-lg font-semibold mb-4">Phương thức giao hàng</h2>
-              <select
-                name="delivery"
-                className="w-full p-2 border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
-                value={formData.delivery}
-                onChange={handleInputChange}
-              >
-                <option value="">Chọn phương thức giao hàng</option>
-                <option value="standard">Giao hàng tiêu chuẩn</option>
-                <option value="express">Giao hàng nhanh</option>
-              </select>
-              {errors.delivery && <p className="text-red-500 text-sm">{errors.delivery}</p>}
-            </div>
-
             <div className="bg-white p-6 shadow rounded-lg">
               <h2 className="text-lg font-semibold mb-4">Phương thức thanh toán</h2>
               <select
@@ -319,8 +322,8 @@ function Checkout() {
                 onChange={handleInputChange}
               >
                 <option value="">Chọn phương thức thanh toán</option>
-                <option value="credit_card">Thẻ tín dụng</option>
-                <option value="cash_on_delivery">Thanh toán khi nhận hàng</option>
+                <option value="MoMo">Thanh toán qua MoMo</option>
+                <option value="Thanh toán khi nhận hàng">Thanh toán khi nhận hàng</option>
               </select>
               {errors.payment && <p className="text-red-500 text-sm">{errors.payment}</p>}
             </div>
@@ -329,26 +332,35 @@ function Checkout() {
           {/* Tóm tắt đơn hàng */}
           <div className="space-y-6">
             <div className="bg-white p-6 shadow rounded-lg">
-              <h2 className="text-lg font-semibold mb-4">Thông tin đơn hàng</h2>
+              <div className="flex justify-between">
+                <h2 className="text-lg font-semibold mb-4">Thông tin đơn hàng</h2>
+                <Link to="/cart">
+                  <span className="text-xs text-blue-700">Chỉnh sửa</span>
+                </Link>
+
+              </div>
+
               <div className="space-y-4">
-                {cartItems.map(item => (
-                  <div key={item.id} className="flex items-center">
-                    <img src={item.imageUrl} alt={item.name} className="w-12 h-12 object-cover rounded-md mr-4" />
+                {items.map(item => (
+                  <div key={item._id} className="flex items-center">
+                    <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-md mr-4" />
                     <div>
-                      <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-sm text-gray-500">Màu: {item.color}</p>
-                      <p className="text-sm text-gray-500">Số lượng: {item.quantity}</p>
-                      <p className="text-sm text-gray-500">Giá: ${item.price.toFixed(2)}</p>
+                      <h3 className="font-semibold text-sm">{item.name}</h3>
+                      <p className="text-xs text-gray-500">Số lượng: {item.quantity}</p>
+                      <p className="text-xs font-semibold text-gray-500">{formatNumber(item.price)}</p>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="mt-4 border-t pt-4">
-                <p className="font-semibold">Tổng cộng: ${calculateTotal().toFixed(2)}</p>
+                <span className="">Tổng cộng: </span>
+                <span className="font-semibold">{formatNumber(totalAmount)}</span>
               </div>
             </div>
 
-            <button type="submit" className="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-md">
+            <button type="submit" 
+              onClick={handleSubmit}
+              className="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-md">
               Đặt hàng
             </button>
           </div>

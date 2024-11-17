@@ -18,6 +18,8 @@ const OverviewProduct = ({ data, onVariantChange }) => {
     setSelectedCpu(variant._id);
     setSelectedPrice(variant.price);
     setSelectedColor(variant.color);
+    setSelectedPrice(variant.price);
+    onVariantChange(variant);
   };
 
   return (

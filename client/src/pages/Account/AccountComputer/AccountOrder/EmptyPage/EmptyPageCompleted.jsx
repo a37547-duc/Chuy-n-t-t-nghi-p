@@ -1,3 +1,4 @@
+
 const EmptyPageCompleted =() => {
     return (
         <div className="mt-[8rem] text-center">

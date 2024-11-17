@@ -54,10 +54,10 @@ function FormRegister() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-xl w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-xl w-full space-y-8 bg-white p-8 rounded-lg shadow-xl transition-transform transform hover:scale-105">
         <div>
-          <h2 className="text-center text-3xl font-bold text-gray-900">Đăng ký</h2>
+          <h2 className="text-center text-4xl font-bold text-gray-900">Đăng ký</h2>
         </div>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
@@ -131,7 +131,7 @@ function FormRegister() {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200"
             >
               Đăng ký
             </button>

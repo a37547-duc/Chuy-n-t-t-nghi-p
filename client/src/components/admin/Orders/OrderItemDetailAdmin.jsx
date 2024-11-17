@@ -1,54 +1,19 @@
 import React from 'react';
 
-const OrderItemDetailAdmin = ({ orderId, onClose }) => {
-  const orderDetails = {
-    customer: {
-      lastName: 'Nguyen',
-      firstName: 'Anh',
-      address: '1 Main St',
-      email: 'example@email.com',
-      paymentMethod: 'Chuyển khoản',
-    },
-    items: [
-      { 
-        productName: "Chuột không dây Logitech Pop Mouse", 
-        quantity: 2, 
-        price: 300, 
-        image: "https://example.com/images/logitech-pop-mouse.jpg" 
-      },
-      { 
-        productName: "Apple MacBook Air M1 256GB 2020", 
-        quantity: 2, 
-        price: 2598, 
-        image: "https://example.com/images/macbook-air-m1.jpg" 
-      },
-    ],
+const OrderItemDetailAdmin = ({ data, onClose }) => {
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "VND";
   };
-
-  const totalPrice = orderDetails.items.reduce(
-    (total, item) => total + item.quantity * item.price,
-    0
-  );
-
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-bold mb-4">Chi tiết đơn đặt hàng</h2>
       <div className="mb-4">
         <div className="flex gap-4 mb-2">
-          <div className="w-1/2">
-            <label className="block font-semibold">Họ:</label>
+          <div className="w-full">
+            <label className="block font-semibold">Họ và tên người nhận:</label>
             <input
               type="text"
-              value={orderDetails.customer.lastName}
-              readOnly
-              className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
-            />
-          </div>
-          <div className="w-1/2">
-            <label className="block font-semibold">Tên:</label>
-            <input
-              type="text"
-              value={orderDetails.customer.firstName}
+              value={data.shippingInfo.fullName}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
             />
@@ -58,7 +23,7 @@ const OrderItemDetailAdmin = ({ orderId, onClose }) => {
         <label className="block font-semibold">Địa chỉ:</label>
         <input
           type="text"
-          value={orderDetails.customer.address}
+          value={data.shippingInfo.address}
           readOnly
           className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
         />
@@ -68,21 +33,29 @@ const OrderItemDetailAdmin = ({ orderId, onClose }) => {
             <label className="block font-semibold">Email:</label>
             <input
               type="email"
-              value={orderDetails.customer.email}
+              value={data.email}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
             />
           </div>
           <div className="w-1/2">
-            <label className="block font-semibold">Phương thức thanh toán:</label>
+            <label className="block font-semibold">Số điện thoại:</label>
             <input
               type="text"
-              value={orderDetails.customer.paymentMethod}
+              value={data.shippingInfo.phone}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
             />
           </div>
         </div>
+
+        <label className="block font-semibold">Phương thức thanh toán:</label>
+        <input
+          type="text"
+          value={data.paymentMethod}
+          readOnly
+          className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
+        />
       </div>
       
       <h3 className="text-lg font-semibold mb-2">Chi tiết đơn hàng:</h3>
@@ -98,16 +71,16 @@ const OrderItemDetailAdmin = ({ orderId, onClose }) => {
             </tr>
           </thead>
           <tbody>
-            {orderDetails.items.map((item, index) => (
+            {data.products.map((item, index) => (
               <tr key={index} className="border-b">
                 <td className="p-2">
                   <img 
-                    src={item.image} 
-                    alt={item.productName} 
-                    className="w-16 h-16 object-cover" 
+                    src={item?.image} 
+                    alt={item?.productName} 
+                    className="w-14 h-14 object-cover" 
                   />
                 </td>
-                <td className="p-2">{item.productName}</td>
+                <td className="p-2">{item?.productName}</td>
                 <td className="p-2">{item.quantity}</td>
                 <td className="p-2">${item.price}</td>
               </tr>
@@ -118,7 +91,7 @@ const OrderItemDetailAdmin = ({ orderId, onClose }) => {
 
       <div className="flex justify-between font-bold">
         <span>Tổng số tiền</span>
-        <span>${totalPrice}</span>
+        <span>{formatNumber(data.totalAmount)}</span>
       </div>
 
       <button 

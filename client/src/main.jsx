@@ -8,8 +8,7 @@ import { Provider } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { store } from "./stores/store.js";
-// import { persistor } from "./stores/store.js"
-import { PersistGate } from "redux-persist/integration/react";
+// import { PersistGate } from "redux-persist/integration/react";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -26,11 +25,11 @@ createRoot(document.getElementById("root")).render(
 // createRoot(document.getElementById("root")).render(
 //   <StrictMode>
 //     <Provider store={store}>
-//       <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+//       {/* <PersistGate loading={<div>Loading...</div>} persistor={persistor}> */}
 //         <RouterProvider router={router}>
 //           <App />
 //         </RouterProvider>
-//       </PersistGate>
+//       {/* </PersistGate> */}
 //     </Provider>
 //   </StrictMode>
 // );

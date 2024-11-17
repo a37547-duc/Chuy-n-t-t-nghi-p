@@ -6,7 +6,11 @@
   width: 100%;
   margin: 0 auto;
   }
-  
+  .search-list div > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   /* Khi màn hình nhỏ (dưới 768px), SearchBar sẽ tách ra khỏi header */
   @media (max-width: 768px) {
     .search-container {

@@ -7,7 +7,9 @@ import ReactPaginate from "react-paginate";
 import BasicModal from "../../../components/Modal/BasicModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductVariations } from "../../../features/product/productVariationSlice";
-import AddProductVariation from "../../../components/admin/ProductVariation/AddProductVariation";
+import AddLaptopVatiation from "../../../components/admin/ProductVariation/AddLaptopVariation"
+import AddLaptopVariation from "../../../components/admin/ProductVariation/AddLaptopVariation";
+import AddMouseVariation from "../../../components/admin/ProductVariation/AddMouseVariation";
 // import DeleteProductVariation from "../../../components/admin/ProductVariation/DeleteProductVariation";
 // import UpdateProductVariation from "../../../components/admin/ProductVariation/UpdateProductVariation";
 
@@ -259,12 +261,13 @@ const ProductVariation = () => {
       <BasicModal
         isOpen={isAddModalOpen}
         onRequestClose={handleCloseAddModal}
-        title="Thêm biến thể sản phẩm"
+        title={`Thêm biến thể sản phẩm`}
       >
-        <AddProductVariation 
-        productId={productId} 
-        onClose={handleCloseAddModal} 
-        />
+          <AddLaptopVariation
+            productId={productId} 
+            onClose={handleCloseAddModal} 
+          />
+        
       </BasicModal>
       
       {/* <BasicModal
