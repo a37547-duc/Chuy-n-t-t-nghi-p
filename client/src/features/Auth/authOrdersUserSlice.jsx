@@ -38,7 +38,7 @@ const userOrdersSlice = createSlice({
       .addCase(getOrdersUser.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload.data;  // Cập nhật danh sách đơn hàng
-        // console.log("State: ",state.orders)
+        console.log("State: ",state.orders)
       })
       // Khi yêu cầu thất bại
       .addCase(getOrdersUser.rejected, (state, action) => {

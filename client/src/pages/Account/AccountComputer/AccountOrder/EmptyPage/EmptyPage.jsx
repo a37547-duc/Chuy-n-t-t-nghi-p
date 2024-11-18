@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 
-const EmptyPageCompleted =() => {
+const EmptyPage =({ label }) => {
     return (
         <div className="mt-[8rem] text-center">
             <div className="max-w-full relative overflow-hidden flex-1 flex cursor-auto z-0 m-auto rounded-none w-[160px] h-[160px]" style={{ contentVisibility: 'auto' }}>
@@ -10,9 +11,11 @@ const EmptyPageCompleted =() => {
                 </img>
             </div>
             <div className="mt-6 text-base">
-                Bạn không có đơn hàng đã hoàn thành!!!
+            {label === "Tất cả"
+                ? "Bạn chưa mua hàng."
+                : `Bạn không có đơn hàng trong trạng thái "${label}"!!!`}
             </div>
         </div>
     );
 };
-export default EmptyPageCompleted;
+export default EmptyPage;

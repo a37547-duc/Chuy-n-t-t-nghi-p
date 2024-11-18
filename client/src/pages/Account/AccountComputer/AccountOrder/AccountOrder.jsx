@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrdersUser } from "../../../../features/Auth/authOrdersUserSlice";
+import EmptyPage from "./EmptyPage/EmptyPage";
 
 const AccountOrder = () => {
   const dispatch = useDispatch();
@@ -110,7 +111,7 @@ const AccountOrder = () => {
             </div>
           ))
         ) : (
-          <p>Không có đơn hàng nào trong trạng thái này</p>
+          <EmptyPage label={navItems[activeIndex]?.label} />
         )}
       </div>
     </div>

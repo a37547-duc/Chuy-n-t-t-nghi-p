@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 const AccountInformation = () => {
   const dispatch = useDispatch();
   const { useProfile, loading, error } = useSelector((state) => state.profile);
+  console.log("User: ", useProfile)
 
   // State để lưu thông tin user
   const [user, setUser] = useState({
@@ -90,6 +91,9 @@ const AccountInformation = () => {
       <div className="flex mb-3 p-0 border-none font-bold text-[20px] leading-[28px] opacity-100 text-inherit transition-colors duration-300">
         Thông tin tài khoản
       </div>
+
+      {loading && <div>Đang tải...</div>}
+      {error && <div className="text-red-500">Lỗi: {error}</div>}
 
       <form onSubmit={handleSubmit} className="border p-4 rounded-lg space-y-4">
         <div>
