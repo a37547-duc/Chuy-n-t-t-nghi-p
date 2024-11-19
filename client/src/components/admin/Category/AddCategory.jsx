@@ -4,7 +4,6 @@ import { useState } from "react";
 const AddCategory = ({ onSave, onClose }) => {
   const [newCategory, setNewCategory] = useState({
     name: "",
-    // Thêm trường description nếu cần
     description: "", // Nếu bạn muốn giữ lại trường mô tả
   });
 

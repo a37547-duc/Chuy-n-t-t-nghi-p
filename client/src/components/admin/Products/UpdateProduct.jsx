@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct } from "../../../features/Admin/adminProductsSlice";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
-import { getAllCategories } from "../../../features/Category/categoriesSlice";
+import { getAllCategories } from "../../../features/category/categoriesSlice";
 import { getAllUseCase } from "../../../features/usecase/usecaseSlice";
 import { getAllProducts } from "../../../features/product/productsSlice";
 import ImageUpload from "../../images/ImageUpload";

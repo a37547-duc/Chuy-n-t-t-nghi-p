@@ -5,7 +5,7 @@ import { MdOutlineRestoreFromTrash } from "react-icons/md";
 import { Link, useLocation, useNavigate  } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isOpen, toggleSidebar, isDarkMode  }) => {
   const [isBrandsOpen, setIsBrandsOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const location = useLocation();
@@ -31,27 +31,29 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   
   return (
     <div
-      className={`bg-white text-gray-800 h-screen fixed z-5 shadow-md transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}
+      className={`${isDarkMode ? 'bg-blue-950' : 'bg-white'} text-gray-800 h-screen fixed z-5 shadow-md transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}
     >
-      <div className="flex flex-col h-full overflow-y-auto">
+      <div className="flex flex-col h-full overflow-y-auto px-2">
         {/* Sidebar Content */}
         <nav className="mt-4 flex flex-col">
           <ul className="space-y-2">
             <Link to="/admin/dashboard" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 flex items-center space-x-2 hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2 
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/dashboard') ? 'bg-gray-300' : ''}`}
+                ${isActive('/admin/dashboard') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}`}
               >
                 <FiHome className="w-5 h-5" />
-                <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Dashboard</span>
+                <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300 }`}>Dashboard</span>
               </li>
             </Link>
             <Link to="/admin/products" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2 
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/products') ? 'bg-gray-300' : ''}`}
+                ${isActive('/admin/products') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}`}
               >
                 <FiBox className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Products</span>
@@ -59,9 +61,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </Link>
             <Link to="/inbox" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2 
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/inbox') ? 'bg-gray-300' : ''}`}
+                ${isActive('/admin/inbox') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}`}
               >
                 <FiInbox className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Inbox</span>
@@ -69,9 +72,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </Link>
             <Link to="/admin/orders" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/orders') ? 'bg-gray-300' : ''}
+                ${isActive('/admin/orders') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}
                 `}
               >
                 <FiPackage className="w-5 h-5" />
@@ -80,20 +84,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </Link>
             <Link to="/admin/users" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/users') ? 'bg-gray-300' : ''}`}
+                ${isActive('/admin/users') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}`}
               >
                 <FiUsers className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Users</span>
               </li>
             </Link>
-            {/* Brands Menu with Submenu */}
             <Link to="/admin/brand" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/brand') ? 'bg-gray-300' : ''}`}
+                ${isActive('/admin/brand') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}`}
                 onClick={toggleBrands}
               >
                   <FiTag className="w-5 h-5" />
@@ -102,12 +107,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                   </div>
               </li>
             </Link>
-            {/* Categories Menu with Submenu */}
             <Link to="/admin/category" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/category') ? 'bg-gray-300' : ''}`}
+                ${isActive('/admin/category') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}`}
                 onClick={toggleBrands}
               >
                 <FiGrid className="w-5 h-5" />
@@ -116,25 +121,30 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             </Link>
             <Link to="/admin/restore" className="block" onDragStart={(e) => e.preventDefault()}>
               <li 
-                className={`px-4 py-2 hover:bg-gray-200 flex items-center space-x-2 active:bg-gray-400 focus:bg-gray-400
+                className={`rounded-md px-4 py-2 flex items-center space-x-2
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
                 ${!isOpen ? 'justify-center' : ''} 
-                ${isActive('/admin/restore') ? 'bg-gray-300' : ''}
-                `}
+                ${isActive('/admin/restore') ? (isDarkMode ? 'bg-blue-800' : 'bg-gray-300') : ''}`}
               >
                 <MdOutlineRestoreFromTrash className="w-5 h-5" />
-                {isOpen && <span>Restore</span>}
+                {isOpen && <span className="transition-opacity duration-300">Restore</span>}
               </li>
             </Link>
-            <div className="flex items-center justify-between px-4 py-2 border-b">
-            </div>
+            <div className="flex items-center justify-between px-4 py-2 border-b"></div>
             <Link to="/authentication" className="block">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+              <li 
+                className={`rounded-md px-4 py-2 flex items-center space-x-2 
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'} 
+                ${!isOpen ? 'justify-center' : ''}`}>
                 <FiLock className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Authentication</span>
               </li>
             </Link>
             <Link to="/help" className="block">
-              <li className={`px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 ${!isOpen ? 'justify-center' : ''}`}>
+              <li 
+                className={`rounded-md px-4 py-2 hover:bg-gray-100 flex items-center space-x-2 
+                ${isDarkMode ? 'text-gray-200 hover:bg-blue-700 active:bg-blue-900 focus:bg-blue-900' : 'hover:bg-gray-200 active:bg-gray-400 focus:bg-gray-400'}
+                ${!isOpen ? 'justify-center' : ''}`}>
                 <FiHelpCircle className="w-5 h-5" />
                 <span className={`${isOpen ? '' : 'hidden'} transition-opacity duration-300`}>Help</span>
               </li>

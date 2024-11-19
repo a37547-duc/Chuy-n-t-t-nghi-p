@@ -1,10 +1,18 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faBell, faBars } from '@fortawesome/free-solid-svg-icons'; // Import icon faBars
+import { GiEvilMoon } from "react-icons/gi";
+import { BsEmojiSunglasses } from "react-icons/bs";
 
 // eslint-disable-next-line react/prop-types
-function Header({ toggleSidebar }) {
+function Header({ toggleSidebar, toggleDarkMode }) {
+  const [isChecked, setIsChecked] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsChecked(!isChecked);
+    toggleDarkMode();
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
@@ -28,6 +36,22 @@ function Header({ toggleSidebar }) {
 
         {/* Icons */}
         <div className="relative flex items-center space-x-4">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={isChecked}
+              onChange={handleToggle}
+            />
+            <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-800 transition-all duration-300"></div>
+            <div className="absolute left-1 top-1 w-4 h-4 rounded-full peer-checked:translate-x-5 transition-transform duration-300 flex items-center justify-center">
+              {isChecked ? (
+                <GiEvilMoon className="text-white" />
+              ) : (
+                <BsEmojiSunglasses className="" />
+              )}
+            </div>
+          </label>
           <button className="text-gray-500">
             <FontAwesomeIcon icon={faComment} size="sm" />
           </button>

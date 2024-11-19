@@ -20,7 +20,6 @@ export const addProduct = createAsyncThunk(
   }
 );
 
-
 // Thunk để gọi API cập nhật sản phẩm
 export const updateProduct = createAsyncThunk(
   "product/updateProduct",
