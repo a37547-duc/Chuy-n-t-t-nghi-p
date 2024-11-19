@@ -25,15 +25,25 @@ const UpdateProduct = ({ onClose, data }) => {
     },
   });
 
-  const handleImageUpload = (url) => {
-    setValue("images", [url]);
-  };
+  const [images, setImages] = useState(data?.images || []);
 
   useEffect(() => {
     dispatch(getAllCategories());
     dispatch(getAllBrands());
     dispatch(getAllUseCase());
   }, [dispatch]);
+
+  const handleImageUpload = (url) => {
+    const updatedImages = [...images, url];
+    setImages(updatedImages);
+    setValue("images", updatedImages);
+  };
+
+  const handleImageRemove = (url) => {
+    const updatedImages = images.filter((image) => image !== url);
+    setImages(updatedImages);
+    setValue("images", updatedImages);
+  };
 
   const onSubmit = async (formData) => {
     try {
@@ -135,8 +145,12 @@ const UpdateProduct = ({ onClose, data }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium"></label>
-        <ImageUpload onUpload={handleImageUpload} existingImages={data.images} />
+        <label className="block text-sm font-medium">Hình ảnh</label>
+        <ImageUpload
+          onUpload={handleImageUpload}
+          onRemove={handleImageRemove}
+          existingImages={images}
+        />
       </div>
 
       <div className="flex justify-end space-x-2">

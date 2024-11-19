@@ -43,6 +43,7 @@ const authSlice = createSlice({
     loginLoading: false,
     registerLoading: false,
     error: null,
+    registerError: null,
     isAuthenticated: !!localStorage.getItem('access_token'),
   },
   reducers: {
@@ -62,6 +63,8 @@ const authSlice = createSlice({
       state.user = null;
       state.loginLoading = false;
       state.isAuthenticated = false;
+      state.error = null;
+      state.registerError = null;
       localStorage.removeItem('access_token');
       localStorage.removeItem('user'); 
       window.location.href = "/";
@@ -80,8 +83,8 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.registerLoading = false;
-        state.error = action.payload;
-        toast.error(state.error || "Đăng ký thất bại. Vui lòng thử lại.");
+        state.registerError = action.payload;
+        toast.error(state.registerError || "Đăng ký thất bại. Vui lòng thử lại.");
       })
 
       // Login User

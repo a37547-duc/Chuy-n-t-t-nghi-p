@@ -63,7 +63,8 @@ function FormLogin() {
     setShowPassword(!showPassword);
   };
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     window.open("https://laptech4k.onrender.com/auth/google", "_self");
   };
 
@@ -134,7 +135,7 @@ function FormLogin() {
             )}
           </div>
 
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+          {/* {error && <p className="text-red-500 text-sm mt-2">{error}</p>} */}
 
           <div>
             <button
@@ -148,6 +149,7 @@ function FormLogin() {
             </button>
             <div className="relative mt-2">
               <button
+                type="button"
                 onClick={handleClick}
                 className="flex items-center justify-center w-full py-3 px-4 bg-white border border-gray-300 rounded-lg shadow-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition transform hover:scale-105"
               >

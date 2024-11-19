@@ -3,52 +3,61 @@ import { useDropzone } from "react-dropzone";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-const ImageUpload = ({ onUpload, existingImages = [] }) => {
-  const [images, setImages] = useState([]);
+const ImageUpload = ({ onUpload, onRemove, existingImages = [] }) => {
   const [urls, setUrls] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
   useEffect(() => {
-    console.log(existingImages);
     setUrls(existingImages);
   }, [existingImages]);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setIsLoading(true);
-    const uploadedImages = [];
-    const uploadPromises = acceptedFiles.map((file) => {
-      const storageRef = ref(storage, `images/${file.name}`);
-      return uploadBytes(storageRef, file).then((snapshot) => {
-        return getDownloadURL(snapshot.ref).then((downloadURL) => {
-          uploadedImages.push({ file, downloadURL });
-          onUpload(downloadURL);
-          return downloadURL;
-        });
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      setUploading(true);
+      const uploadPromises = acceptedFiles.map((file) => {
+        const storageRef = ref(storage, `images/${file.name}`);
+        return uploadBytes(storageRef, file).then((snapshot) =>
+          getDownloadURL(snapshot.ref)
+        );
       });
-    });
 
-    Promise.all(uploadPromises).then((downloadedUrls) => {
-      setImages((prevImages) => [...prevImages, ...acceptedFiles]);
-      setUrls((prevUrls) => [...prevUrls, ...downloadedUrls]);
-      setIsLoading(false);
-    }).catch(() => {
-      setIsLoading(false);
-    });
-  }, [onUpload]);
+      Promise.all(uploadPromises)
+        .then((downloadedUrls) => {
+          const newUrls = [...urls, ...downloadedUrls];
+          setUrls(newUrls);
+          downloadedUrls.forEach((url) => onUpload(url));
+        })
+        .catch((error) => {
+          console.error("Upload failed:", error);
+        })
+        .finally(() => {
+          setUploading(false);
+        });
+    },
+    [onUpload, urls]
+  );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, multiple: true });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: true,
+  });
 
   const handleRemoveImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    setUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
+    const removedUrl = urls[index];
+    const updatedUrls = urls.filter((_, i) => i !== index);
+    setUrls(updatedUrls);
+    onRemove(removedUrl);
   };
 
   return (
     <div>
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed p-6 focus:border-2 focus:border-blue-500 focus:outline-none ${isDragActive ? "bg-gray-200" : "bg-white"} text-center`}
+        className={`border-2 border-dashed p-6 ${
+          isDragActive ? "bg-gray-200" : "bg-white"
+        } text-center`}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
@@ -58,7 +67,12 @@ const ImageUpload = ({ onUpload, existingImages = [] }) => {
         )}
       </div>
 
-      {isLoading && <p className="mt-4 text-blue-500">Đang tải hình ảnh...</p>}
+      {uploading && (
+        <div className="mt-4 text-center text-blue-500">
+          <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />
+          Đang tải ảnh lên, vui lòng chờ...
+        </div>
+      )}
 
       {urls.length > 0 && (
         <div>

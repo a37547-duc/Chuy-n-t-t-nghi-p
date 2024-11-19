@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
@@ -7,6 +6,7 @@ import { addProduct } from "../../../features/Admin/adminProductsSlice";
 import { getAllUseCase } from "../../../features/usecase/usecaseSlice";
 import { getAllProducts } from "../../../features/product/productsSlice";
 import ImageUpload from "../../../components/images/ImageUpload";
+
 const AddProduct = ({ onClose }) => {
   const dispatch = useDispatch();
   const [newProduct, setNewProduct] = useState({
@@ -44,6 +44,13 @@ const AddProduct = ({ onClose }) => {
     }));
   };
 
+  const handleRemoveImage = (url) => {
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      images: prevProduct.images.filter((image) => image !== url),
+    }));
+  };
+
   const validateForm = () => {
     const newErrors = {};
     if (!newProduct.name) newErrors.name = "Tên sản phẩm không được để trống.";
@@ -57,7 +64,6 @@ const AddProduct = ({ onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(newProduct);
     if (validateForm()) {
       dispatch(addProduct(newProduct))
         .unwrap()
@@ -161,36 +167,33 @@ const AddProduct = ({ onClose }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Mô tả</label>
+        <label className="block text-sm font-medium">Mô tả sản phẩm</label>
         <textarea
           name="description"
           value={newProduct.description}
           onChange={handleChange}
           className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
           rows="4"
+          required
         ></textarea>
       </div>
-
+      
       <div>
         <label className="block text-sm font-medium">Hình ảnh</label>
-        <ImageUpload onUpload={handleImageUpload} existingImages={newProduct.images} />
+        <ImageUpload
+          onUpload={handleImageUpload}
+          onRemove={handleRemoveImage}
+          existingImages={newProduct.images}
+        />
         {errors.images && <p className="text-red-500 text-sm">{errors.images}</p>}
       </div>
 
-      <div className="flex justify-end space-x-2">
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Thêm sản phẩm
-        </button>
-        <button
-          onClick={onClose}
-          className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
-        >
-          Đóng
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        Thêm sản phẩm
+      </button>
     </form>
   );
 };

@@ -15,12 +15,11 @@ export const getCategoryById = createAsyncThunk(
 );
 
 
-// Thunk để gọi API lấy tất cả danh mục
 export const createCategories = createAsyncThunk(
   "category/getAllCategories",
   async (_,  { rejectWithValue }) => {
     try {
-      const response = await api.post("/admin/products/categor");
+      const response = await api.post("/admin/products/category");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

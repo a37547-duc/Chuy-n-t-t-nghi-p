@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function FormRegister() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { registerLoading , error} = useSelector((state) => state.auth);
+  const { registerLoading} = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -79,7 +79,6 @@ function FormRegister() {
           <h2 className="text-center text-4xl font-bold text-gray-900">Đăng ký</h2>
         </div>
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
           <div>
             <label htmlFor="username" className="block text-sm font-semibold text-gray-700">
               Tên người dùng

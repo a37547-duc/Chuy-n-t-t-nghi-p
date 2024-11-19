@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-// import ProtectedRouter from "./components/protected/ProtectedRouter";
+import ProtectedRouter from "./components/protected/ProtectedRouter";
 
 import Home from "./pages/Home/Home";
 import App from "./App";
@@ -79,7 +79,11 @@ const router = createBrowserRouter([
       },
       {
         path: "account",
-        element: <Account />,
+        element: (
+          <ProtectedRouter>
+            <Account/>
+          </ProtectedRouter>
+        ),
         children: [
           {
             path: "information",
