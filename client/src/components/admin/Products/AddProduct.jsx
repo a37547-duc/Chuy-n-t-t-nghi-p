@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
-import { getAllCategories } from "../../../features/Category/categoriesSlice";
+import { getAllCategories } from "../../../features/category/categoriesSlice";
 import { addProduct } from "../../../features/Admin/adminProductsSlice";
 import { getAllUseCase } from "../../../features/usecase/usecaseSlice";
 import { getAllProducts } from "../../../features/product/productsSlice";

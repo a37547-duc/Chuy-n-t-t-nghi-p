@@ -7,8 +7,13 @@ import BasicModal from "../../../components/Modal/BasicModal";
 import AddCategory from "../../../components/admin/Category/AddCategory";
 import UpdateCategory from "../../../components/admin/Category/UpdateCategory";
 import DeleteCategory from "../../../components/admin/Category/DeleteCategory";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategories } from "../../../features/category/categoriesSlice";
 
 const CategoryManagement = () => {
+  const dispatch = useDispatch();
+  const { categories, loading, error } = useSelector((state) => state.category);
+  console.log("Category: ", categories)
   const [page, setPage] = useState(0);
   const [categoryPerPage] = useState(7);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -16,22 +21,12 @@ const CategoryManagement = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [categories, setCategories] = useState([]); // State để lưu danh mục
+  // const [category, setCategories] = useState([]); // State để lưu danh mục
 
   // Gọi API để lấy danh mục
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/category");
-        const data = await response.json();
-        setCategories(data); // Cập nhật danh mục với dữ liệu từ API
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
+    dispatch(getAllCategories());
+  }, [dispatch]);
 
   const totalCategories = categories.length;
   const totalPages = Math.ceil(totalCategories / categoryPerPage);
@@ -96,6 +91,9 @@ const CategoryManagement = () => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold">All categories</h1>
+
+      {loading && <p>Loading categories...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
 
       {/* Search Bar & Add Button */}
       <div className="flex justify-between items-center mt-4">
