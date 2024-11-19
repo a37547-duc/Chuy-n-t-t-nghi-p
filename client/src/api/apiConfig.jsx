@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 export const API_BASE_URL = 'https://laptech4k.onrender.com/api/v1';
 
 
@@ -42,3 +43,15 @@ api.interceptors.request.use((config) => {
 //     return Promise.reject(error);
 //   }
 // );
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("access_token");
+      toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại")
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);

@@ -9,8 +9,10 @@ function Checkout() {
   const navigate = useNavigate()
   const location = useLocation();
   const dispatch = useDispatch();
-  const { items, totalAmount } = location.state || { items: [], totalAmount: 0 };
-  const cartItems = useSelector((state) => state.cart.items)
+  const cartData = JSON.parse(localStorage.getItem('cart'));
+  const items = cartData.items;
+  const totalAmount = cartData.totalAmount;
+  // const cartItems = useSelector((state) => state.cart.items)
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
@@ -20,9 +22,12 @@ function Checkout() {
   const [choosedProvince, setChoosedProvince] = useState('');
   const [choosedDistrict, setChoosedDistrict] = useState('');
   const [choosedWard, setChoosededWard] = useState('');
-  if (items.length === 0) {
-    navigate("/cart")
-  }
+  useEffect(() => {
+    if (items.length === 0) {
+      navigate("/cart");
+    }
+  }, [items, navigate]);
+  
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
@@ -34,10 +39,6 @@ function Checkout() {
     delivery: "",
     payment: "",
   });
-
-  
-
-  console.log(formData)
 
   const [errors, setErrors] = useState({});
 

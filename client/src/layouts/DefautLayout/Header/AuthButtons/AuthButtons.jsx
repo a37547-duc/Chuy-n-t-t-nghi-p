@@ -31,13 +31,13 @@ export default function AuthButtons() {
             aria-hidden={!user}
             role="menu"
           >
-            <Link to="/profile" aria-label="Go to profile">
+            <Link to="/account/information" aria-label="Go to profile">
               <div className="px-4 py-2 text-xs text-gray-700 hover:bg-gray-200" role="menuitem">
               <FontAwesomeIcon icon={faAddressCard} className="mr-2" />
                 Thông tin tài khoản
               </div>
             </Link>
-            <Link to="/orders" aria-label="Go to orders">
+            <Link to="/account/order/emptyDelivery" aria-label="Go to orders">
               <div className="px-4 py-2 text-xs text-gray-700 hover:bg-gray-200 flex items-center" role="menuitem">
               <FontAwesomeIcon icon={faRectangleList} className="mr-2" />
                 Quản lý đơn hàng

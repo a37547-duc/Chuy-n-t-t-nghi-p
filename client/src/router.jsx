@@ -66,7 +66,11 @@ const router = createBrowserRouter([
       },
       {
         path: "checkouts",
-        element: <Checkouts></Checkouts>,
+        element: (
+          <ProtectedRouter>
+            <Checkouts />
+          </ProtectedRouter>
+        ),
       },
       {
         path: "/login",

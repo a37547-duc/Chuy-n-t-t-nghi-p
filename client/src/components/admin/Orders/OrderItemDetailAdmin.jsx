@@ -76,11 +76,11 @@ const OrderItemDetailAdmin = ({ data, onClose }) => {
                 <td className="p-2">
                   <img 
                     src={item?.image} 
-                    alt={item?.productName} 
+                    alt={item?.name} 
                     className="w-14 h-14 object-cover" 
                   />
                 </td>
-                <td className="p-2">{item?.productName}</td>
+                <td className="p-2">{item?.name}</td>
                 <td className="p-2">{item.quantity}</td>
                 <td className="p-2">${item.price}</td>
               </tr>

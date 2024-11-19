@@ -11,7 +11,7 @@ export const registerUser = createAsyncThunk(
       const response = await api.post('/user/register', userData);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -29,10 +29,11 @@ export const loginUser = createAsyncThunk(
       }
       return token;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Lỗi kết nối");
+      return rejectWithValue(error.response?.data?.message || "Email hoặc mật khẩu không chính xác. Vui lòng thử lại.");
     }
   }
 );
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -45,6 +46,17 @@ const authSlice = createSlice({
     isAuthenticated: !!localStorage.getItem('access_token'),
   },
   reducers: {
+    setUserInfo: (state, action) => {
+      state.token = action.payload.token;
+      state.user = {
+        username: action.payload.name,
+        email: action.payload.email,
+      };
+      state.isAuthenticated = true;
+    
+      localStorage.setItem("access_token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
     logoutUser: (state) => {
       state.token = null;
       state.user = null;
@@ -83,15 +95,15 @@ const authSlice = createSlice({
         state.user = action.payload.user.data;
         state.isAuthenticated = true;
         toast.success("Đăng nhập thành công");
-        window.location.href = "/"
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginLoading = false;
         state.error = action.payload;
+        console.log(state.error);
         toast.error(state.error || "Đăng nhập thất bại. Vui lòng thử lại.");
       });
   },
 });
 
-export const { logoutUser } = authSlice.actions;
+export const { logoutUser, setUserInfo } = authSlice.actions;
 export default authSlice.reducer;
