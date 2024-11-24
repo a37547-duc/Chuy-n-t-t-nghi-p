@@ -56,11 +56,21 @@ export const loginUser = createAsyncThunk(
 //   }
 // );
 
+const generateRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
     token: localStorage.getItem('access_token') || null,
     user: JSON.parse(localStorage.getItem('user')) || null,
+    profileBgColor: localStorage.getItem("profile_bg_color") || null,
     loginLoading: false,
     error: null,
     isAuthenticated: !!localStorage.getItem('access_token'),
@@ -73,6 +83,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       localStorage.removeItem('access_token');
       localStorage.removeItem('user'); 
+      localStorage.removeItem("profile_bg_color");
       toast.success("Bạn đã đăng xuất");
       setTimeout(() => {
         window.location.href = "/";
@@ -105,6 +116,12 @@ const authSlice = createSlice({
         state.token = action.payload.user.data.token;
         state.user = action.payload.user.data;
         state.isAuthenticated = true;
+
+        // Tạo màu ngẫu nhiên khi đăng nhập
+        const randomColor = generateRandomColor();
+        state.profileBgColor = randomColor;
+        localStorage.setItem("profile_bg_color", randomColor);
+        
         toast.success("Đăng nhập thành công");
         window.location.href = "/"
       })

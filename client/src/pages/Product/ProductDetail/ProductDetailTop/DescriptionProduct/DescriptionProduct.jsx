@@ -11,15 +11,15 @@ const DescriptionProduct = ({data}) => {
   return (
     <div>
       <div className='p-4 text-[14px] text-[#333]'>
-        - CPU: {data.cpu.name}
+        - CPU: {data.cpu?.name}
         <br />
-        - RAM: {data.ram.capacity}
+        - RAM: {data.ram?.capacity}
         <br />
-        - GPU: {data.gpu.name}
+        - GPU: {data.gpu?.name}
         <br />
         - Màu: {data.color}
         <br />
-        - Core: {data.cpu.cores}
+        - Core: {data.cpu?.cores}
         <br />
         - Giá: {data.price}
       </div>

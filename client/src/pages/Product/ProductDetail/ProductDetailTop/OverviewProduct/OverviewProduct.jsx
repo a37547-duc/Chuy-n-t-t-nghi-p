@@ -55,11 +55,11 @@ const OverviewProduct = ({ data, onVariantChange }) => {
                 ${variant.stock_quantity <= 1 ? 'cursor-not-allowed opacity-50' : ''}  // Vô hiệu hóa bấm và giảm độ sáng khi stock_quantity <= 1
               `}
             >
-              {variant.ram.capacity}
+              {variant.ram?.capacity}
               <br />
-              {variant.cpu.name}
+              {variant.cpu?.name}
               <br />
-              {variant.gpu.name}
+              {variant.gpu?.name}
             </a>
           ))}
         </div>

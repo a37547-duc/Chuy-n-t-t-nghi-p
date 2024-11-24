@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 const AccountInformation = () => {
   const dispatch = useDispatch();
   const { useProfile, loading, error } = useSelector((state) => state.profile);
-  console.log("User: ", useProfile)
+  // console.log("User: ", useProfile)
 
   // State để lưu thông tin user
   const [user, setUser] = useState({

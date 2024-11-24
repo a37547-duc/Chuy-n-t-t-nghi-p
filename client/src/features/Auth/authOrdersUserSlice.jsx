@@ -8,11 +8,15 @@ export const getOrdersUser = createAsyncThunk(
   "userOrders/getOrdersUser",
   async (status, { rejectWithValue }) => {
     try {
-      // Cấu hình URL với query parameter `status`
-      const response = await api.get(`/user/order?status=${(status)}`);
+      const response = await api.get(`/user/order?status=${status}`);
+      console.log("Response: ",response)
+      // Nếu API trả về phản hồi thành công nhưng không có dữ liệu
+      if (response.status === 404 && (!response.data || response.data.length === 0)) {
+        console.log("RE", response)
+        return { data: [] }; // Trả về mảng rỗng nếu không có đơn hàng
+      }
       return response.data;
     } catch (error) {
-      // Hiển thị thông báo lỗi
       toast.error("Không thể lấy thông tin đơn hàng");
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
@@ -38,7 +42,7 @@ const userOrdersSlice = createSlice({
       .addCase(getOrdersUser.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload.data;  // Cập nhật danh sách đơn hàng
-        console.log("State: ",state.orders)
+        // console.log("State: ",state.orders)
       })
       // Khi yêu cầu thất bại
       .addCase(getOrdersUser.rejected, (state, action) => {

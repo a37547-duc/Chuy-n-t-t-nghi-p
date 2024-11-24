@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLaptop, faDesktop, faGamepad, faCogs, faComputer } from '@fortawesome/free-solid-svg-icons';
+import { faLaptop, faDesktop, faGamepad, faComputer } from '@fortawesome/free-solid-svg-icons';
 import { faGreaterThan } from '@fortawesome/free-solid-svg-icons';
 import "./Taskbar.css";
 
@@ -79,13 +79,6 @@ const Taskbar = () => {
       usecase: "Student",
       icon: faGamepad,
       subItems: [],
-    },
-    {
-      name: "Phụ kiện",
-      icon: faCogs,
-      subItems: [
-        { name: "Chuột", subSubItems: ["ASUS", "Logitech", "Razer", "HyperX", "Dell", "Microsoft", "Xiaomi", "MSI"] },
-      ],
     },
   ];
 

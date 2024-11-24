@@ -65,7 +65,6 @@ const AccountOrder = () => {
             <div key={order.id} className="border-t pt-4">
               <div className="bg-white p-4 flex justify-between rounded-md">
                 <div className="flex items-start space-x-4">
-                  {/* Hiển thị sản phẩm đầu tiên trong đơn hàng */}
                   <img
                     src={order.products[0]?.image}
                     alt={order.products[0]?.name}

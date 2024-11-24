@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faUpLong, faDownLong } from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import BasicModal from "../../../components/Modal/BasicModal";
 import AddCategory from "../../../components/admin/Category/AddCategory";
@@ -12,16 +12,32 @@ import { getAllCategories } from "../../../features/category/categoriesSlice";
 
 const CategoryManagement = () => {
   const dispatch = useDispatch();
+  //Truy xuất dữ liệu
   const { categories, loading, error } = useSelector((state) => state.category);
-  console.log("Category: ", categories)
+  useEffect(() => {
+    console.log("Category: ", categories)
+  },[categories])
+
+  //Phân trang
   const [page, setPage] = useState(0);
   const [categoryPerPage] = useState(7);
+
+  //Modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [categoryToUpdate, setCategoryToUpdate] = useState(null);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+
+  //CheckBox
   const [selectAll, setSelectAll] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  // const [category, setCategories] = useState([]); // State để lưu danh mục
+
+  //Sắp xếp
+  const [sortCategory, setSortCategory] = useState(null);
+
+  // Search term state
+  const [searchTerm, setSearchTerm] = useState(""); // State to hold search input
 
   // Gọi API để lấy danh mục
   useEffect(() => {
@@ -30,62 +46,96 @@ const CategoryManagement = () => {
 
   const totalCategories = categories.length;
   const totalPages = Math.ceil(totalCategories / categoryPerPage);
-
-  const handlePageClick = (data) => {
-    setPage(data.selected);
-  };
+  const handlePageClick = useCallback((data) => {setPage(data.selected);}, []);
 
   const indexOfLastCategory = (page + 1) * categoryPerPage;
   const indexOfFirstCategory = indexOfLastCategory - categoryPerPage;
-  const currentCategories = categories.slice(indexOfFirstCategory, indexOfLastCategory);
+
+  // Filter categories based on search term
+  const filteredCategories = useMemo(() => {
+    if (searchTerm) {
+      return categories.filter(category =>
+        category.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    return categories;
+  }, [categories, searchTerm]);
+
+  //Sort categories
+  const sortedCategories = useMemo(() => {
+    const copiedCategories = [...filteredCategories];
+    if (sortCategory === "asc") {
+      return copiedCategories.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortCategory === "desc") {
+      return copiedCategories.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    return copiedCategories;
+  }, [filteredCategories, sortCategory]);
+
+  const currentCategories = sortedCategories.slice(indexOfFirstCategory, indexOfLastCategory);
+
+  const handleSortClick = () => {
+    setSortCategory((prevOrder) => {
+      if (prevOrder === "asc") return "desc";
+      if (prevOrder === "desc") return null;
+      return "asc";
+    });
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   // Cập nhật trạng thái checkbox selectAll khi chuyển trang
   useEffect(() => {
     const allSelected = currentCategories.every((category) => selectedCategories.includes(category._id));
     setSelectAll(allSelected);
-  }, [page, selectedCategories, currentCategories]);
-
+  }, [currentCategories, selectedCategories]);
+  // useEffect(() => {
+  //   const allSelected = currentCategories.every((category) => selectedCategories.includes(category._id));
+  //   setSelectAll(allSelected);
+  // }, [page, selectedCategories, currentCategories]);
+  
   // Sử lý chọn hết checkbox
-  const handleSelectAll = (e) => {
+  const handleSelectAll = useCallback((e) => {
     setSelectAll(e.target.checked);
     if (e.target.checked) {
       const allIds = currentCategories.map((category) => category._id);
-      setSelectedCategories([...new Set([...selectedCategories, ...allIds])]);
+      setSelectedCategories((prevSelected) => [...new Set([...prevSelected, ...allIds])]);
     } else {
       const remainingIds = selectedCategories.filter(id => !currentCategories.some(category => category._id === id));
       setSelectedCategories(remainingIds);
     }
-  };
+  }, [currentCategories, selectedCategories]);
 
   // Sử lý riêng lẻ checkbox
-  const handleCheckboxChange = (e, categoryId) => {
-    if (e.target.checked) {
-      setSelectedCategories([...selectedCategories, categoryId]);
-    } else {
-      setSelectedCategories(selectedCategories.filter((id) => id !== categoryId));
-    }
-  };
+  const handleCheckboxChange = useCallback((e, categoryId) => {
+    setSelectedCategories((prevSelected) =>
+      e.target.checked ? [...prevSelected, categoryId] : prevSelected.filter((id) => id !== categoryId)
+    );
+  }, []);
 
   const handleOpenAddModal = () => setIsAddModalOpen(true);
   const handleCloseAddModal = () => setIsAddModalOpen(false);
 
-  const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
-  const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
-
-  const hanleOpenUpdateModal = () => setIsUpdateModalOpen(true);
-  const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
-
-  const handleSaveCategory = (category) => {
-    console.log("New category added:", category);
-    handleCloseAddModal();
+  const handleOpenDeleteModal = (category) => {
+    setCategoryToDelete(category);
+    setIsDeleteModalOpen(true);
   };
-  const handleDeleteCategory = () => {
-    console.log("Category deleted:", selectedCategories);
-    handleCloseDeleteModal();
+  
+  const handleCloseDeleteModal = () => {
+    setCategoryToDelete(null);
+    setIsDeleteModalOpen(false);
+  };;
+
+  const handleOpenUpdateModal = (category) => {
+    setCategoryToUpdate(category);
+    setIsUpdateModalOpen(true);
   };
-  const handleUpdateCategory = (updatedCategory) => {
-    console.log("Category updated:", updatedCategory);
-    handleCloseUpdateModal();
+
+  const handleCloseUpdateModal = () => {
+    setCategoryToUpdate(null);
+    setIsUpdateModalOpen(false);
   };
 
   return (
@@ -101,6 +151,8 @@ const CategoryManagement = () => {
           <input
             type="text"
             placeholder="Search for categories"
+            value={searchTerm}
+            onChange={handleSearchChange}
             className="flex-grow px-4 py-2 border border-gray-200 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
           />
           <button className="ml-2 p-2 bg-gray-200 rounded-md">
@@ -127,41 +179,49 @@ const CategoryManagement = () => {
               />
             </th>
             <th className="p-4">id</th>
-            <th className="p-4">category name</th>
-            {/* <th className="p-4">description</th> */}
+            <th className="p-4 cursor-pointer" onClick={handleSortClick}>Category Name
+                <FontAwesomeIcon
+                  icon={faUpLong}
+                  className={`ml-2 text-xs ${sortCategory === "asc" ? "text-black" : "text-gray-300"}`}
+                />
+                <FontAwesomeIcon
+                  icon={faDownLong}
+                  className={`ml-1 text-xs ${sortCategory === "desc" ? "text-black" : "text-gray-300"}`}
+                />
+              </th>
             <th className="p-4">actions</th>
           </tr>
         </thead>
         <tbody>
-          {currentCategories.map((caterory, index) => (
+        {currentCategories.length > 0 ? (
+          currentCategories.map((category, index) => (
             <tr key={index} className="border-b border-gray-200 text-gray-700 hover:bg-gray-100">
               <td className="p-4">
                 <input
                   type="checkbox"
                   className="form-checkbox text-blue-600 transition duration-150 ease-in-out border border-gray-300 rounded"
-                  checked={selectedCategories.includes(caterory._id)}
-                  onChange={(e) => handleCheckboxChange(e, caterory._id)}
+                  checked={selectedCategories.includes(category._id)}
+                  onChange={(e) => handleCheckboxChange(e, category._id)}
                 />
               </td>
-              <td className="p-4 text-sm">{caterory._id}</td>
+              <td className="p-4 text-sm">{category._id}</td>
               <td className="p-4">
                 <div className="flex flex-col">
-                  <span className="font-semibold text-sm">{caterory.name}</span>
-                  {/* <span className="text-sm text-gray-500">{caterory.description}</span> */}
+                  <span className="font-semibold text-sm uppercase">{category.name}</span>
                 </div>
               </td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">
                   <button 
                     className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    onClick={hanleOpenUpdateModal}
+                    onClick={() => handleOpenUpdateModal(category)}
                   >
                     <FaEdit className="mr-2" />
                     Edit
                   </button>
                   <button 
                     className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                    onClick={handleOpenDeleteModal}
+                    onClick={() => handleOpenDeleteModal(category)}
                   >
                     <FaTrashAlt className="mr-2" />
                     Delete
@@ -169,7 +229,12 @@ const CategoryManagement = () => {
                 </div>
               </td>
             </tr>
-          ))}
+          ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="text-center text-red-500 py-4">No categories found</td>
+            </tr>
+          )}
         </tbody>
 
         {/* Pagination & Count within table footer */}
@@ -179,7 +244,11 @@ const CategoryManagement = () => {
               <div className="flex justify-between items-center">
                 {/* Left: Count display */}
                 <div className="text-sm text-gray-500">
-                  Hiển thị {indexOfFirstCategory + 1} đến {Math.min(indexOfLastCategory, totalCategories)} / {totalCategories} sản phẩm
+                  {searchTerm ? (
+                    `Tìm thấy : ${filteredCategories.length} kết quả`
+                  ) : (
+                    `Hiển thị ${indexOfFirstCategory + 1} đến ${Math.min(indexOfLastCategory, totalCategories)} / ${totalCategories} danh mục.`
+                  )}
                 </div>
 
                 {/* Right: Pagination */}
@@ -208,13 +277,28 @@ const CategoryManagement = () => {
 
       {/* Modal for Adding Caterory */}
       <BasicModal isOpen={isAddModalOpen} onRequestClose={handleCloseAddModal}>
-        <AddCategory onSave={handleSaveCategory} onClose={handleCloseAddModal} />
-      </BasicModal>
-      <BasicModal isOpen={isDeleteModalOpen} onRequestClose={handleCloseDeleteModal}>
-        <DeleteCategory onDelete={handleDeleteCategory} onClose={handleCloseDeleteModal} />
+        <AddCategory onClose={handleCloseAddModal} />
       </BasicModal>
       <BasicModal isOpen={isUpdateModalOpen} onRequestClose={handleCloseUpdateModal}>
-        <UpdateCategory onUpdate={handleUpdateCategory} onClose={handleCloseUpdateModal} />
+        {categoryToUpdate ? (
+          <UpdateCategory
+            editCategory={categoryToUpdate}
+            onClose={handleCloseUpdateModal}
+          />
+        ) : (
+          <p>Lỗi Edit rồi kiểm tra đê...</p>
+        )}
+      </BasicModal>
+      <BasicModal isOpen={isDeleteModalOpen} onRequestClose={handleCloseDeleteModal}>
+        {categoryToDelete ? (
+          <DeleteCategory
+            categoryId={categoryToDelete._id}
+            categoryName={categoryToDelete.name}
+            onClose={handleCloseDeleteModal}
+          />
+        ) : (
+          <p>Lỗi Delete rồi kiểm tra đê...</p>
+        )}
       </BasicModal>
     </div>
   );
