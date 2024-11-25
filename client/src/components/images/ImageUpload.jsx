@@ -22,7 +22,6 @@ const ImageUpload = ({ onUpload, onRemove, existingImages = [] }) => {
           getDownloadURL(snapshot.ref)
         );
       });
-
       Promise.all(uploadPromises)
         .then((downloadedUrls) => {
           const newUrls = [...urls, ...downloadedUrls];

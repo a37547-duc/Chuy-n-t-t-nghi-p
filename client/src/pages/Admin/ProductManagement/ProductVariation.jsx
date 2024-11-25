@@ -7,21 +7,20 @@ import ReactPaginate from "react-paginate";
 import BasicModal from "../../../components/Modal/BasicModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductVariations } from "../../../features/product/productVariationSlice";
-import AddLaptopVatiation from "../../../components/admin/ProductVariation/AddLaptopVariation"
 import AddLaptopVariation from "../../../components/admin/ProductVariation/AddLaptopVariation";
-import AddMouseVariation from "../../../components/admin/ProductVariation/AddMouseVariation";
-// import DeleteProductVariation from "../../../components/admin/ProductVariation/DeleteProductVariation";
-// import UpdateProductVariation from "../../../components/admin/ProductVariation/UpdateProductVariation";
+import DeleteProductVariation from "../../../components/admin/ProductVariation/DeleteProductVariation";
 
 const ProductVariation = () => {
-  const { productId, productType } = useParams();
+  const { productId } = useParams();
   const dispatch = useDispatch();
   const { variations, loading: variationLoading, error: variationError } = useSelector((state) => state.productVariation);
   const [page, setPage] = useState(0);
   const variationsPerPage = 7;
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  console.log(variations);
   const [id, setId] = useState(null);
-  const [initV, setInitV] = useState(null);
+  const [initVariant, setInitVariant] = useState(null);
   
   const [selectAll, setSelectAll] = useState(false);
   const [selectedVariations, setSelectedVariations] = useState([]);
@@ -73,11 +72,6 @@ const ProductVariation = () => {
   const handleOpenUpdateModal = () => setIsUpdateModalOpen(true);
   const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
 
-  const handleDeleteButtonClick = () => {
-    if (selectedVariations.length > 0) {
-      handleOpenDeleteModal();
-    }
-  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -96,7 +90,7 @@ const ProductVariation = () => {
           </button>
             <button
               className="ml-2 p-2 bg-gray-200 rounded-md"
-              onClick={handleDeleteButtonClick}
+              // onClick={handleDeleteButtonClick}
             >
               <i className="fa fa-trash"></i>
             </button>
@@ -153,7 +147,6 @@ const ProductVariation = () => {
                 />
               </th>
               <th className="p-4">ID</th>
-              <th className="p-4">Tên biến thể</th>
               <th className="p-4">Mô tả</th>
               <th className="p-4">Giá</th>
               <th className="p-4">Tồn kho</th>
@@ -173,7 +166,6 @@ const ProductVariation = () => {
                     />
                   </td>
                   <td className="p-4 text-sm">{variation._id}</td>
-                  <td className="p-4 text-sm">{variation.type}</td>
                   <td className="p-4">
                     <div className="flex flex-col">
                     {variation.color && (
@@ -196,10 +188,10 @@ const ProductVariation = () => {
                     <div className="flex space-x-2">
                       <button 
                         className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                        onClick={() => {
-                          // handleOpenUpdateModal();
-                          // setInitV(variation);
-                        }}
+                        // onClick={() => {
+                        //   handleOpenUpdateModal();
+                        //   setInitVariant(variation);
+                        // }}
                       >
                         <FaEdit className="mr-2" />
                         Edit
@@ -207,8 +199,8 @@ const ProductVariation = () => {
                       <button 
                         className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                         onClick={() => {
-                          // setSelectedVariations([variation._id]);
-                          // handleOpenDeleteModal();
+                          handleOpenDeleteModal();
+                          setId(variation._id);
                         }}
                       >
                         <FaTrashAlt className="mr-2" />
@@ -220,7 +212,7 @@ const ProductVariation = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="p-4 text-center">Không có biến thể nào.</td>
+                <td colSpan="6" className="p-4 text-center mt-4 bg-red-100 text-red-700 rounded">Không có biến thể nào.</td>
               </tr>
             )}
           </tbody>
@@ -228,7 +220,7 @@ const ProductVariation = () => {
           {/* Pagination & Count within table footer */}
           <tfoot>
             <tr>
-              <td colSpan="7" className="p-4">
+              <td colSpan="6" className="p-4">
                 <div className="flex justify-between items-center">
                   {/* Left: Count display */}
                   <span className="text-sm text-gray-500">
@@ -270,17 +262,16 @@ const ProductVariation = () => {
         
       </BasicModal>
       
-      {/* <BasicModal
+      <BasicModal
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
         title="Xóa biến thể sản phẩm"
       >
-        <DeleteProductVariation 
-          ids={selectedVariations} 
-          onDelete={handleDeleteVariation} 
+        <DeleteProductVariation
+          data={id}
           onClose={handleCloseDeleteModal} 
         />
-      </BasicModal> */}
+      </BasicModal>
       
       {/* <BasicModal
         isOpen={isUpdateModalOpen}

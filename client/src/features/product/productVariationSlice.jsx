@@ -44,7 +44,7 @@ const productVariationSlice = createSlice({
         state.error = false;
       })
       .addCase(getAllProductVariations.fulfilled, (state, action) => {
-        state.variations = action.payload;
+        state.variations = action.payload.data;
         state.loading = false;
         state.error = false;
       })

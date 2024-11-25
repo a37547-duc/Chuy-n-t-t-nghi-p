@@ -14,7 +14,39 @@ export const addVariation = createAsyncThunk(
       );
       return response.data;
     } catch (error) {
-      // Kiểm tra lỗi trả về từ API
+      const message = error.response?.data?.message || error.message;
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Thunk để cập nhật biến thể cho sản phẩm
+export const updateVariation = createAsyncThunk(
+  'variation/updateVariation',
+  async ({ variationId, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(
+        `/admin/products/variants/update/${variationId}`,
+        updatedData
+      );
+      return response.data;
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Thunk để xóa biến thể
+export const deleteVariation = createAsyncThunk(
+  'variation/deleteVariation',
+  async (variationId, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(
+        `/admin/products/variants/delete/${variationId}`
+      );
+      return { variationId, message: response.data.message };
+    } catch (error) {
       const message = error.response?.data?.message || error.message;
       return rejectWithValue(message);
     }
@@ -46,6 +78,41 @@ const adminVariationSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         toast.error("Thêm biến thể thất bại. Vui lòng thử lại!");
+      })
+      .addCase(updateVariation.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateVariation.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.variations.findIndex(
+          (variation) => variation.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.variations[index] = action.payload;
+        }
+        toast.success("Cập nhật biến thể thành công!");
+      })
+      .addCase(updateVariation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Cập nhật biến thể thất bại. Vui lòng thử lại!");
+      })
+      .addCase(deleteVariation.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteVariation.fulfilled, (state, action) => {
+        state.loading = false;
+        state.variations = state.variations.filter(
+          (variation) => variation.id !== action.payload.variationId
+        );
+        toast.success("Xóa biến thể thành công!");
+      })
+      .addCase(deleteVariation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Xóa biến thể thất bại. Vui lòng thử lại!");
       });
   },
 });

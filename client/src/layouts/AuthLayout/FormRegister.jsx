@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function FormRegister() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { registerLoading} = useSelector((state) => state.auth);
+  const { registerLoading } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -31,6 +31,9 @@ function FormRegister() {
 
   const validateForm = () => {
     const newErrors = {};
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    const whiteSpaceRegex = /\s/;
+  
     if (!formData.username.trim()) {
       newErrors.username = "Tên người dùng không được để trống";
     }
@@ -39,14 +42,23 @@ function FormRegister() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Email không đúng định dạng";
     }
-    if (formData.password.length < 6) {
+    if (!formData.password.trim()) {
+      newErrors.password = "Mật khẩu không được để trống";
+    } else if (formData.password.length < 6) {
       newErrors.password = "Mật khẩu phải chứa ít nhất 6 ký tự";
+    } else if (!specialCharRegex.test(formData.password)) {
+      newErrors.password = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt (!@#$%^&*...)";
+    } else if (whiteSpaceRegex.test(formData.password)) {
+      newErrors.password = "Mật khẩu không được chứa khoảng trắng";
     }
-    if (formData.password !== formData.confirmPassword) {
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = "Nhập lại mật khẩu không được để trống";
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Mật khẩu và xác nhận mật khẩu không khớp";
     }
     return newErrors;
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,8 +101,11 @@ function FormRegister() {
               type="text"
               autoComplete="username"
               placeholder="Nhập tên người dùng"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.username ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.username ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.username}
               onChange={handleInputChange}
             />
@@ -103,11 +118,14 @@ function FormRegister() {
             <input
               id="email"
               name="email"
-              type="email"
+              // type="email"
               autoComplete="email"
               placeholder="Nhập email"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.email ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.email}
               onChange={handleInputChange}
             />
@@ -123,8 +141,11 @@ function FormRegister() {
               type="password"
               autoComplete="new-password"
               placeholder="Nhập mật khẩu"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.password ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.password}
               onChange={handleInputChange}
             />
@@ -140,8 +161,11 @@ function FormRegister() {
               type="password"
               autoComplete="new-password"
               placeholder="Nhập lại mật khẩu"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.confirmPassword ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.confirmPassword ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.confirmPassword}
               onChange={handleInputChange}
             />

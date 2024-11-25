@@ -1,8 +1,23 @@
-// eslint-disable-next-line react/prop-types
-const DeleteProduct = ({ productName, onDelete, onClose }) => {
-  const handleDelete = () => {
-    onDelete();
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { deleteProduct } from "../../../features/Admin/adminProductsSlice";
+import { getAllProducts } from "../../../features/product/productsSlice";
+
+const DeleteProduct = ({ data, onClose }) => {
+  const dispatch = useDispatch();
+
+
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteProduct(data)).unwrap();
+      console.log("Product deleted successfully");
+      dispatch(getAllProducts());
+      onClose();
+    } catch (error) {
+      console.error("Lỗi khi xóa sản phẩm:", error);
+    }
   };
+
 
   return (
     <div className="space-y-4">
@@ -10,8 +25,7 @@ const DeleteProduct = ({ productName, onDelete, onClose }) => {
         Xóa sản phẩm
       </h2>
       <p className="text-gray-700">
-        Bạn có chắc chắn muốn xóa sản phẩm{" "}
-        <span className="font-bold">{productName}</span> không? Hành động này
+        Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này
         không thể hoàn tác.
       </p>
 

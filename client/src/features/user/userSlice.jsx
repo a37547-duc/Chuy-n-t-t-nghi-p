@@ -6,7 +6,7 @@ export const getAllUsers = createAsyncThunk(
   'users/getAllUsers',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('/admin/user');
+      const response = await api.get('/admin/users');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -32,7 +32,7 @@ const usersSlice = createSlice({
       })
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.users = action.payload.data;
       })
       .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;

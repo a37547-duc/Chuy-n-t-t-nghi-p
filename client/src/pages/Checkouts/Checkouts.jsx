@@ -10,9 +10,17 @@ function Checkout() {
   const location = useLocation();
   const dispatch = useDispatch();
   const cartData = JSON.parse(localStorage.getItem('cart'));
+  useEffect(() => {
+    if (!cartData) {
+      navigate("/cart");
+    }
+  }, [cartData, navigate]);
+
+  if (!cartData) {
+    return null;
+  }
   const items = cartData.items;
   const totalAmount = cartData.totalAmount;
-  // const cartItems = useSelector((state) => state.cart.items)
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);

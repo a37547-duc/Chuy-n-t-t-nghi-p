@@ -30,7 +30,9 @@ function FormLogin() {
   const validateForm = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+    const passwordSpecialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    const passwordWhitespaceRegex = /\s/;
+  
     if (!formData.email.trim()) {
       newErrors.email = "Email không được để trống";
     } else if (!emailRegex.test(formData.email)) {
@@ -38,9 +40,16 @@ function FormLogin() {
     }
     if (!formData.password.trim()) {
       newErrors.password = "Mật khẩu không được để trống";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Mật khẩu phải có ít nhất 8 ký tự";
+    } else if (!passwordSpecialCharRegex.test(formData.password)) {
+      newErrors.password = "Mật khẩu phải có ít nhất 1 ký tự đặc biệt (!@#$%^&*...)";
+    } else if (passwordWhitespaceRegex.test(formData.password)) {
+      newErrors.password = "Mật khẩu không được chứa khoảng trắng";
     }
     return newErrors;
   };
+    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,12 +97,11 @@ function FormLogin() {
               <input
                 id="email"
                 name="email"
-                type="email"
+                // type="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="Nhập email của bạn"
                 autoComplete="username"
-                required
                 className="pl-10 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md transition"
               />
             </div>
@@ -119,7 +127,6 @@ function FormLogin() {
                 onChange={handleInputChange}
                 placeholder="Nhập mật khẩu"
                 autoComplete="current-password"
-                required
                 className="pl-10 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md transition"
               />
               <button
