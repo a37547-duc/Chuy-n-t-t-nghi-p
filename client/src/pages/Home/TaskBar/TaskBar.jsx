@@ -7,11 +7,7 @@ import "./Taskbar.css";
 // TEST
 import { useDispatch, useSelector } from "react-redux";
 import { useGetProductsQuery } from "../../../stores/query/productQuery";
-import {
-  setCategory,
-  setUsecase,
-  setBrand,
-} from "../../../stores/slices/producSlice"; // Import từ RTK Query
+import { setCategory, setUsecase, setBrand } from "../../../stores/slices/producSlice"; // Import từ RTK Query
 
 const Taskbar = () => {
   const dispatch = useDispatch();
@@ -110,7 +106,10 @@ const Taskbar = () => {
                 {subItem.subSubItems && (
                   <div className="sub-submenu flex flex-col w-full">
                     {subItem.subSubItems.map((subSubItem, subSubIndex) => (
-                      <a key={subSubIndex} href="#" className="sub-submenu-item px-[10px] py-[5px] text-[#333] no-underline whitespace-nowrap text-left hover:text-red-500">
+                      <a 
+                        key={subSubIndex} 
+                        href="#" 
+                        className="sub-submenu-item px-[10px] py-[5px] text-[#333] no-underline whitespace-nowrap text-left hover:text-red-500">
                         {subSubItem}
                       </a>
                     ))}

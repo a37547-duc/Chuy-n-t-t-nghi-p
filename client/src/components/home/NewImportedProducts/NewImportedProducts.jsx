@@ -12,17 +12,11 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
 
   const handleArrowClick = (direction) => {
     setCurrentIndex(prevIndex => {
-      if (direction === 'left') {
-        return Math.max(0, prevIndex - 1);
-      } else {
-        return Math.min(totalPages - 1, prevIndex + 1);
-      }
+      return direction === 'left' ? Math.max(0, prevIndex - 1) : Math.min(totalPages - 1, prevIndex + 1);
     });
   };
 
-  const handleProductClick = (productId) => {
-    navigate(`/products/${productId}`);
-  };
+  const handleProductClick = (productId) => {navigate(`/products/${productId}`);};
 
   // Tính toán giá trị translateX
   const translateX = currentIndex * -100; // Mỗi sản phẩm chiếm 100% chiều rộng

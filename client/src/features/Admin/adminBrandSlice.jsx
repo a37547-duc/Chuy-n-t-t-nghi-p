@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../api/apiConfig";
 
 // Thunk để gọi API thêm brand
@@ -51,11 +53,6 @@ const handlePending = (state) => {
   state.error = null;
 };
 
-const handleRejected = (state, action) => {
-  state.loading = false;
-  state.error = action.payload;
-};
-
 const handleBrandUpdate = (state, action) => {
   const index = state.brands.findIndex((brand) => brand._id === action.payload._id);
   if (index !== -1) {
@@ -74,24 +71,39 @@ const brandSlice = createSlice({
       .addCase(addBrand.fulfilled, (state, action) => {
         state.loading = false;
         state.brands.push(action.payload);
+        toast.success("Thêm thương hiệu thành công!");
       })
-      .addCase(addBrand.rejected, handleRejected)
+      .addCase(addBrand.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Thêm thương hiệu thất bại. Vui lòng thử lại!");
+      })
 
       // Sửa brand
       .addCase(updateBrand.pending, handlePending)
       .addCase(updateBrand.fulfilled, (state, action) => {
         state.loading = false;
         handleBrandUpdate(state, action);
+        toast.success("Sửa thương hiệu thành công!");
       })
-      .addCase(updateBrand.rejected, handleRejected)
+      .addCase(updateBrand.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Sửa thương hiệu thất bại. Vui lòng thử lại!");
+      })
 
       // Xóa brand
       .addCase(deleteBrand.pending, handlePending)
       .addCase(deleteBrand.fulfilled, (state, action) => {
         state.loading = false;
         state.brands = state.brands.filter((brand) => brand._id !== action.payload.id);
+        toast.success("Xóa thương hiệu thành công!");
       })
-      .addCase(deleteBrand.rejected, handleRejected);
+      .addCase(deleteBrand.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Xóa thương hiệu thất bại. Vui lòng thử lại!");
+      });
   },
 });
 

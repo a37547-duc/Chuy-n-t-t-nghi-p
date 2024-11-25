@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../api/apiConfig";
 
 // Thunk để gọi API thêm danh mục
@@ -51,11 +53,6 @@ const handlePending = (state) => {
   state.error = null;
 };
 
-const handleRejected = (state, action) => {
-  state.loading = false;
-  state.error = action.payload;
-};
-
 const handleCategoryUpdate = (state, action) => {
   const index = state.categories.findIndex((cat) => cat._id === action.payload._id);
   if (index !== -1) {
@@ -74,24 +71,39 @@ const categorySlice = createSlice({
       .addCase(addCategories.fulfilled, (state, action) => {
         state.loading = false;
         state.categories.push(action.payload);
+        toast.success("Thêm danh mục thành công!");
       })
-      .addCase(addCategories.rejected, handleRejected)
+      .addCase(addCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Thêm danh mục thất bại. Vui lòng thử lại!");
+      })
 
       // Sửa danh mục
       .addCase(updateCategory.pending, handlePending)
       .addCase(updateCategory.fulfilled, (state, action) => {
         state.loading = false;
         handleCategoryUpdate(state, action);
+        toast.success("Sửa danh mục thành công!");
       })
-      .addCase(updateCategory.rejected, handleRejected)
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Sửa danh mục thất bại. Vui lòng thử lại!");
+      })
 
       // Xóa danh mục
       .addCase(deleteCategory.pending, handlePending)
       .addCase(deleteCategory.fulfilled, (state, action) => {
         state.loading = false;
         state.categories = state.categories.filter((cat) => cat._id !== action.payload.id);
+        toast.success("Xóa danh mục thành công!");
       })
-      .addCase(deleteCategory.rejected, handleRejected);
+      .addCase(deleteCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Xóa danh mục thất bại. Vui lòng thử lại!");
+      });
   },
 });
 
