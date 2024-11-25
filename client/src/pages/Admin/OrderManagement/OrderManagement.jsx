@@ -12,35 +12,44 @@ import { getAllOrders } from "../../../features/order/orderSlice";
 
 const OrderManagement = () => {
   const dispatch = useDispatch();
-  const {orders, loading, error} = useSelector((state) => state.order)
-  console.log(orders);
+  const { orders, loading, error } = useSelector((state) => state.order);
   const [page, setPage] = useState(0);
   const ordersPerPage = 7;
   const [isChangeOrderStatusModalOpen, setIsChangeOrderStatusModalOpen] = useState(false);
   const [isOrderDetailModalOpen, setIsOrderDetailModalOpen] = useState(false);
-  const [initOrder, setInitOrder] = useState()
+  const [initOrder, setInitOrder] = useState();
   const [sortStatus, setSortStatus] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     dispatch(getAllOrders());
   }, [dispatch]);
-  
-  const totalOrders = orders.length;
+
+  const filteredOrders = useMemo(() => {
+    return orders.filter(order => 
+      order.shippingInfo.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [orders, searchQuery]);
+
+  const totalOrders = filteredOrders.length;
   const totalPages = Math.ceil(totalOrders / ordersPerPage);
+
   const handlePageClick = (data) => {
     setPage(data.selected);
   };
 
   const indexOfLastOrder = (page + 1) * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  
+
   const displayedOrders = useMemo(() => {
     if (sortStatus === "asc") {
-      return [...orders].sort((a, b) => a.totalAmount - b.totalAmount);
+      return [...filteredOrders].sort((a, b) => a.totalAmount - b.totalAmount);
     } else if (sortStatus === "desc") {
-      return [...orders].sort((a, b) => b.totalAmount - a.totalAmount);
+      return [...filteredOrders].sort((a, b) => b.totalAmount - a.totalAmount);
     }
-    return orders;
-  }, [orders, sortStatus]);
+    return filteredOrders;
+  }, [filteredOrders, sortStatus]);
+
   const currentOrders = displayedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   const handleOpenChangeOrderStatusModal = () => {
@@ -64,7 +73,6 @@ const OrderManagement = () => {
   };
 
   const handleSortByPrice = () => {
-    // Chuyển đổi trạng thái sắp xếp giữa null, asc và desc
     setSortStatus((prevStatus) => {
       if (prevStatus === "asc") return "desc";
       if (prevStatus === "desc") return null;
@@ -80,8 +88,10 @@ const OrderManagement = () => {
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
           <input
             type="text"
-            placeholder="Search for orders"
+            placeholder="Tìm kiếm đơn hàng..."
             className="flex-grow px-4 py-2 border border-gray-200 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button className="ml-2 p-2 bg-gray-200 rounded-md">
             <i className="fa fa-search"></i>

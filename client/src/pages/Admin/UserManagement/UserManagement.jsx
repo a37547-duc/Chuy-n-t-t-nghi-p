@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FaEye } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -14,14 +14,21 @@ const UserManagement = () => {
 
   const [page, setPage] = useState(0);
   const [usersPerPage] = useState(7);
+  const [searchUser, setSearchUser] = useState("");
+  const [isUserDetailModalOpen, setIsUserDetailModalOpen] = useState(false);
+  const [initUser, setInitUser] = useState();
 
   useEffect(() => {
     dispatch(getAllUsers());
   }, [dispatch]);
 
-  const [isUserDetailModalOpen, setIsUserDetailModalOpen] = useState(false);
-  const [initUser, setInitUser] = useState()
-  const totalUsers = users.length;
+  const filteredUsers = useMemo(() => {
+    return users.filter((user) =>
+      user.email.toLowerCase().includes(searchUser.toLowerCase())
+    );
+  }, [users, searchUser]);
+
+  const totalUsers = filteredUsers.length;
   const totalPages = Math.ceil(totalUsers / usersPerPage);
 
   const handlePageClick = (data) => {
@@ -30,8 +37,7 @@ const UserManagement = () => {
 
   const indexOfLastUser = (page + 1) * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
-
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   const handleOpenUserDetailModal = () => {
     setIsUserDetailModalOpen(true);
@@ -49,8 +55,10 @@ const UserManagement = () => {
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
           <input
             type="text"
-            placeholder="Search for users..."
-            className="flex-grow px-4 py-2 border border-gray-200 rounded-md"
+            placeholder="Tìm kiếm user bằng email"
+            className="flex-grow px-4 py-2 border border-gray-200 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
+            value={searchUser}
+            onChange={(e) => setSearchUser(e.target.value)}
           />
           <button className="ml-2 p-2 bg-gray-200 rounded-md">
             <i className="fa fa-search"></i>
