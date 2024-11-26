@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../api/apiConfig";
 
@@ -8,10 +8,7 @@ export const addProduct = createAsyncThunk(
   "product/addProduct",
   async (newProduct, { rejectWithValue }) => {
     try {
-      const response = await api.post(
-        "/admin/products/create",
-        newProduct
-      );
+      const response = await api.post("/admin/products/create",newProduct);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

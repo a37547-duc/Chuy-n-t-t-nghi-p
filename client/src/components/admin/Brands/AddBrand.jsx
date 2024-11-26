@@ -1,102 +1,60 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addBrand } from "../../../features/Admin/adminBrandSlice";
+import { getAllBrands } from "../../../features/brand/brandsSlice";
 import ImageUploadOne from "../../images/ImageUploadOne";
 
 // eslint-disable-next-line react/prop-types
-const AddBrand = ({ onSave, onClose }) => {
-
+const AddBrand = ({ onClose }) => {
+  const dispatch = useDispatch();
+  const brands = useSelector((state) => state.brand.brands);
+  useEffect(() => {
+    console.log("AddBrand: ",brands)
+  },[brands])
+  const [error, setError] = useState(""); // State để hiển thị lỗi
   const [newBrand, setNewBrand] = useState({
     name: "",
-    category_id: null,
-    categoryName: "",
-    category: "",
-    Logo: null,
+    image: null,
   });
-  
 
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/category");
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
+      setNewBrand((prev) => ({ ...prev, [name]: value }));
+  },[]);
 
-    if (name === "category") {
-      const selectedCategory = categories.find(cat => cat._id === value);
-      if (selectedCategory) {
-        setNewBrand({ 
-          ...newBrand, 
-          category_id: selectedCategory._id, // Lưu ID của category
-          categoryName: selectedCategory.name, // Lưu tên category
-          category: value
-        });
-      }
-    } else {
-      setNewBrand({ ...newBrand, [name]: value });
-    }
-  };
+  const handleImageUpload = useCallback((url) => {
+    setNewBrand((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+  },[]);
 
-  const handleImageUpload = (url) => {
-    setNewBrand({ ...newBrand, Logo: url }); // Lưu URL thay cho file
-  };
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-  // const handleFileChange = (e) => {
-  //   const { files } = e.target;
-  //   if (files && files.length > 0) {
-  //       setNewBrand({ ...newBrand, Logo: files[0] });
-  //   }
-  // };
+      const trimmedName = newBrand.name.trim().toLowerCase();
+      const isDuplicate = brands.some(
+        (brand) => brand.name.toLowerCase() === trimmedName
+      );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    const newBrandData = {
-      name: newBrand.name,
-      category_id: newBrand.category_id,
-      image: newBrand.Logo,
-    };
-
-    console.log("Submitting brand data:", newBrandData);
-
-    try {
-      // Gửi dữ liệu lên server dưới dạng JSON
-      const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/brand/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Thêm header để chỉ rõ gửi dữ liệu dạng JSON
-        },
-        body: JSON.stringify(newBrandData), // Chuyển đổi dữ liệu thành chuỗi JSON
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text(); // Lấy thông tin lỗi từ phản hồi
-        console.error("Server response error:", errorText); // Ghi lại thông tin lỗi
-        throw new Error("Failed to save brand");
+      if (isDuplicate) {
+        setError("Danh mục đã tồn tại. Vui lòng nhập tên khác.");
+        return;
       }
 
-      // Gọi onSave nếu lưu thành công
-      onSave(newBrand);
-      setNewBrand({ name: "", category_id: null, Logo: null }); // Reset brand mới
-    } catch (error) {
-      console.error("Error saving brand:", error);
-      alert("Có lỗi xảy ra khi lưu thương hiệu.");
-    }
-  };
+      try {
+        await dispatch(addBrand(newBrand));
+        console.log("Brand added successfully");
+        dispatch(getAllBrands());
+        setNewBrand({ name: "", image: null });
+        onClose();
+      } catch (error) {
+        console.error("Error adding brand:", error);
+      }
+  },[brands, newBrand, dispatch, onClose]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="mb-4 text-xl font-semibold tracking-wide">Thêm thương hiệu mới</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium">Brand Name</label>
           <input
@@ -104,33 +62,19 @@ const AddBrand = ({ onSave, onClose }) => {
             name="name"
             value={newBrand.name}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
+            className={`mt-1 block w-full border ${
+              error ? "border-red-500" : "border-gray-300"
+            } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Category</label>
-          <select
-            name="category"
-            value={newBrand.category}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          >
-            <option value="">Select a category</option>
-            {categories.map((category) => (
-              <option key={category._id} value={category._id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          {error && <p className="mt-1 text-sm text-red-500">{error}</p>} {/* Hiển thị lỗi */}
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium">Logo</label>
-          <ImageUploadOne onUploadComplete={handleImageUpload} />
+          <ImageUploadOne onUploadComplete={handleImageUpload} existingUrl={newBrand.image} />
         </div>
       </div>
 

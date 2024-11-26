@@ -1,40 +1,66 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCategories } from "../../../features/Admin/adminCategorySlice";
+import { getAllCategories } from "../../../features/category/categoriesSlice";
 
 // eslint-disable-next-line react/prop-types
-const AddCategory = ({ onSave, onClose }) => {
+const AddCategory = ({ onClose }) => {
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.category.categories); // Lấy danh sách danh mục từ Redux
+  const [error, setError] = useState(""); // State để hiển thị lỗi
   const [newCategory, setNewCategory] = useState({
     name: "",
-    description: "", // Nếu bạn muốn giữ lại trường mô tả
   });
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setNewCategory({ ...newCategory, [name]: value });
-  };
+    setNewCategory((prevCategory) => ({
+      ...prevCategory,
+      [name]: value,
+    }));
+    setError(""); // Reset lỗi khi người dùng nhập
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      // Gửi dữ liệu đến API
-      const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/category/create", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newCategory), // Chuyển đổi dữ liệu thành JSON
-      });
+  const handleSubmit = useCallback( 
+    async (e) => {
+      e.preventDefault();
 
-      if (!response.ok) {
-        throw new Error("Failed to create category");
+      // Kiểm tra trùng tên danh mục
+      const isDuplicate = categories.some(
+        (category) => category.name.toLowerCase() === newCategory.name.toLowerCase().trim()
+      );
+
+      if (isDuplicate) {
+        setError("Danh mục đã tồn tại. Vui lòng nhập tên khác.");
+        return;
       }
 
-      const savedCategory = await response.json();
-      onSave(savedCategory); // Gọi hàm onSave với dữ liệu trả về từ API
-      setNewCategory({ name: "", description: "" }); // Reset form
-    } catch (error) {
-      console.error("Error saving category:", error);
-    }
-  };
+      // Thêm danh mục nếu không trùng
+      // dispatch(addCategories(newCategory))
+      // console.log("AddCate: ",newCategory)
+      // .unwrap()
+      // .then(() => {
+      //   console.log("Category added successfully");
+      //   dispatch(getAllCategories()); // Lấy lại danh sách danh mục
+      //   setNewCategory({ name: "" }); // Reset form
+      //   onClose(); // Đóng modal
+      // })
+      // .catch((error) => {
+      //   console.error("Error adding category:", error);
+      // });
+
+      try {
+        await dispatch(addCategories(newCategory));
+        console.log("Added category:", newCategory);
+        console.log("Category added successfully");
+        dispatch(getAllCategories());
+        setNewCategory({ name: "" });
+        onClose();
+      } catch (error) {
+        console.error("Error adding category:", error);
+      }
+    },[dispatch, categories, newCategory, onClose] // Đảm bảo mọi thứ cần thiết là dependencies
+  );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -47,20 +73,12 @@ const AddCategory = ({ onSave, onClose }) => {
             name="name"
             value={newCategory.name}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
+            className={`mt-1 block w-full border ${
+              error ? "border-red-500" : "border-gray-300"
+            } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Description</label>
-          <input
-            type="text"
-            name="description"
-            value={newCategory.description}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
+          {error && <p className="mt-1 text-sm text-red-500">{error}</p>} {/* Hiển thị lỗi */}
         </div>
       </div>
 

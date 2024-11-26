@@ -1,52 +1,80 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCategory } from "../../../features/Admin/adminCategorySlice";
+import { getAllCategories } from "../../../features/category/categoriesSlice";
 
-const UpdateCategory = ({ product, onUpdate, onClose }) => {
+const UpdateCategory = ({ editCategory, onClose }) => {
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.category.categories); // Lấy danh sách danh mục từ Redux
+  useEffect(() => {
+    console.log("UpdateCate: ", categories)
+  },[categories])
+  const [error, setError] = useState(""); // State để lưu lỗi
   const [updatedCategory, setUpdatedCategory] = useState({
     name: "",
-    category: "",
-    technology: "",
-    price: "",
-    details: "",
-    image: null,
   });
 
+  // Gán dữ liệu từ editCategory vào form khi mở modal
   useEffect(() => {
-    // Populate the form with the existing product data when the modal opens
-    if (product) {
+    if (editCategory) {
       setUpdatedCategory({
-        name: product.name || "",
-        category: product.category || "",
-        technology: product.technology || "",
-        price: product.price || "",
-        details: product.details || "",
-        image: null, // Image should be updated via file input
+        name: editCategory.name || "",
       });
+      setError(""); // Xóa lỗi cũ nếu có
     }
-  }, [product]);
+  }, [editCategory]);
 
-  const handleChange = (e) => {
+  const duplicateCategory = useMemo(() => {
+    return categories.find(
+      (cat) =>
+        cat.name.toLowerCase().trim() === updatedCategory.name.toLowerCase().trim() &&
+        cat._id !== editCategory._id
+    );
+  }, [categories, updatedCategory.name, editCategory]);
+
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setUpdatedCategory({ ...updatedCategory, [name]: value });
-  };
+    setUpdatedCategory((prev) => ({ ...prev, [name]: value }));
+    setError(""); 
+  }, []);
 
-  const handleFileChange = (e) => {
-    const { files } = e.target;
-    if (files && files.length > 0) {
-      setUpdatedCategory({ ...updatedCategory, image: files[0] });
-    }
-  };
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onUpdate(updatedCategory);
-    setUpdatedCategory({ name: "", category: "", technology: "", price: "", details: "", image: null });
-  };
+      // Kiểm tra trùng tên danh mục
+      // const duplicateCategory = categories.find(
+      //   (cat) =>
+      //     cat.name.toLowerCase().trim() === updatedCategory.name.toLowerCase().trim() && cat._id !== editCategory._id
+      // );
+
+      if (duplicateCategory) {
+        setError("Danh mục đã tồn tại."); // Hiển thị lỗi nếu trùng
+        return;
+      }
+
+      try {
+        // Gửi yêu cầu cập nhật danh mục
+        await dispatch(
+          updateCategory({
+            id: editCategory._id,
+            editCategory: updatedCategory,
+          })
+        ).unwrap();
+
+        dispatch(getAllCategories());
+        onClose();
+      } catch (error) {
+        setError("Error edit category", error); // Hiển thị lỗi nếu cập nhật thất bại
+      }
+    },[duplicateCategory, dispatch, editCategory, updatedCategory, onClose]
+  );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="mb-4 text-xl font-semibold tracking-wide">Cập nhật danh mục</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium">Category Name</label>
           <input
@@ -57,64 +85,7 @@ const UpdateCategory = ({ product, onUpdate, onClose }) => {
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Category</label>
-          <input
-            type="text"
-            name="category"
-            value={updatedCategory.category}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Descriptions</label>
-          <input
-            type="text"
-            name="technology"
-            value={updatedCategory.technology}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Price</label>
-          <input
-            type="text"
-            name="price"
-            value={updatedCategory.price}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4">
-        <div>
-          <label className="block text-sm font-medium">Details</label>
-          <input
-            type="text"
-            name="details"
-            value={updatedCategory.details}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Product Image</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleFileChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-          />
+          {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
       </div>
 
@@ -123,7 +94,7 @@ const UpdateCategory = ({ product, onUpdate, onClose }) => {
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Update Product
+          Update
         </button>
         <button
           onClick={onClose}

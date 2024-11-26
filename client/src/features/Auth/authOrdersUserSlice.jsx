@@ -8,12 +8,18 @@ export const getOrdersUser = createAsyncThunk(
   "userOrders/getOrdersUser",
   async (status, { rejectWithValue }) => {
     try {
-      // Cấu hình URL với query parameter `status`
-      const response = await api.get(`/user/order?status=${(status)}`);
+      const response = await api.get(`/user/order?status=${status}`);
+      console.log("Response: ",response)
+      // Nếu API trả về phản hồi thành công nhưng không có dữ liệu
+      if (response.status === 404 && (!response.data || response.data.length === 0)) {
+        console.log("RE", response)
+        return { data: [] }; // Trả về mảng rỗng nếu không có đơn hàng
+      }
       return response.data;
     } catch (error) {
-      // Hiển thị thông báo lỗi
-      toast.error("Không thể lấy thông tin đơn hàng");
+      if (!toast.isActive("getOrderUserError")) {
+        toast.error("Không thể lấy thông tin đơn hàng", { toastId: "getOrderUserError" });
+      }
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }
@@ -22,28 +28,25 @@ export const getOrdersUser = createAsyncThunk(
 const userOrdersSlice = createSlice({
   name: "userOrders",
   initialState: {
-    orders: [],  // Lưu trữ danh sách đơn hàng
+    orders: [],
     loading: false,
     error: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Khi yêu cầu đang thực hiện
       .addCase(getOrdersUser.pending, (state) => {
         state.loading = true;
-        state.error = null;  // Xóa lỗi cũ nếu có
+        state.error = null;
       })
-      // Khi yêu cầu thành công
       .addCase(getOrdersUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders = action.payload.data;  // Cập nhật danh sách đơn hàng
-        console.log("State: ",state.orders)
+        state.orders = action.payload.data;
+        // console.log("State: ",state.orders)
       })
-      // Khi yêu cầu thất bại
       .addCase(getOrdersUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Lỗi không xác định";  // Lưu lỗi
+        state.error = action.payload || "Lỗi không xác định";
       });
   },
 });

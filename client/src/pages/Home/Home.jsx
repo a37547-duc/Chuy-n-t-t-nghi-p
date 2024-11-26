@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import BestSeller from "./BestSeller/BestSeller";
 import ProductCategory from "./ProductCategory/ProductCategory";
 import LogonButtonComputer from "./LogoButton/LogoButtonComputer/LogoButton";
 import LogonButtonMobile from "./LogoButton/LogoButtonMobile/LogoButtonMobile";
@@ -55,7 +54,6 @@ export default function Home() {
       <div className="mt-[50px] mb-[20px]">
         <div className="max-w-[1100px] mx-auto">
           <ProductCategory />
-          <BestSeller />
         </div>
       </div>
     </div>

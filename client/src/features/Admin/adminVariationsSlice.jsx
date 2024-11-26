@@ -24,6 +24,7 @@ export const addVariation = createAsyncThunk(
 export const updateVariation = createAsyncThunk(
   'variation/updateVariation',
   async ({ variationId, updatedData }, { rejectWithValue }) => {
+    console.log(updatedData);
     try {
       const response = await api.patch(
         `/admin/products/variants/update/${variationId}`,
@@ -65,13 +66,14 @@ const adminVariationSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Add
       .addCase(addVariation.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(addVariation.fulfilled, (state, action) => {
         state.loading = false;
-        state.variations.push(action.payload);
+        state.variations.push(action.payload.variant);
         toast.success("Thêm biến thể thành công!");
       })
       .addCase(addVariation.rejected, (state, action) => {
@@ -79,6 +81,7 @@ const adminVariationSlice = createSlice({
         state.error = action.payload;
         toast.error("Thêm biến thể thất bại. Vui lòng thử lại!");
       })
+      // Update
       .addCase(updateVariation.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -86,10 +89,10 @@ const adminVariationSlice = createSlice({
       .addCase(updateVariation.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.variations.findIndex(
-          (variation) => variation.id === action.payload.id
+          (variation) => variation._id === action.payload.variant._id
         );
         if (index !== -1) {
-          state.variations[index] = action.payload;
+          state.variations[index] = action.payload.variant;
         }
         toast.success("Cập nhật biến thể thành công!");
       })
@@ -98,6 +101,7 @@ const adminVariationSlice = createSlice({
         state.error = action.payload;
         toast.error("Cập nhật biến thể thất bại. Vui lòng thử lại!");
       })
+      // Delete
       .addCase(deleteVariation.pending, (state) => {
         state.loading = true;
         state.error = null;

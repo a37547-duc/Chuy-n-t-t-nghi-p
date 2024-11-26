@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";

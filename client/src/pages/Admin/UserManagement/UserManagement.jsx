@@ -48,7 +48,7 @@ const UserManagement = () => {
   };
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold">All Users</h1>
+      <h1 className="text-2xl font-bold">Danh sách người dùng</h1>
 
       {/* Search Bar & Add Button */}
       <div className="flex justify-between items-center mt-4">

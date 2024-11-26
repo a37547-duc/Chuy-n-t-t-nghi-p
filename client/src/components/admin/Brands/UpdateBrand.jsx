@@ -1,50 +1,82 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateBrand } from "../../../features/Admin/adminBrandSlice";
+import { getAllBrands } from "../../../features/brand/brandsSlice";
+import ImageUploadOne from "../../images/ImageUploadOne";
 
-const UpdateBrand = ({ brand, onUpdate, onClose }) => {
-  console.log('Brand:', brand);
+const UpdateBrand = ({ editBrand, onClose }) => {
+  const dispatch = useDispatch();
+  const brands = useSelector((state) => state.brand.brands);
+  useEffect(() => {
+    console.log("UpdateBrand: ", brands);
+    console.log('Brand:', editBrand);
+  }, [brands, editBrand]);
+
+  const [error, setError] = useState(""); // State để lưu lỗi
   const [updatedBrand, setUpdatedBrand] = useState({
     name: "",
-    NumProduct: "",
-    description: "",
-    Logo: null,
+    image: null,
   });
 
   useEffect(() => {
-    // Populate the form with the existing brand data when the modal opens
-    if (brand) {
-      console.log('Brand:', brand);
-        setUpdatedBrand({
-        name: brand.name || "",
-        NumProduct: brand.NumProduct || "",
-        description: brand.description || "",
-        Logo: null, // Image should be updated via file input
+    if (editBrand) {
+      setUpdatedBrand({
+        name: editBrand.name || "",
+        image: editBrand.image || null,
       });
+      setError(""); // Xóa lỗi cũ nếu có
     }
-  }, [brand]);
+  }, [editBrand]);
 
-  const handleChange = (e) => {
+  const duplicateCategory = useMemo(() => {
+    return brands.find(
+      (cat) =>
+        cat.name.toLowerCase().trim() === updatedBrand.name.toLowerCase().trim() &&
+        cat._id !== editBrand._id
+    );
+  }, [brands, updatedBrand.name, editBrand._id]);
+
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setUpdatedBrand({ ...updatedBrand, [name]: value });
-  };
+    setUpdatedBrand((prev) =>({ ...prev, [name]: value }));
+  },[]);
 
-  const handleFileChange = (e) => {
-    const { files } = e.target;
-    if (files && files.length > 0) {
-        setUpdatedBrand({ ...updatedBrand, Logo: files[0] });
-    }
-  };
+  const handleImageUpload = useCallback((url) => {
+    setUpdatedBrand((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+  },[]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onUpdate(updatedBrand);
-    setUpdatedBrand({ name: "", NumProduct: "", description: "", Logo: null });
-  };
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      if (duplicateCategory) {
+        setError("Thương hiệu đã tồn tại."); // Hiển thị lỗi nếu trùng
+        return;
+      }
+    // console.log("Updated brand:", updatedBrand);
+      try {
+        // Gửi yêu cầu cập nhật danh mục
+        await dispatch(
+          updateBrand({
+            id: editBrand._id,
+            editBrand: updatedBrand,
+          })
+        ).unwrap();
+        setUpdatedBrand({ name: "", image: null });
+        dispatch(getAllBrands());
+        onClose();
+      } catch (error) {
+        setError("Error edit category", error); // Hiển thị lỗi nếu cập nhật thất bại
+      }
+    },[dispatch, updatedBrand, editBrand._id, duplicateCategory, onClose]
+  );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="mb-4 text-xl font-semibold tracking-wide">Cập nhật thương hiệu <span className="font-bold">{brand}</span></h2>
-      <div className="grid grid-cols-2 gap-4">
+      <h2 className="mb-4 text-xl font-semibold tracking-wide">
+        Cập nhật thương hiệu <span className="font-bold">{editBrand.name}</span></h2>
+      <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium">Brand Name</label>
           <input
@@ -55,39 +87,14 @@ const UpdateBrand = ({ brand, onUpdate, onClose }) => {
             className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             required
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">NumProduct</label>
-          <input
-            type="number"
-            name="NumProduct"
-            value={updatedBrand.NumProduct}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-            required
-          />
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
         <div>
-          <label className="block text-sm font-medium">Descriptions</label>
-          <input
-            type="text"
-            name="descriptions"
-            value={updatedBrand.description}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Brand Logo</label>
-          <input
-            type="file"
-            name="Logo"
-            onChange={handleFileChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
-          />
+          <label className="block text-sm font-medium">Logo</label>
+          <ImageUploadOne onUploadComplete={handleImageUpload} existingUrl={editBrand.image} />
         </div>
       </div>
 

@@ -82,7 +82,7 @@ const OrderManagement = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold">All Orders</h1>
+      <h1 className="text-2xl font-bold">Danh sách đơn hàng</h1>
 
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">

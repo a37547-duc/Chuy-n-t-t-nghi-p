@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrdersUser } from "../../../../features/Auth/authOrdersUserSlice";
 import EmptyPage from "./EmptyPage/EmptyPage";
+import BasicModal from "../../../../components/Modal/BasicModal";
+import OrderItemDetailAdmin from "../../../../components/admin/Orders/OrderItemDetailAdmin";
 
 const AccountOrder = () => {
   const dispatch = useDispatch();
@@ -11,6 +13,8 @@ const AccountOrder = () => {
   // State lưu trạng thái đơn hàng đang được chọn
   const [status, setStatus] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isOrderDetailModalOpen, setIsOrderDetailModalOpen] = useState(false);
+  const [initOrder, setInitOrder] = useState();
 
   // Mảng chứa các mục trạng thái điều hướng
   const navItems = [
@@ -31,6 +35,13 @@ const AccountOrder = () => {
   const handleItemClick = (index, newStatus) => {
     setActiveIndex(index);
     setStatus(newStatus === "Tất cả" ? "" : newStatus);
+  };
+
+  const handleOpenOrderDetailModal = () => {
+    setIsOrderDetailModalOpen(true);
+  };
+  const handleCloseOrderDetailModal = () => {
+    setIsOrderDetailModalOpen(false);
   };
 
   return (
@@ -65,7 +76,6 @@ const AccountOrder = () => {
             <div key={order.id} className="border-t pt-4">
               <div className="bg-white p-4 flex justify-between rounded-md">
                 <div className="flex items-start space-x-4">
-                  {/* Hiển thị sản phẩm đầu tiên trong đơn hàng */}
                   <img
                     src={order.products[0]?.image}
                     alt={order.products[0]?.name}
@@ -102,12 +112,22 @@ const AccountOrder = () => {
                     <button className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md mb-2 border-2 border-red-600">
                       Xem hóa đơn
                     </button>
-                    <button className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md border-2 border-red-600">
+                    <button
+                     className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md border-2 border-red-600"
+                     onClick={() => {
+                      handleOpenOrderDetailModal();
+                      setInitOrder(order);
+                    }}
+                     >
                       Xem chi tiết
                     </button>
                   </div>
                 </div>
               </div>
+              <BasicModal className="mt-10" isOpen={isOrderDetailModalOpen} onRequestClose={handleCloseOrderDetailModal}>
+                <OrderItemDetailAdmin
+                data={initOrder} onClose={handleCloseOrderDetailModal} />
+              </BasicModal>
             </div>
           ))
         ) : (

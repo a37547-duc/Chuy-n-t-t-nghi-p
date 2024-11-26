@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 const AccountInformation = () => {
   const dispatch = useDispatch();
   const { useProfile, loading, error } = useSelector((state) => state.profile);
-  console.log("User: ", useProfile)
+  // console.log("User: ", useProfile)
 
   // State để lưu thông tin user
   const [user, setUser] = useState({
@@ -50,10 +50,7 @@ const AccountInformation = () => {
     
     // Cập nhật giá trị mới cho các trường nhập liệu, đảm bảo không có giá trị undefined
     setUser((prevUser) => {
-      const newUser = { 
-        ...prevUser, 
-        [name]: value !== undefined ? value : "" // Tránh giá trị undefined, thay bằng chuỗi rỗng
-      };
+      const newUser = { ...prevUser, [name]: value !== undefined ? value : "" }; // Tránh giá trị undefined, thay bằng chuỗi rỗng
       setIsChanged(checkIfChanged(newUser)); // Kiểm tra xem thông tin có thay đổi không
       return newUser;
     });
@@ -73,10 +70,8 @@ const AccountInformation = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Gửi yêu cầu cập nhật thông tin người dùng
     dispatch(updateUserProfile(user))
       .then(() => {
-        // Sau khi cập nhật thành công, lấy lại thông tin mới nhất
         dispatch(getUserProfile());
       })
       .catch((error) => {

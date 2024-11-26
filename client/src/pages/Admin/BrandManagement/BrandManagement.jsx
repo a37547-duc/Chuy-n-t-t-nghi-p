@@ -1,51 +1,90 @@
-import { useState, useEffect  } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faUpLong, faDownLong } from "@fortawesome/free-solid-svg-icons";
 import ReactPaginate from "react-paginate";
 import BasicModal from "../../../components/Modal/BasicModal";
 import AddBrand from "../../../components/admin/Brands/AddBrand";
 import UpdateBrand from "../../../components/admin/Brands/UpdateBrand";
 import DeleteBrand from "../../../components/admin/Brands/DeleteBrand";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBrands } from "../../../features/brand/brandsSlice";
 
 const BrandManagement = () => {
+  const dispatch = useDispatch();
+  //Truy xuất dữ liệu
+  const { brands, loading, error } = useSelector((state) => state.brand);
+  useEffect(() => {
+    console.log("Brand: ", brands);
+  }, [brands]);
+
+  //Phân trang
   const [page, setPage] = useState(0);
   const [brandsPerPage] = useState(7);
+
+  //Modal
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedBrand, setSelectedBrand] = useState(null);
-  const [selectedBrands, setSelectedBrands] = useState([]);
-  const [brands, setBrands] = useState([]);  // State để lưu dữ liệu brands từ API
-  const [loading, setLoading] = useState(true); // Để hiển thị trạng thái tải dữ liệu
-  const [error, setError] = useState(null); // Để hiển thị lỗi nếu có
+  const [brandToUpdate, setBrandToUpdate] = useState(null);
+  const [brandToDelete, setBrandToDelete] = useState(null);
 
+  //CheckBox
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+
+  //Sắp xếp
+  const [sortBrand, setSortBrand] = useState(null);
+
+  // Search term state
+  const [searchTerm, setSearchTerm] = useState("");
+
+  //Gọi API lấy brand
   useEffect(() => {
-    const fetchBrands = async () => {
-      try {
-        const response = await fetch("https://laptech4k.onrender.com/api/v1/admin/products/brand");
-        const data = await response.json();
-        setBrands(data);  // Cập nhật state với dữ liệu từ API
-        setLoading(false); // Ngừng trạng thái loading sau khi dữ liệu được tải
-      } catch (err) {
-        setError(err.message); // Lưu thông báo lỗi nếu có
-        setLoading(false); // Ngừng trạng thái loading nếu xảy ra lỗi
-      }
-    };
-    fetchBrands(); // Gọi API
-  }, []);
+    dispatch(getAllBrands());
+  }, [dispatch]);
   
   const totalBrands = brands.length;
   const totalPages = Math.ceil(totalBrands / brandsPerPage);
-
-  const handlePageClick = (data) => {
-    setPage(data.selected);
-  };
+  const handlePageClick = useCallback((data) => {setPage(data.selected);},[]);
 
   const indexOfLastBrand = (page + 1) * brandsPerPage;
   const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;
-  const currentBrands = brands.slice(indexOfFirstBrand, indexOfLastBrand);
+
+  // Filter brand based on search term
+  const filteredBrand = useMemo(() => {
+    if (searchTerm) {
+      return brands.filter(brand =>
+        brand.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    return brands;
+  }, [brands, searchTerm]);
+
+  //Sort brand
+  const sortedBrands = useMemo(() => {
+    const copiedBrands = [...filteredBrand];
+    if (sortBrand === "asc") {
+      return copiedBrands.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBrand === "desc") {
+      return copiedBrands.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    return copiedBrands;
+  }, [filteredBrand, sortBrand]);
+
+  const currentBrands = sortedBrands.slice(indexOfFirstBrand, indexOfLastBrand);
+
+  const handleSortClick = () => {
+    setSortBrand((prevOrder) => {
+      if (prevOrder === "asc") return "desc";
+      if (prevOrder === "desc") return null;
+      return "asc";
+    });
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   // Cập nhật trạng thái checkbox selectAll khi chuyển trang
   useEffect(() => {
@@ -54,70 +93,53 @@ const BrandManagement = () => {
   }, [page, selectedBrands, currentBrands]);
 
   // Sử lý chọn hết checkbox
-  const handleSelectAll = (e) => {
+  const handleSelectAll = useCallback((e) => {
     setSelectAll(e.target.checked);
     if (e.target.checked) {
       const allIds = currentBrands.map((brand) => brand._id); // Sử dụng brand._id
-      setSelectedBrands([...new Set([...selectedBrands, ...allIds])]); // Sử dụng new Set để loại bỏ ID trùng lặp
+      setSelectedBrands((prevSelected) => [...new Set([...prevSelected, ...allIds])]); // Sử dụng new Set để loại bỏ ID trùng lặp
     } else {
       const remainingIds = selectedBrands.filter(id => !currentBrands.some(brand => brand._id === id));
       setSelectedBrands(remainingIds);
     }
-  };
+  },[currentBrands, selectedBrands]);
 
   // Sử lý riêng lẻ checkbox
-  const handleCheckboxChange = (e, brandId) => {
-    if (e.target.checked) {
-      setSelectedBrands([...selectedBrands, brandId]); // Thêm brand ID vào danh sách đã chọn
-    } else {
-      setSelectedBrands(selectedBrands.filter((id) => id !== brandId)); // Xóa brand ID khỏi danh sách đã chọn
-    }
-  };
+  const handleCheckboxChange = useCallback((e, brandId) => {
+    setSelectedBrands((prevSelected) => 
+      e.target.checked ? [...prevSelected, brandId] : prevSelected.filter((id) => id !== brandId)
+    );
+  },[]);
 
   const handleOpenAddModal = () => setIsAddModalOpen(true);
   const handleCloseAddModal = () => setIsAddModalOpen(false);
 
   const handleOpenDeleteModal = (brand) => {
-    setSelectedBrand(brand); 
+    setBrandToDelete(brand); 
     setIsDeleteModalOpen(true); 
   };
 
   const handleCloseDeleteModal = () => {
-    setSelectedBrand(null);
+    setBrandToDelete(null);
     setIsDeleteModalOpen(false);
   };
 
   const handeOpenUpdateModal = (brand) => {
-    setSelectedBrand(brand);
+    setBrandToUpdate(brand);
     setIsUpdateModalOpen(true);
   };
   
   const handleCloseUpdateModal = () => {
-    setSelectedBrand(null);
+    setBrandToUpdate(null);
     setIsUpdateModalOpen(false);
   };
-
-  // Hàm mô phỏng sau khi hoàn thành
-  const handleSaveBrand = (brand) => {
-    console.log("New brand added:", brand);
-    handleCloseAddModal();
-  };
-  
-  const handleDeleteBrand = () => {
-    console.log(`Delete brand: ${selectedBrand.name}`);
-    handleCloseDeleteModal();
-  };
-  const handleUpdateBrand = (updatedBrand) => {
-    console.log(`Brand updated: ${updatedBrand.name}`);
-    handleCloseUpdateModal();
-  };
-
-  if (loading) return <p>Loading brands...</p>;
-  if (error) return <p>Error loading brands: {error}</p>;
   
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold">All brands</h1>
+      <h1 className="text-2xl font-bold">Danh sách thương hiệu</h1>
+
+      {loading && <p>Loading brands...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
 
       {/* Search Bar & Add Button */}
       <div className="flex justify-between items-center mt-4">
@@ -125,6 +147,8 @@ const BrandManagement = () => {
           <input
             type="text"
             placeholder="Search for brands"
+            value={searchTerm}
+            onChange={handleSearchChange}
             className="flex-grow px-4 py-2 border border-gray-200 rounded-md"
           />
           <button className="ml-2 p-2 bg-gray-200 rounded-md">
@@ -139,8 +163,6 @@ const BrandManagement = () => {
             </button>
           </div>
         </div>
-
-        {/* Add Brand Button */}
         <button 
           className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600"
           onClick={handleOpenAddModal}
@@ -161,14 +183,23 @@ const BrandManagement = () => {
               />
             </th>
             <th className="p-4">id</th>
-            <th className="p-4">brand name</th>
+            <th className="p-4 cursor-pointer" onClick={handleSortClick}>Brand Name
+                <FontAwesomeIcon
+                  icon={faUpLong}
+                  className={`ml-2 text-xs ${sortBrand === "asc" ? "text-black" : "text-gray-300"}`}
+                />
+                <FontAwesomeIcon
+                  icon={faDownLong}
+                  className={`ml-1 text-xs ${sortBrand === "desc" ? "text-black" : "text-gray-300"}`}
+                />
+              </th>
             <th className="p-4">logo</th>
-            <th className="p-4">category</th>
             <th className="p-4">actions</th>
           </tr>
         </thead>
         <tbody>
-          {currentBrands.map((brand, index) => (
+        {currentBrands.length > 0 ? (
+            currentBrands.map((brand, index) => (
             <tr
               key={index}
               className="border-b border-gray-200 text-gray-700 hover:bg-gray-100"
@@ -186,8 +217,6 @@ const BrandManagement = () => {
               <td className="p-1 text-sm">
                 <img src={brand.image} alt={brand.name} className="h-10 w-20 object-contain" />
               </td>
-              <td className="p-4 text-sm font-semibold">
-                {brand.category_id.name}</td>
               <td className="p-4 text-sm">
                 <div className="flex space-x-2">
                   <button 
@@ -207,7 +236,12 @@ const BrandManagement = () => {
                 </div>
               </td>
             </tr>
-          ))}
+          ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="text-center text-red-500 py-4">No brands found</td>
+            </tr>
+          )}
         </tbody>
 
         {/* Pagination & Count within table footer */}
@@ -217,7 +251,11 @@ const BrandManagement = () => {
               <div className="flex justify-between items-center">
                 {/* Left: Count display */}
                 <div className="text-sm text-gray-500">
-                  Hiển thị {indexOfFirstBrand + 1} đến {Math.min(indexOfLastBrand, totalBrands)} / {totalBrands} thương hiệu
+                  {searchTerm ? (
+                    `Tìm thấy : ${filteredBrand.length} kết quả`
+                  ) : (
+                    `Hiển thị ${indexOfFirstBrand + 1} đến ${Math.min(indexOfLastBrand, totalBrands)} / ${totalBrands} thương hiệu`
+                  )}
                 </div>
 
                 {/* Right: Pagination */}
@@ -246,21 +284,24 @@ const BrandManagement = () => {
 
       {/* Modal for Adding Product */}
       <BasicModal isOpen={isAddModalOpen} onRequestClose={handleCloseAddModal}>
-        <AddBrand onSave={handleSaveBrand} onClose={handleCloseAddModal} />
-      </BasicModal>
-      <BasicModal isOpen={isDeleteModalOpen} onRequestClose={handleCloseDeleteModal}>
-        <DeleteBrand 
-          brandName={selectedBrand ? selectedBrand.name : ""}
-          onDelete={handleDeleteBrand}
-          onClose={handleCloseDeleteModal}
-        />
+        <AddBrand onClose={handleCloseAddModal} />
       </BasicModal>
       <BasicModal isOpen={isUpdateModalOpen} onRequestClose={handleCloseUpdateModal}>
-        <UpdateBrand 
-          brand={selectedBrand ? selectedBrand.name : ""}
-          onUpdate={handleUpdateBrand} 
-          onClose={handleCloseUpdateModal} 
-        />
+        {brandToUpdate && (
+          <UpdateBrand
+            editBrand={brandToUpdate}
+            onClose={handleCloseUpdateModal}
+          />
+        )}
+      </BasicModal>
+      <BasicModal isOpen={isDeleteModalOpen} onRequestClose={handleCloseDeleteModal}>
+        {brandToDelete && (
+          <DeleteBrand
+            brandId={brandToDelete._id}
+            brandName={brandToDelete.name}
+            onClose={handleCloseDeleteModal}
+          />
+        )}
       </BasicModal>
     </div>
   );

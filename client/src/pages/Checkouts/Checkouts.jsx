@@ -168,6 +168,7 @@ function Checkout() {
     }
 
     setErrors({});
+    console.log(orderData);
 
     if (formData.payment === "MoMo") {
       dispatch(submitOrderPayment(orderData))

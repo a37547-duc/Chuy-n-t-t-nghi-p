@@ -32,12 +32,12 @@ const DetailsProduct = ({ data, selectedVariant }) => {
   ];
 
   const values = [
-    productDetails.brand,
-    productDetails.color,
-    productDetails.cpu,
-    productDetails.gpu,
-    productDetails.ram,
-    productDetails.storage,
+    productDetails?.brand,
+    productDetails?.color,
+    productDetails?.cpu,
+    productDetails?.gpu,
+    productDetails?.ram,
+    productDetails?.storage,
   ];
 
   return (

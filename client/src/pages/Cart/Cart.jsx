@@ -25,6 +25,10 @@ function ShoppingCart() {
     navigate('/checkouts');
   };
 
+  const handleContinueShopping = () => {
+    navigate('/');
+  };
+
   const handleQuantityChange = (itemId, newQuantity) => {
     const quantity = Math.min(99, Math.max(1, Number(newQuantity) || 1));
     dispatch(updateCartItem({ id: itemId, quantity }));
@@ -145,7 +149,7 @@ function ShoppingCart() {
                   </div>
                 ))}
               </div>
-              <div className="md:col-span-1 border rounded-md p-4 bg-gray-50 h-64">
+              <div className="md:col-span-1 border rounded-md p-4 bg-gray-50 h-68">
                 <h2 className="text-xl font-bold mb-4">Tổng đơn hàng</h2>
                 <div className="flex justify-between mb-2">
                   <span>Tổng tạm tính</span>
@@ -163,6 +167,12 @@ function ShoppingCart() {
                   className="mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
                 >
                   Thanh toán
+                </button>
+                <button
+                  onClick={handleContinueShopping}
+                  className=" mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full"
+                >
+                  Tiếp tục mua sắm
                 </button>
               </div>
             </div>

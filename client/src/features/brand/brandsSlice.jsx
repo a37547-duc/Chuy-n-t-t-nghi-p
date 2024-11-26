@@ -20,9 +20,15 @@ export const getAllBrands = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/admin/products/brand");
+      console.log("DataBrand: ",response)
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response && error.response.status === 404) {
+        // Trả về mảng rỗng nếu lỗi 404
+        return [];
+      }
+      // Các lỗi khác được xử lý bình thường
+      return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }
 );

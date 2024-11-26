@@ -14,28 +14,20 @@ export const getCategoryById = createAsyncThunk(
   }
 );
 
-
-export const createCategories = createAsyncThunk(
-  "category/getAllCategories",
-  async (_,  { rejectWithValue }) => {
-    try {
-      const response = await api.post("/admin/products/category");
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-// Thunk để gọi API lấy tất cả danh mục
 export const getAllCategories = createAsyncThunk(
   "category/getAllCategories",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/admin/products/category");
+      // console.log("DataCategory: ",response)
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      if (error.response && error.response.status === 404) {
+        // Trả về mảng rỗng nếu lỗi 404
+        return [];
+      }
+      // Các lỗi khác được xử lý bình thường
+      return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }
 );

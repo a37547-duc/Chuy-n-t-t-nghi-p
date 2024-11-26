@@ -8,12 +8,12 @@ const ImageModal = ({ isOpen, onClose, images, currentImage, setCurrentImage }) 
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showControls, setShowControls] = useState(false);
-  const modalRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentTranslateX, setCurrentTranslateX] = useState(0);
   
+  const modalRef = useRef(null);
   const currentIndex = images.indexOf(currentImage);
 
   useEffect(() => {
