@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { registerUser } from "../../features/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -86,7 +86,7 @@ function FormRegister() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-xl w-full space-y-8 bg-white p-8 rounded-lg shadow-xl transition-transform transform hover:scale-105">
+      <div className="max-w-xl w-full space-y-8 bg-white p-8 rounded-lg shadow-xl transition-transform transform">
         <div>
           <h2 className="text-center text-4xl font-bold text-gray-900">Đăng ký</h2>
         </div>
