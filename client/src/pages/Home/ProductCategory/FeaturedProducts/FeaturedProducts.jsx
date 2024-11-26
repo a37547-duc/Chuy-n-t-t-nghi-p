@@ -26,7 +26,7 @@ const FeaturedProducts = () => {
     fetch('https://laptech4k.onrender.com/api/v1/products', {credentials: "include"})
       .then(response => response.json())
       .then(data => {
-        const formattedProducts = data.laptops.map(product => {
+        const formattedProducts = data.map(product => {
           // Kiểm tra nếu product_variants tồn tại và có giá
           const price = product.product_variants ? product.product_variants.price : null;
           return {

@@ -111,6 +111,9 @@ const AccountInformation = () => {
             onChange={handleInputChange}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
           />
+          <span className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px] bg-gray-100 text-gray-700">
+            {user.email || "Chưa có email"}
+          </span>
         </div>
 
         <div>

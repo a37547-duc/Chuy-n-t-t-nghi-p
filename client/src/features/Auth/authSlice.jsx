@@ -77,8 +77,8 @@ const authSlice = createSlice({
       state.registerError = null;
       localStorage.removeItem('access_token');
       localStorage.removeItem('user'); 
-      window.location.href = "/";
       localStorage.removeItem("profile_bg_color");
+      window.location.href = "/";
       toast.success("Bạn đã đăng xuất");
     },
   },

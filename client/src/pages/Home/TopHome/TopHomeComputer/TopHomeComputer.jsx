@@ -20,15 +20,12 @@ const TopHomeComputer = () => {
               <Link to="/admin" className="bg-[#fff] ml-1">
                 Trang Admin
               </Link>
-              <Link to="/cart" className="bg-[#fff] ml-1">
-                Trang Cart
-              </Link>
-              <Link to="checkouts" className="bg-[#fff] ml-1">
+              {/* <Link to="checkouts" className="bg-[#fff] ml-1">
                 Trang Checkouts
               </Link>
               <Link to="account" className="bg-[#fff] ml-1">
                 Trang Account
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

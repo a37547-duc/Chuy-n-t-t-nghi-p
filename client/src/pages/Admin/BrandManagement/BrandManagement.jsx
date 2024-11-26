@@ -44,12 +44,7 @@ const BrandManagement = () => {
     dispatch(getAllBrands());
   }, [dispatch]);
   
-  const totalBrands = brands.length;
-  const totalPages = Math.ceil(totalBrands / brandsPerPage);
-  const handlePageClick = useCallback((data) => {setPage(data.selected);},[]);
-
-  const indexOfLastBrand = (page + 1) * brandsPerPage;
-  const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;
+  
 
   // Filter brand based on search term
   const filteredBrand = useMemo(() => {
@@ -71,6 +66,13 @@ const BrandManagement = () => {
     }
     return copiedBrands;
   }, [filteredBrand, sortBrand]);
+
+  const totalBrands = filteredBrand.length;
+  const totalPages = Math.ceil(totalBrands / brandsPerPage);
+  const handlePageClick = useCallback((data) => {setPage(data.selected);},[]);
+
+  const indexOfLastBrand = (page + 1) * brandsPerPage;
+  const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;
 
   const currentBrands = sortedBrands.slice(indexOfFirstBrand, indexOfLastBrand);
 
@@ -138,7 +140,6 @@ const BrandManagement = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold">Danh sách thương hiệu</h1>
 
-      {loading && <p>Loading brands...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
 
       {/* Search Bar & Add Button */}
@@ -171,116 +172,145 @@ const BrandManagement = () => {
         </button>
       </div>
 
+      {loading && (
+        <div className="flex justify-center items-center mt-6">
+          <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            ></path>
+          </svg>
+          <span className="ml-2 text-blue-500">Loading...</span>
+        </div>
+      )}
+
+      {error && (
+        <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
+          <p>Lỗi: {error.message || error}</p>
+        </div>
+      )}
+
       {/* Brand Table */}
-      <table className="table-auto w-full mt-6 bg-white shadow-md rounded-lg">
-        <thead>
-          <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
-            <th className="p-4">
-              <input 
-                  type="checkbox" 
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-              />
-            </th>
-            <th className="p-4">id</th>
-            <th className="p-4 cursor-pointer" onClick={handleSortClick}>Brand Name
-                <FontAwesomeIcon
-                  icon={faUpLong}
-                  className={`ml-2 text-xs ${sortBrand === "asc" ? "text-black" : "text-gray-300"}`}
-                />
-                <FontAwesomeIcon
-                  icon={faDownLong}
-                  className={`ml-1 text-xs ${sortBrand === "desc" ? "text-black" : "text-gray-300"}`}
+      {!loading && !error && (
+        <table className="table-auto w-full mt-6 bg-white shadow-md rounded-lg">
+          <thead onMouseDown={(event) => {event.preventDefault();}}>
+            <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
+              <th className="p-4">
+                <input 
+                    type="checkbox" 
+                    checked={selectAll}
+                    onChange={handleSelectAll}
                 />
               </th>
-            <th className="p-4">logo</th>
-            <th className="p-4">actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        {currentBrands.length > 0 ? (
-            currentBrands.map((brand, index) => (
-            <tr
-              key={index}
-              className="border-b border-gray-200 text-gray-700 hover:bg-gray-100"
-            >
-              <td className="p-4">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600 transition duration-150 ease-in-out border border-gray-300 rounded"
-                  checked={selectedBrands.includes(brand._id)}
-                  onChange={(e) => handleCheckboxChange(e, brand._id)}
-                />
-              </td>
-              <td className="p-4 text-sm">{brand._id}</td>
-              <td className="p-4 text-sm font-semibold">{brand.name}</td>
-              <td className="p-1 text-sm">
-                <img src={brand.image} alt={brand.name} className="h-10 w-20 object-contain" />
-              </td>
-              <td className="p-4 text-sm">
-                <div className="flex space-x-2">
-                  <button 
-                    className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    onClick={() => handeOpenUpdateModal(brand)}
-                  >
-                    <FaEdit className="mr-2" />
-                    Edit
-                  </button>
-                  <button 
-                    className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                    onClick={() => handleOpenDeleteModal(brand)}
+              <th className="p-4">id</th>
+              <th className="p-4 cursor-pointer" onClick={handleSortClick}>Brand Name
+                  <FontAwesomeIcon
+                    icon={faUpLong}
+                    className={`ml-2 text-xs ${sortBrand === "asc" ? "text-black" : "text-gray-300"}`}
+                  />
+                  <FontAwesomeIcon
+                    icon={faDownLong}
+                    className={`ml-1 text-xs ${sortBrand === "desc" ? "text-black" : "text-gray-300"}`}
+                  />
+                </th>
+              <th className="p-4">logo</th>
+              <th className="p-4">actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentBrands.length > 0 ? (
+              currentBrands.map((brand, index) => (
+              <tr
+                key={index}
+                className="border-b border-gray-200 text-gray-700 hover:bg-gray-100"
+              >
+                <td className="p-4">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox text-blue-600 transition duration-150 ease-in-out border border-gray-300 rounded"
+                    checked={selectedBrands.includes(brand._id)}
+                    onChange={(e) => handleCheckboxChange(e, brand._id)}
+                  />
+                </td>
+                <td className="p-4 text-sm">{brand._id}</td>
+                <td className="p-4 text-sm font-semibold">{brand.name}</td>
+                <td className="p-1 text-sm">
+                  <img src={brand.image} alt={brand.name} className="h-10 w-20 object-contain" />
+                </td>
+                <td className="p-4 text-sm">
+                  <div className="flex space-x-2">
+                    <button 
+                      className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                      onClick={() => handeOpenUpdateModal(brand)}
                     >
-                    <FaTrashAlt className="mr-2" />
-                    Delete
-                  </button>
+                      <FaEdit className="mr-2" />
+                      Edit
+                    </button>
+                    <button 
+                      className="flex items-center bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                      onClick={() => handleOpenDeleteModal(brand)}
+                      >
+                      <FaTrashAlt className="mr-2" />
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center text-red-500 py-4">Thương hiệu không tồn tại</td>
+              </tr>
+            )}
+          </tbody>
+
+          {/* Pagination & Count within table footer */}
+          <tfoot>
+            <tr>
+              <td colSpan="5" className="p-4">
+                <div className="flex justify-between items-center">
+                  {/* Left: Count display */}
+                  <div className="text-sm text-gray-500">
+                    {searchTerm ? (
+                      `Tìm thấy : ${filteredBrand.length} kết quả`
+                    ) : (
+                      `Hiển thị ${indexOfFirstBrand + 1} đến ${Math.min(indexOfLastBrand, totalBrands)} / ${totalBrands} thương hiệu`
+                    )}
+                  </div>
+
+                  {/* Right: Pagination */}
+                  <div className="flex justify-end">
+                  <ReactPaginate
+                    previousLabel={<FontAwesomeIcon icon={faChevronLeft} size="xs" />}
+                    nextLabel={<FontAwesomeIcon icon={faChevronRight} size="xs" />}
+                    pageCount={totalPages}
+                    onPageChange={handlePageClick}
+                    containerClassName={"flex items-center space-x-2"}
+                    previousLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                    nextLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                    disabledClassName={"text-blue-500"}
+                    activeLinkClassName={"bg-blue-500 text-white rounded w-8 h-8 flex items-center justify-center hover:bg-blue-600"}
+                    pageClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
+                    pageLinkClassName={"w-full h-full flex items-center justify-center focus:outline-none"}
+                    breakLabel={"..."}
+                    breakClassName={"w-8 h-8 flex items-center justify-center text-gray-500"}
+                  />
+                  </div>
                 </div>
               </td>
             </tr>
-          ))
-          ) : (
-            <tr>
-              <td colSpan="4" className="text-center text-red-500 py-4">No brands found</td>
-            </tr>
-          )}
-        </tbody>
-
-        {/* Pagination & Count within table footer */}
-        <tfoot>
-          <tr>
-            <td colSpan="7" className="p-4">
-              <div className="flex justify-between items-center">
-                {/* Left: Count display */}
-                <div className="text-sm text-gray-500">
-                  {searchTerm ? (
-                    `Tìm thấy : ${filteredBrand.length} kết quả`
-                  ) : (
-                    `Hiển thị ${indexOfFirstBrand + 1} đến ${Math.min(indexOfLastBrand, totalBrands)} / ${totalBrands} thương hiệu`
-                  )}
-                </div>
-
-                {/* Right: Pagination */}
-                <div className="flex justify-end">
-                <ReactPaginate
-                  previousLabel={<FontAwesomeIcon icon={faChevronLeft} size="xs" />}
-                  nextLabel={<FontAwesomeIcon icon={faChevronRight} size="xs" />}
-                  pageCount={totalPages}
-                  onPageChange={handlePageClick}
-                  containerClassName={"flex items-center space-x-2"}
-                  previousLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
-                  nextLinkClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
-                  disabledClassName={"text-blue-500"}
-                  activeLinkClassName={"bg-blue-500 text-white rounded w-8 h-8 flex items-center justify-center hover:bg-blue-600"}
-                  pageClassName={"w-8 h-8 flex items-center justify-center bg-white border rounded shadow hover:bg-gray-100"}
-                  pageLinkClassName={"w-full h-full flex items-center justify-center focus:outline-none"}
-                  breakLabel={"..."}
-                  breakClassName={"w-8 h-8 flex items-center justify-center text-gray-500"}
-                />
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </tfoot>
+        </table>
+      )}
 
       {/* Modal for Adding Product */}
       <BasicModal isOpen={isAddModalOpen} onRequestClose={handleCloseAddModal}>
