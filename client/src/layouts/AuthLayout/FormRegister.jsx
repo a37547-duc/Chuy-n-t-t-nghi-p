@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { registerUser } from "../../features/Auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function FormRegister() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { registerLoading } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    username: "",
+    email: "",
+    password: "",
+    authType: "local",
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -18,12 +25,15 @@ function FormRegister() {
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: '', // Xóa lỗi khi người dùng nhập liệu
+      [name]: "",
     }));
   };
 
   const validateForm = () => {
     const newErrors = {};
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    const whiteSpaceRegex = /\s/;
+  
     if (!formData.username.trim()) {
       newErrors.username = "Tên người dùng không được để trống";
     }
@@ -32,24 +42,45 @@ function FormRegister() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Email không đúng định dạng";
     }
-    if (formData.password.length < 6) {
+    if (!formData.password.trim()) {
+      newErrors.password = "Mật khẩu không được để trống";
+    } else if (formData.password.length < 6) {
       newErrors.password = "Mật khẩu phải chứa ít nhất 6 ký tự";
+    } else if (!specialCharRegex.test(formData.password)) {
+      newErrors.password = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt (!@#$%^&*...)";
+    } else if (whiteSpaceRegex.test(formData.password)) {
+      newErrors.password = "Mật khẩu không được chứa khoảng trắng";
     }
-    if (formData.password !== formData.confirmPassword) {
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = "Nhập lại mật khẩu không được để trống";
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Mật khẩu và xác nhận mật khẩu không khớp";
     }
     return newErrors;
   };
+  
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-    } else {
-      setErrors({});
-      console.log('Dữ liệu hợp lệ, đăng ký:', formData);
-      // Xử lý đăng ký người dùng hoặc gọi API
+      return;
+    }
+
+    const userData = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      authType: formData.authType,
+    };
+
+    try {
+      await dispatch(registerUser(userData)).unwrap();
+      navigate("/login");
+    } catch (error) {
+      setErrors({ apiError: "Đăng ký thất bại. Vui lòng thử lại!" });
+      console.error("Đăng ký thất bại:", error);
     }
   };
 
@@ -70,8 +101,11 @@ function FormRegister() {
               type="text"
               autoComplete="username"
               placeholder="Nhập tên người dùng"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.username ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.username ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.username}
               onChange={handleInputChange}
             />
@@ -84,11 +118,14 @@ function FormRegister() {
             <input
               id="email"
               name="email"
-              type="email"
+              // type="email"
               autoComplete="email"
               placeholder="Nhập email"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.email ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.email}
               onChange={handleInputChange}
             />
@@ -104,8 +141,11 @@ function FormRegister() {
               type="password"
               autoComplete="new-password"
               placeholder="Nhập mật khẩu"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.password ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.password}
               onChange={handleInputChange}
             />
@@ -121,8 +161,11 @@ function FormRegister() {
               type="password"
               autoComplete="new-password"
               placeholder="Nhập lại mật khẩu"
-              required
-              className="mt-1 p-3 block w-full border border-gray-300 focus:border-2 focus:border-indigo-500 focus:outline-none rounded-md"
+              className={`mt-1 p-3 block w-full border ${
+                errors.confirmPassword ? "border-red-500" : "border-gray-300"
+              } focus:border-2 focus:${
+                errors.confirmPassword ? "border-red-500" : "border-indigo-500"
+              } focus:outline-none rounded-md`}
               value={formData.confirmPassword}
               onChange={handleInputChange}
             />
@@ -131,15 +174,18 @@ function FormRegister() {
           <div>
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200"
+              disabled={registerLoading}
+              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-white ${
+                registerLoading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
+              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200`}
             >
-              Đăng ký
+              {registerLoading ? "Đang xử lý..." : "Đăng ký"}
             </button>
           </div>
         </form>
         <div className="text-sm text-center">
           <p>
-            Đã có tài khoản?{' '}
+            Đã có tài khoản?{" "}
             <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
               Đăng nhập
             </Link>

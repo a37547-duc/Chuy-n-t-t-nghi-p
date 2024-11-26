@@ -1,11 +1,8 @@
-/* eslint-disable react/prop-types */
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProduct } from "../../../features/Admin/adminProductsSlice";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
 import { getAllCategories } from "../../../features/category/categoriesSlice";
-import { getAllUseCase } from "../../../features/usecase/usecaseSlice";
 import { getAllProducts } from "../../../features/product/productsSlice";
 import ImageUpload from "../../images/ImageUpload";
 
@@ -13,30 +10,57 @@ const UpdateProduct = ({ onClose, data }) => {
   const dispatch = useDispatch();
   const { categories, loading: loadingCategories } = useSelector((state) => state.category);
   const { brands, loading: loadingBrands } = useSelector((state) => state.brand);
-  const { useCases, loading: loadingUseCases } = useSelector((state) => state.useCase);
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
-    defaultValues: {
-      name: data?.name || "",
-      category: data?.category?._id || "",
-      brand: data?.brand?._id || "",
-      description: data?.description || "",
-      use_case_ids: data?.use_cases?._id || "",
-      images: data?.images || [],
-    },
+
+  const [formData, setFormData] = useState({
+    name: data?.name || "",
+    category: data?.category?._id || "",
+    brand: data?.brand?._id || "",
+    description: data?.description || "",
+    images: data?.images || [],
   });
 
-  const handleImageUpload = (url) => {
-    setValue("images", [url]);
-  };
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     dispatch(getAllCategories());
     dispatch(getAllBrands());
-    dispatch(getAllUseCase());
   }, [dispatch]);
 
-  const onSubmit = async (formData) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = (url) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: [...prev.images, url],
+    }));
+  };
+
+  const handleImageRemove = (url) => {
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((image) => image !== url),
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Tên sản phẩm là bắt buộc";
+    if (!formData.category) newErrors.category = "Danh mục là bắt buộc";
+    if (!formData.brand) newErrors.brand = "Thương hiệu là bắt buộc";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
     try {
+      console.log(data._id);
       await dispatch(updateProduct({ id: data._id, updatedProduct: formData })).unwrap();
       setTimeout(() => {
         dispatch(getAllProducts());
@@ -48,38 +72,20 @@ const UpdateProduct = ({ onClose, data }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4">
       <h2 className="mb-4 text-xl font-semibold tracking-wide">Cập nhật sản phẩm</h2>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium">Tên sản phẩm</label>
           <input
             type="text"
-            {...register("name", { required: "Tên sản phẩm là bắt buộc" })}
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
             className={`mt-1 block w-full border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
           />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium">Nhu cầu sử dụng</label>
-          <select
-            {...register("use_case_ids", { required: "Nhu cầu sử dụng là bắt buộc" })}
-            className={`mt-1 block w-full border ${errors.use_case_ids ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
-          >
-            <option disabled value="">Chọn nhu cầu sử dụng</option>
-            {loadingUseCases ? (
-              <option disabled>Đang tải...</option>
-            ) : (
-              useCases.map((useCase) => (
-                <option key={useCase._id} value={useCase._id}>
-                  {useCase.name}
-                </option>
-              ))
-            )}
-          </select>
-          {errors.use_case_ids && <p className="text-red-500 text-sm">{errors.use_case_ids.message}</p>}
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
       </div>
 
@@ -87,7 +93,9 @@ const UpdateProduct = ({ onClose, data }) => {
         <div>
           <label className="block text-sm font-medium">Danh mục</label>
           <select
-            {...register("category", { required: "Danh mục là bắt buộc" })}
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
             className={`mt-1 block w-full border ${errors.category ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
           >
             <option disabled value="">Chọn danh mục</option>
@@ -101,13 +109,15 @@ const UpdateProduct = ({ onClose, data }) => {
               ))
             )}
           </select>
-          {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
+          {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
         </div>
 
         <div>
           <label className="block text-sm font-medium">Thương hiệu</label>
           <select
-            {...register("brand", { required: "Thương hiệu là bắt buộc" })}
+            name="brand"
+            value={formData.brand}
+            onChange={handleInputChange}
             className={`mt-1 block w-full border ${errors.brand ? 'border-red-500' : 'border-gray-300'} focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
           >
             <option disabled value="">Chọn thương hiệu</option>
@@ -121,22 +131,28 @@ const UpdateProduct = ({ onClose, data }) => {
               ))
             )}
           </select>
-          {errors.brand && <p className="text-red-500 text-sm">{errors.brand.message}</p>}
+          {errors.brand && <p className="text-red-500 text-sm">{errors.brand}</p>}
         </div>
       </div>
 
       <div>
         <label className="block text-sm font-medium">Mô tả</label>
         <textarea
-          {...register("description")}
+          name="description"
+          value={formData.description}
+          onChange={handleInputChange}
           className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
           rows="4"
         ></textarea>
       </div>
 
       <div>
-        <label className="block text-sm font-medium"></label>
-        <ImageUpload onUpload={handleImageUpload} existingImages={data.images} />
+        <label className="block text-sm font-medium">Hình ảnh</label>
+        <ImageUpload
+          onUpload={handleImageUpload}
+          onRemove={handleImageRemove}
+          existingImages={formData.images}
+        />
       </div>
 
       <div className="flex justify-end space-x-2">

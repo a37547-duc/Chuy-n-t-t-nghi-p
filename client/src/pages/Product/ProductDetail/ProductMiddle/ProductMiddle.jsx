@@ -43,7 +43,7 @@ const ProductDetailMiddle = ({product, selectedVariant}) => {
                 <div className="py-4 font-bold text-[20px]">Mô tả sản phẩm</div>
               </div>
               <div className="p-4">
-                <div className="text-[14px]">{product.product.description}</div>
+                <div className="text-[14px]">{product?.product?.description}</div>
               </div>
             </div>
 

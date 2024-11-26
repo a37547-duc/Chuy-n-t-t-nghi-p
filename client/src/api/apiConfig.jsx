@@ -1,6 +1,7 @@
 import axios from 'axios';
-export const API_BASE_URL = 'https://laptech4k.onrender.com/api/v1';
+import { toast } from 'react-toastify';
 
+export const API_BASE_URL = 'https://laptech4k.onrender.com/api/v1';
 
 export const api = axios.create({
     baseURL: API_BASE_URL,
@@ -8,13 +9,6 @@ export const api = axios.create({
         "Content-Type": "application/json"
     },
 });
-
-// export const getTokenFromLocalStorage = () => {
-//     if (typeof window !== "undefined") {
-//       return localStorage.getItem("access_token") || "";
-//     }
-//     return "";
-// };
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access_token");
@@ -26,19 +20,16 @@ api.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-// api.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("access_token");
-
-//     console.log("LẤY TOKEN TỪ LOCALSTORAGE: ", token);
-
-//     if (token) {
-//       config.headers.Authorization = `bearer ${token}`;
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.clear();
+      toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+    }
+    return Promise.reject(error);
+  }
+);

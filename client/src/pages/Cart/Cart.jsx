@@ -22,9 +22,7 @@ function ShoppingCart() {
   //   setItems(updatedItems);
   // };
   const handleCheckout = () => {
-    navigate('/checkouts', {
-      state: { items, totalAmount }
-    });
+    navigate('/checkouts');
   };
 
   const handleQuantityChange = (itemId, newQuantity) => {

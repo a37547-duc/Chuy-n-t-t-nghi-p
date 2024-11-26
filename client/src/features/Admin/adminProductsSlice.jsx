@@ -22,11 +22,26 @@ export const updateProduct = createAsyncThunk(
   "product/updateProduct",
   async ({ id, updatedProduct }, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(
-        `https://laptech4k.onrender.com/api/v1/admin/products/edit/${id}`,
+      const response = await api.patch(
+        `/admin/products/edit/${id}`,
         updatedProduct,
       );
       return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Thunk để gọi API xóa sản phẩm
+export const deleteProduct = createAsyncThunk(
+  "product/deleteProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(
+        `/admin/products/delete/${id}`
+      );
+      return { id, message: response.data.message };
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -77,6 +92,22 @@ const adminProductSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         toast.error("Cập nhập sản phẩm thất bại. Vui lòng thử lại!");
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = state.products.filter(
+          (product) => product.id !== action.payload.id
+        );
+        toast.success("Xóa sản phẩm thành công!");
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Xóa sản phẩm thất bại. Vui lòng thử lại!");
       });
   },
 });
