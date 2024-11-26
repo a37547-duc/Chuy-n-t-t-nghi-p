@@ -36,7 +36,6 @@ const cartSlice = createSlice({
         existingItem.quantity = quantity;
         state.totalAmount += priceDifference;
         toast.success("Cập nhập sản phẩm thành công");
-
         localStorage.setItem("cart", JSON.stringify(state));
       }
     },

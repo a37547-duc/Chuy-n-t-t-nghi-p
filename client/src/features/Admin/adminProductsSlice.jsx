@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../api/apiConfig";
-import axios from "axios";
 
 // Thunk để gọi API thêm sản phẩm
 export const addProduct = createAsyncThunk(

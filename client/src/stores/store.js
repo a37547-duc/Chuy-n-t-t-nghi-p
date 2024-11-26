@@ -13,6 +13,7 @@ import userReducer from "../features/user/userSlice"
 import authReducer from "../features/Auth/authSlice";
 import authProfileReducer from "../features/Auth/authProfileSlice";
 import authOrdersUserReducer from "../features/Auth/authOrdersUserSlice";
+import statsReducer from "../features/Admin/statistical"
 
 export const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export const store = configureStore({
     auth: authReducer,
     profile: authProfileReducer,
     ordersUser: authOrdersUserReducer,
+    stats: statsReducer,
   },
 });
 
