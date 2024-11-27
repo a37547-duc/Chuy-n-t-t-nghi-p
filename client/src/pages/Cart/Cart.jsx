@@ -82,7 +82,7 @@ function ShoppingCart() {
                     key={item._id}
                     className="border rounded-md p-4 mb-4 flex justify-between items-start"
                   >
-                    <div className="flex">
+                    <div className="flex max-w-[400px]">
                       <img
                         src={item.image}
                         alt={item.name}

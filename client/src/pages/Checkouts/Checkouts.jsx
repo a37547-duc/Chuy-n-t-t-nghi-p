@@ -173,8 +173,12 @@ function Checkout() {
     if (formData.payment === "MoMo") {
       dispatch(submitOrderPayment(orderData))
         .then((result) => {
-          console.log("Đặt hàng thành công qua MoMo", result);
-          dispatch(clearCart());
+          if (submitOrderPayment.fulfilled.match(result)) {
+            console.log("Đặt hàng thành công qua MoMo:", result.payload);
+            dispatch(clearCart());
+          } else {
+            console.error("Đặt hàng qua MoMo không thành công:", result.payload);
+          }
         })
         .catch((error) => {
           console.error("Lỗi khi đặt hàng qua MoMo:", error);
@@ -182,12 +186,18 @@ function Checkout() {
     } else if (formData.payment === "Thanh toán khi nhận hàng") {
       dispatch(submitOrderCod(orderData))
         .then((result) => {
-          dispatch(clearCart());
+          if (submitOrderCod.fulfilled.match(result)) {
+            console.log("Đặt hàng thành công với thanh toán khi nhận hàng:", result.payload);
+            dispatch(clearCart());
+          } else {
+            console.error("Đặt hàng với thanh toán khi nhận hàng không thành công:", result.payload);
+          }
         })
         .catch((error) => {
           console.error("Lỗi khi đặt hàng với thanh toán khi nhận hàng:", error);
         });
     }
+    
   };
 
   const formatNumber = (num) => {

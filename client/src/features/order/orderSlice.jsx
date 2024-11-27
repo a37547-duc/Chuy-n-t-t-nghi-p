@@ -69,6 +69,7 @@ const orderSlice = createSlice({
 },
   extraReducers: (builder) => {
     builder
+      // Đặt hàng qua MoMo
       .addCase(submitOrderPayment.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -81,9 +82,10 @@ const orderSlice = createSlice({
       })
       .addCase(submitOrderPayment.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-        toast.error("Đặt hàng không thành công");
+        state.error = action.payload.error;
+        toast.error(state.error);
       })
+      // Đặt hàng Cod
       .addCase(submitOrderCod.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -96,9 +98,10 @@ const orderSlice = createSlice({
       })
       .addCase(submitOrderCod.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-        toast.error("Đặt hàng không thành công");
+        state.error = action.payload.error;
+        toast.error(state.error);
       })
+      // Get Danh sách đơn hàng
       .addCase(getAllOrders.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -112,6 +115,7 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      // Thay đổi trạng thái
       .addCase(changeOrderStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
