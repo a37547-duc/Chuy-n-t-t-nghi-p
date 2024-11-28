@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from "../../api/apiConfig";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 // Thunk to get all orders
 export const getAllOrders = createAsyncThunk(
   'order/getAllOrders',
@@ -83,7 +82,6 @@ const orderSlice = createSlice({
       .addCase(submitOrderPayment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
-        toast.error(state.error);
       })
       // Đặt hàng Cod
       .addCase(submitOrderCod.pending, (state) => {
@@ -99,7 +97,6 @@ const orderSlice = createSlice({
       .addCase(submitOrderCod.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
-        toast.error(state.error);
       })
       // Get Danh sách đơn hàng
       .addCase(getAllOrders.pending, (state) => {

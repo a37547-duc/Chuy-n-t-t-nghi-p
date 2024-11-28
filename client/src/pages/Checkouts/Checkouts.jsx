@@ -4,12 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import {submitOrderPayment, submitOrderCod} from "../../features/order/orderSlice";
 import { Link } from 'react-router-dom';
 import { clearCart } from "../../features/cart/cartSlice"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Checkout() {
   const navigate = useNavigate()
   const location = useLocation();
   const dispatch = useDispatch();
   const cartData = JSON.parse(localStorage.getItem('cart'));
+  const { loading } = useSelector((state) => state.order);
   useEffect(() => {
     if (!cartData) {
       navigate("/cart");
@@ -159,25 +162,22 @@ function Checkout() {
       },
       paymentMethod: formData.payment, 
     }
-
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
     setErrors({});
-    console.log(orderData);
-
     if (formData.payment === "MoMo") {
       dispatch(submitOrderPayment(orderData))
         .then((result) => {
-          if (submitOrderPayment.fulfilled.match(result)) {
-            console.log("Đặt hàng thành công qua MoMo:", result.payload);
+          if (!result.error) {
+            console.log("Đặt hàng thành công qua MoMo");
             dispatch(clearCart());
           } else {
-            console.error("Đặt hàng qua MoMo không thành công:", result.payload);
+            toast.error(result.payload.error)
+            console.error("Đặt hàng qua MoMo không thành công");
           }
         })
         .catch((error) => {
@@ -186,18 +186,19 @@ function Checkout() {
     } else if (formData.payment === "Thanh toán khi nhận hàng") {
       dispatch(submitOrderCod(orderData))
         .then((result) => {
-          if (submitOrderCod.fulfilled.match(result)) {
-            console.log("Đặt hàng thành công với thanh toán khi nhận hàng:", result.payload);
+          if (!result.error) {
+            console.log("Đặt hàng thành công với thanh toán khi nhận hàng");
             dispatch(clearCart());
           } else {
-            console.error("Đặt hàng với thanh toán khi nhận hàng không thành công:", result.payload);
+            toast.error(result.payload.error)
+            console.error("Đặt hàng không thành công");
           }
         })
         .catch((error) => {
           console.error("Lỗi khi đặt hàng với thanh toán khi nhận hàng:", error);
         });
     }
-    
+
   };
 
   const formatNumber = (num) => {
@@ -378,11 +379,14 @@ function Checkout() {
                 <span className="font-semibold">{formatNumber(totalAmount)}</span>
               </div>
             </div>
-
-            <button type="submit" 
-              onClick={handleSubmit}
-              className="w-full p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-md">
-              Đặt hàng
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full p-3 ${
+                loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
+              } text-white rounded-md`}
+            >
+              {loading ? 'Đang xử lý...' : 'Đặt hàng'}
             </button>
           </div>
         </form>

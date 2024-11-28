@@ -22,7 +22,7 @@ function ShoppingCart() {
   //   setItems(updatedItems);
   // };
   const handleCheckout = () => {
-    navigate('/checkouts');
+    window.location.href = "/checkouts";
   };
 
   const handleContinueShopping = () => {
