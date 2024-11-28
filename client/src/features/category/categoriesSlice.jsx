@@ -14,6 +14,7 @@ export const getCategoryById = createAsyncThunk(
   }
 );
 
+// Lấy danh sách tất cả danh mục
 export const getAllCategories = createAsyncThunk(
   "category/getAllCategories",
   async (_, { rejectWithValue }) => {

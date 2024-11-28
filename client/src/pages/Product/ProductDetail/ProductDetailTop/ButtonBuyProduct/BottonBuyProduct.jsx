@@ -30,8 +30,15 @@ const ButtonBuyProduct = ({ product, variant }) => {
       {/* Kiểm tra variant */}
       {isVariantAvailable ? (
         <>
-          <div className='flex-grow flex-shrink basis-0'>
-            <button className='h-[50px] bg-blue-600 cursor-pointer w-full text-white font-bold rounded hover:bg-blue-700'>
+          <div
+        className='flex-grow flex-shrink basis-0'
+        onClick={() => {
+          handleClickAddProductToCart();
+          window.location.href = "/cart";
+        }}
+      >
+            <button 
+          className='h-[50px] bg-blue-600 cursor-pointer w-full text-white font-bold rounded hover:bg-blue-700'>
               Mua ngay
             </button>
           </div>

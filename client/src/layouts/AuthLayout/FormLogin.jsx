@@ -50,7 +50,6 @@ function FormLogin() {
     return newErrors;
   };
     
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();

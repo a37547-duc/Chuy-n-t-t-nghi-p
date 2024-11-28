@@ -4,32 +4,35 @@ import ProtectedRouter from "./components/protected/ProtectedRouter";
 import Home from "./pages/Home/Home";
 import App from "./App";
 // import Root from "./pages/Root";
-import ProductDetail from "./pages/Product/ProductDetail/ProductDetail";
-import ProductList from "./pages/Product/ProductList/ProductList";
 import Cart from "./pages/Cart/Cart";
 import Checkouts from "./pages/Checkouts/Checkouts";
 import Collections from "./pages/Collections/Collections";
+import ProductList from "./pages/Product/ProductList/ProductList";
+import ProductDetail from "./pages/Product/ProductDetail/ProductDetail";
+import ProductOneBrand from "./pages/Product/ProductOneBrand/ProductOneBrand";
+
 import Account from "./pages/Account/Account";
-import AccountInformation from "./pages/Account/AccountComputer/AccountInformation/AccountInformation";
 import AccountOrder from "./pages/Account/AccountComputer/AccountOrder/AccountOrder";
+import InformationUser from "./pages/Account/AccountMobile/InformationUser/InformationUser";
+import AccountInformation from "./pages/Account/AccountComputer/AccountInformation/AccountInformation";
+import PurchaseHistoryUser from "./pages/Account/AccountMobile/PurchaseHistoryUser/PurchaseHistoryUser";
 import AccountNotification from "./pages/Account/AccountComputer/AccountNotification/AccountNotification";
+import ChangePasswordMobile from "./pages/Account/AccountMobile/ChangePasswordMobile/ChangePasswordMobile";
+import AccountChangePassword from "./pages/Account/AccountComputer/AccountChangePassword/AccountChangePassword";
+
 import AdminLayout from "./pages/Admin/AdminLayout";
 import DashBoard from "./pages/Admin/DashBoard/DashBoard";
-import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
-import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
 import UserManagement from "./pages/Admin/UserManagement/UserManagement";
+import BrandManagement from "./pages/Admin/BrandManagement/BrandManagement";
+import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement";
+import ProductVariation from "./pages/Admin/ProductManagement/ProductVariation";
+import ProductManagement from "./pages/Admin/ProductManagement/ProductManagement";
+import RestoreManagement from "./pages/Admin/RestoreManagement/RestoreManagement";
+import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManagement";
+
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
-import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement"
-import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManagement"
-import RestoreManagement from "./pages/Admin/RestoreManagement/RestoreManagement";
-import ProductVariation from "./pages/Admin/ProductManagement/ProductVariation";
 
-import AccountChangePassword from "./pages/Account/AccountComputer/AccountChangePassword/AccountChangePassword";
-import InformationUser from "./pages/Account/AccountMobile/InformationUser/InformationUser";
-import PurchaseHistoryUser from "./pages/Account/AccountMobile/PurchaseHistoryUser/PurchaseHistoryUser";
-import ChangePasswordMobile from "./pages/Account/AccountMobile/ChangePasswordMobile/ChangePasswordMobile";
-import ProductOneBrand from "./pages/Product/ProductOneBrand/ProductOneBrand";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,6 +55,13 @@ const router = createBrowserRouter([
       {
         path: "/productList",
         element: <ProductList></ProductList>,
+
+        children: [
+          {
+            path: ":name",
+            element: <ProductList></ProductList>,
+          }
+        ],
       },
       {
         path: "/productOneBrand",

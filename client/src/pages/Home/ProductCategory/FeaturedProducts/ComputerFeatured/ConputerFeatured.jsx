@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ComputerFeatured = ({ currentProducts }) => {
-  // console.log("Data: ", currentProducts);
+  // useEffect(()=> {
+  //   console.log("Data: ", currentProducts);
+  // })
   const navigate = useNavigate();
 
   const handleProductClick = (productId) => {
@@ -57,7 +60,7 @@ const ComputerFeatured = ({ currentProducts }) => {
                         : "text-[rgb(20,53,195)]"
                     }`}
                   >
-                    {product.status === "out of stock" ? "Hết hàng" : `${product.price} đ`}
+                    {product.status === "out of stock" ? "Hết hàng" : `${product?.product_variants?.price?.toLocaleString()} VNĐ`}
                   </div>
                 </div>
               </div>

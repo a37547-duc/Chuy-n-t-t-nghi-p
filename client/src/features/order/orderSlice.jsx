@@ -75,7 +75,7 @@ const orderSlice = createSlice({
       })
       .addCase(submitOrderPayment.fulfilled, (state, action) => {
         state.loading = false;
-        state.orderInfo = action.payload.data.payUrl;
+        state.orderInfo = action.payload.paymentData.payUrl;
         toast.success("Đặt hàng thành công");
         window.location.href = state.orderInfo;
       })

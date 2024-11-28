@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProductVariations } from "../../../features/product/productVariationSlice";
 import AddLaptopVariation from "../../../components/admin/ProductVariation/AddLaptopVariation";
 import DeleteProductVariation from "../../../components/admin/ProductVariation/DeleteProductVariation";
+import UpdateProductVariation from "../../../components/admin/ProductVariation/UpdateProductVariation";
 
 const ProductVariation = () => {
   const { productId } = useParams();
@@ -18,7 +19,7 @@ const ProductVariation = () => {
   const variationsPerPage = 7;
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  console.log(variations);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [id, setId] = useState(null);
   const [initVariant, setInitVariant] = useState(null);
   
@@ -75,7 +76,7 @@ const ProductVariation = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold">Variations for Product ID: {productId}</h1>
+      <h1 className="text-2xl font-bold">Biến thể của sản phẩm: {productId}</h1>
       {/* Search Bar & Add Button */}
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
@@ -182,16 +183,17 @@ const ProductVariation = () => {
                       )}
                     </div>
                   </td>
-                  <td className="p-4 text-sm">{variation.price} VNĐ</td>
+                  <td className="p-4 text-sm">{variation.price?.toLocaleString()} VNĐ</td>
                   <td className="p-4 text-sm">{variation.stock_quantity}</td>
                   <td className="p-4 text-sm">
                     <div className="flex space-x-2">
                       <button 
                         className="flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                        // onClick={() => {
-                        //   handleOpenUpdateModal();
-                        //   setInitVariant(variation);
-                        // }}
+                        onClick={() => {
+                          handleOpenUpdateModal();
+                          setInitVariant(variation);
+                          setId(variation._id);
+                        }}
                       >
                         <FaEdit className="mr-2" />
                         Edit
@@ -255,35 +257,36 @@ const ProductVariation = () => {
         onRequestClose={handleCloseAddModal}
         title={`Thêm biến thể sản phẩm`}
       >
-          <AddLaptopVariation
-            productId={productId} 
-            onClose={handleCloseAddModal} 
-          />
-        
+        <AddLaptopVariation
+          productId={productId} 
+          onClose={handleCloseAddModal} 
+        />
       </BasicModal>
       
       <BasicModal
         isOpen={isDeleteModalOpen}
-        onClose={handleCloseDeleteModal}
+        onRequestClose={handleCloseDeleteModal}
         title="Xóa biến thể sản phẩm"
       >
         <DeleteProductVariation
+          productId={productId}
           data={id}
           onClose={handleCloseDeleteModal} 
         />
       </BasicModal>
-      
-      {/* <BasicModal
+
+      <BasicModal
         isOpen={isUpdateModalOpen}
-        onClose={handleCloseUpdateModal}
-        title="Cập nhật biến thể sản phẩm"
+        onRequestClose={handleCloseUpdateModal}
+        title="Xóa biến thể sản phẩm"
       >
-        <UpdateProductVariation 
-          variation={initV} 
-          onUpdate={handleUpdateVariation} 
+        <UpdateProductVariation
+          productId={productId}
+          data={initVariant}
+          id={id}
           onClose={handleCloseUpdateModal} 
         />
-      </BasicModal> */}
+      </BasicModal>
     </div>
   );
 };

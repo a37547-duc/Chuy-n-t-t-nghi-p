@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addVariation } from "../../../features/Admin/adminVariationsSlice";
@@ -16,14 +17,31 @@ const AddLaptopVariation = ({ onClose, productId }) => {
     storage: "",
   });
 
+  const [displayPrice, setDisplayPrice] = useState("");
   const [errors, setErrors] = useState({});
+
+  const formatPrice = (value) => {
+    if (!value) return "";
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
+    if (name === "price") {
+      // Xử lý định dạng giá
+      const numericValue = value.replaceAll(",", "").replace(/\D/g, ""); // Loại bỏ dấu phẩy và ký tự không phải số
+      setDisplayPrice(formatPrice(numericValue, ",")); // Định dạng lại với dấu phẩy
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        price: numericValue, // Lưu giá trị không chứa dấu phẩy
+      }));
+    } else {
+      // Xử lý các trường khác
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        [name]: value,
+      }));
+    }
   };
 
   const handleNestedChange = (e, field, subField) => {
@@ -107,12 +125,12 @@ const AddLaptopVariation = ({ onClose, productId }) => {
   return (
     <form className="space-y-2" onSubmit={handleSubmit}>
       <h2 className="mb-4 text-xl font-semibold tracking-wide">
-        Thêm sản phẩm biến thể {newProduct.type}
+        Thêm biến thể sản phẩm
       </h2>
       <div className="grid grid-cols-1 gap-4">
         <div className="flex items-center space-x-2">
           <div className="flex-1">
-            <label className="block text-sm font-medium">Color</label>
+            <label className="block text-sm font-medium">Màu sắc</label>
             <input
               type="text"
               name="color"
@@ -124,12 +142,12 @@ const AddLaptopVariation = ({ onClose, productId }) => {
           </div>
 
           <div className="flex-1">
-            <label className="block text-sm font-medium">Price</label>
+            <label className="block text-sm font-medium">Giá</label>
             <input
-              type="number"
+              type="text" // Sử dụng type="text" để hiển thị dấu chấm
               name="price"
-              value={newProduct.price}
-              onChange={handleChange}
+              value={displayPrice} // Hiển thị giá trị có dấu chấm
+              onChange={handleChange} // Cập nhật giá trị
               className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             />
             {errors.price && <p className="text-red-500 text-sm">{errors.price}</p>}
@@ -138,7 +156,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
 
         <div className="flex items-center space-x-2">
           <div className="flex-1">
-            <label className="block text-sm font-medium">Stock Quantity</label>
+            <label className="block text-sm font-medium">Số lượng trong kho</label>
             <input
               type="number"
               name="stock_quantity"
@@ -162,7 +180,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
           </div>
 
           <div className="flex-1">
-            <label className="block text-sm font-medium">Storage</label>
+            <label className="block text-sm font-medium">Dung lượng</label>
             <input
               type="text"
               name="storage"
@@ -176,7 +194,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
 
         <div className="flex items-center space-x-2">
           <div className="flex-1">
-            <label className="block text-sm font-medium">CPU Name</label>
+            <label className="block text-sm font-medium">CPU</label>
             <input
               type="text"
               name="cpu"
@@ -188,7 +206,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
           </div>
 
           <div className="flex-1">
-            <label className="block text-sm font-medium">CPU Cores</label>
+            <label className="block text-sm font-medium">Số nhân CPU (CPU Cores)</label>
             <input
               type="number"
               name="cpuCores"
@@ -200,7 +218,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
           </div>
 
           <div className="flex-1">
-            <label className="block text-sm font-medium">CPU Threads</label>
+            <label className="block text-sm font-medium">Số luồng (CPU threads) </label>
             <input
               type="number"
               name="cpuThreads"
@@ -214,7 +232,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
 
         <div className="flex items-center space-x-2">
           <div className="flex-1">
-            <label className="block text-sm font-medium">RAM Capacity</label>
+            <label className="block text-sm font-medium">Dung lượng RAM</label>
             <input
               type="text"
               name="ramCapacity"
@@ -226,7 +244,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
           </div>
 
           <div className="flex-1">
-            <label className="block text-sm font-medium">RAM Type</label>
+            <label className="block text-sm font-medium">Loại RAM</label>
             <input
               type="text"
               name="ramType"
@@ -240,7 +258,7 @@ const AddLaptopVariation = ({ onClose, productId }) => {
       </div>
       <div className="flex justify-end space-x-2">
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Thêm sản phẩm
+          Thêm biến thể sản phẩm
         </button>
         <button onClick={onClose} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
           Đóng

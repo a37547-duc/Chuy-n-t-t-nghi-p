@@ -3,17 +3,20 @@ import { useDispatch } from "react-redux";
 import { deleteVariation } from "../../../features/Admin/adminVariationsSlice";
 import { getAllProductVariations } from "../../../features/product/productVariationSlice";
 
-const DeleteProductVariation = ({ data, onClose }) => {
+const DeleteProductVariation = ({ data, productId, onClose }) => {
   const dispatch = useDispatch();
 
-  const handleDelete = async () => {
-    try {
-      await dispatch(deleteVariation(data)).unwrap();
-      dispatch(getAllProductVariations());
-      onClose();
-    } catch (error) {
-      console.error("Lỗi khi xóa biến thể:", error);
-    }
+
+  const handleDelete = () => {
+    dispatch(deleteVariation(data))
+      .unwrap()
+      .then(() => {
+        dispatch(getAllProductVariations(productId));
+        onClose();
+      })
+      .catch((error) => {
+        console.error("Error deleting variation:", error);
+      });
   };
 
   return (

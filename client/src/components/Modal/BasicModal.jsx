@@ -14,7 +14,7 @@ const BasicModal = ({ isOpen, onRequestClose, children }) => {
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
     >
-      <div className="bg-white rounded-lg shadow-md max-w-3xl w-full p-6 relative max-h-[80vh] overflow-y-auto">
+      <div className="mt-10 bg-white rounded-lg shadow-md max-w-3xl w-full p-6 relative max-h-[80vh] overflow-y-auto">
         {/* Nút đóng modal */}
         <button
           onClick={onRequestClose}

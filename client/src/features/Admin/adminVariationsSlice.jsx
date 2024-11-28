@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../api/apiConfig";
 
@@ -24,6 +24,7 @@ export const addVariation = createAsyncThunk(
 export const updateVariation = createAsyncThunk(
   'variation/updateVariation',
   async ({ variationId, updatedData }, { rejectWithValue }) => {
+    console.log(updatedData);
     try {
       const response = await api.patch(
         `/admin/products/variants/update/${variationId}`,
@@ -65,13 +66,14 @@ const adminVariationSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Add
       .addCase(addVariation.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(addVariation.fulfilled, (state, action) => {
         state.loading = false;
-        state.variations.push(action.payload);
+        state.variations.push(action.payload.variant);
         toast.success("Thêm biến thể thành công!");
       })
       .addCase(addVariation.rejected, (state, action) => {
@@ -79,6 +81,7 @@ const adminVariationSlice = createSlice({
         state.error = action.payload;
         toast.error("Thêm biến thể thất bại. Vui lòng thử lại!");
       })
+      // Update
       .addCase(updateVariation.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -96,8 +99,9 @@ const adminVariationSlice = createSlice({
       .addCase(updateVariation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error("Cập nhật biến thể thất bại. Vui lòng thử lại!");
+        toast.error(action.payload || "Cập nhật biến thể thất bại. Vui lòng thử lại!");
       })
+      // Delete
       .addCase(deleteVariation.pending, (state) => {
         state.loading = true;
         state.error = null;
