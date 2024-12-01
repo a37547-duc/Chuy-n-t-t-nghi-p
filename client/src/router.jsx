@@ -24,12 +24,13 @@ import OrderManagement from "./pages/Admin/OrderManagement/OrderManagement"
 import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManagement"
 import RestoreManagement from "./pages/Admin/RestoreManagement/RestoreManagement";
 import ProductVariation from "./pages/Admin/ProductManagement/ProductVariation";
-
 import AccountChangePassword from "./pages/Account/AccountComputer/AccountChangePassword/AccountChangePassword";
 import InformationUser from "./pages/Account/AccountMobile/InformationUser/InformationUser";
 import PurchaseHistoryUser from "./pages/Account/AccountMobile/PurchaseHistoryUser/PurchaseHistoryUser";
 import ChangePasswordMobile from "./pages/Account/AccountMobile/ChangePasswordMobile/ChangePasswordMobile";
 import ProductOneBrand from "./pages/Product/ProductOneBrand/ProductOneBrand";
+import EmailVerify from "./components/verify/EmailVerify";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/collections",
         element: <Collections></Collections>,
+      },
+      {
+        path: "/users/:id/verify/:token",
+        element: <EmailVerify></EmailVerify>,
       },
       {
         path: "/productList",

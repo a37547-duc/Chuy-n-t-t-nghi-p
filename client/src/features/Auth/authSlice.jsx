@@ -22,10 +22,11 @@ export const loginUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await api.post('/user/login', formData);
+      console.log(response.data);
       const token = response.data;
       if (token) {
-        localStorage.setItem('access_token', token.user.data.token);
-        localStorage.setItem('user', JSON.stringify(token.user.data));
+        localStorage.setItem('access_token', token.user.token);
+        localStorage.setItem('user', JSON.stringify(token.user));
       }
       return token;
     } catch (error) {
@@ -51,21 +52,21 @@ const authSlice = createSlice({
     user: JSON.parse(localStorage.getItem('user')) || null,
     profileBgColor: localStorage.getItem("profile_bg_color") || null,
     loginLoading: false,
-    registerLoading: false,
-    error: null,
+    error: null,    registerLoading: false,
+
     registerError: null,
     isAuthenticated: !!localStorage.getItem('access_token'),
   },
   reducers: {
     setUserInfo: (state, action) => {
-      state.token = action.payload.token;
+      state.token = action.payload.user.token;
       state.user = {
-        username: action.payload.name,
-        email: action.payload.email,
+        username: action.payload.user.username,
+        email: action.payload.user.email,
       };
       state.isAuthenticated = true;
     
-      localStorage.setItem("access_token", action.payload.token);
+      localStorage.setItem("access_token", action.payload.user.token);
       localStorage.setItem("user", JSON.stringify(state.user));
     },
     logoutUser: (state) => {
@@ -90,7 +91,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state) => {
         state.registerLoading = false;
-        toast.success("Đăng ký thành công. Vui lòng đăng nhập để tiếp tục.");
+        toast.info("Vui lòng kiểm tra eamil để xác minh tài khoản");
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.registerLoading = false;
@@ -105,8 +106,8 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loginLoading = false;
-        state.token = action.payload.user.data.token;
-        state.user = action.payload.user.data;
+        state.token = action.payload.user.token;
+        state.user = action.payload.user;
         state.isAuthenticated = true;
 
         // Tạo màu ngẫu nhiên khi đăng nhập

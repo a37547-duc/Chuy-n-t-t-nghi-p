@@ -33,7 +33,7 @@ export const submitOrderPayment = createAsyncThunk(
   'order/submitOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/order-payment', orderData);
+      const response = await api.post('/user/order-payment', orderData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -45,7 +45,7 @@ export const submitOrderCod = createAsyncThunk(
   'order/submitOrderCod',
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/order-payment', orderData);
+      const response = await api.post('/user/order-payment', orderData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -92,7 +92,7 @@ const orderSlice = createSlice({
         state.loading = false;
         state.orderInfo = action.payload
         toast.success("Đặt hàng thành công");
-        window.location.href = `/`
+        window.location.href = `/account/order`
       })
       .addCase(submitOrderCod.rejected, (state, action) => {
         state.loading = false;
