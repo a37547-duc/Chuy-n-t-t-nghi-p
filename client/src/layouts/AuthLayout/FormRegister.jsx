@@ -44,8 +44,8 @@ function FormRegister() {
     }
     if (!formData.password.trim()) {
       newErrors.password = "Mật khẩu không được để trống";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Mật khẩu phải chứa ít nhất 6 ký tự";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Mật khẩu phải chứa ít nhất 8 ký tự";
     } else if (!specialCharRegex.test(formData.password)) {
       newErrors.password = "Mật khẩu phải chứa ít nhất một ký tự đặc biệt (!@#$%^&*...)";
     } else if (whiteSpaceRegex.test(formData.password)) {

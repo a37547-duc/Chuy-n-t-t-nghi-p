@@ -101,7 +101,7 @@ const DashBoard = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen overflow-hidden">
+    <div className="p-6 bg-gray-50 min-h-screen -z-50">
       <div className="flex justify-between items-center mb-4 ml-4">
         <div className="flex space-x-4 mr-4">
           <div className="flex items-center space-x-1">

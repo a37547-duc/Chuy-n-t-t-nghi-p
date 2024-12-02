@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import ProtectedRouter from "./components/protected/ProtectedRouter";
+import ProtectedAdminRouter from "./components/protected/ProtectedAdminRouter";
 
 import Home from "./pages/Home/Home";
 import App from "./App";
@@ -126,7 +127,11 @@ const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <AdminLayout></AdminLayout>,
+    element: (
+      <ProtectedAdminRouter>
+        <AdminLayout />
+      </ProtectedAdminRouter>
+    ),
     children: [
       {
         path: "dashboard",

@@ -19,14 +19,14 @@ export default function AuthButtons() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="flex items-center lg:order-2 relative">
-      {user ? (
+      {user?.role === "user" ? (
         <>
           <FontAwesomeIcon
             icon={faUser}
             className="h-5 w-5 text-gray-800 dark:text-white mr-4 cursor-pointer"
           />
           <div className="flex flex-col cursor-pointer text-xs mr-2">
-            <div>Hello,</div>
+            <div>Chào mừng,</div>
             <div>{user.username}</div>
           </div>
 

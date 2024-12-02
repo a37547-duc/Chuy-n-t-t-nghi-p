@@ -7,7 +7,7 @@ export const getAllOrders = createAsyncThunk(
   'order/getAllOrders',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('/order');
+      const response = await api.get('/admin/orders');
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -20,7 +20,7 @@ export const changeOrderStatus = createAsyncThunk(
   'order/changeOrderStatus',
   async ({ orderId, newStatus }, { rejectWithValue }) => {
     try {
-      const response = await api.patch(`/order/${orderId}`, { orderStatus: newStatus });
+      const response = await api.patch(`/admin/orders/update/${orderId}`, { orderStatus: newStatus });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

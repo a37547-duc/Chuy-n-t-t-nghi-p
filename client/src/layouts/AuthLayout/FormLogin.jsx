@@ -59,8 +59,13 @@ function FormLogin() {
     } else {
       setErrors({});
       try {
-        await dispatch(loginUser(formData)).unwrap();
-        navigate(from, {replace: true});
+        const result = await dispatch(loginUser(formData)).unwrap();
+        const role = result.user.role;
+        if (role === "admin") {
+          window.location.href = "/admin";
+        } else {
+          navigate(from, { replace: true });
+        }
       } catch (err) {
         console.error("Đăng nhập thất bại:", err);
       }
