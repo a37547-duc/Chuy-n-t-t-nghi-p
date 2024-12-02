@@ -52,15 +52,19 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
                       </div>
                     </div>
                     <div className="mb-1">
-                      <div className="uppercase m-0 p-0 opacity-100 text-[rgb(130,134,158)] font-medium text-[13px] leading-[20px] overflow-hidden block transition-colors duration-300">
+                      <div className="uppercase m-0 p-0 opacity-100 text-[rgb(130,134,158)] font-medium text-[13px] leading-[20px] overflow-hidden line-clamp-3 transition-colors duration-300">
                         {product.name}
                       </div>
                     </div>
                   </div>
                   <div className="relative mt-1 mb-1">
                     <div className="flex items-start">
-                      <div className="m-0 p-0 opacity-100 text-[rgb(20,53,195)] font-bold text-[15px] leading-6 overflow-hidden block transition-colors duration-300">
-                        {product.price} đ
+                      <div
+                        className={`m-0 p-0 border-none font-bold text-[15px] leading-[24px] overflow-hidden 
+                        ${product.status === "out of stock" ? "text-[#ff0000]" : "text-[rgb(20,53,195)]"
+                        }`}
+                      >
+                        {product.status === "out of stock" ? "Hết hàng" : `${product?.product_variants?.price?.toLocaleString()} VNĐ`}
                       </div>
                     </div>
                   </div>

@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-import { useGetBrandByNameQuery } from "../../../stores/query/productQuery";
-
-import { useDispatch, useSelector } from "react-redux";
 import { setBrand } from "../../../stores/slices/producSlice";
 
 const ProductListSideBar = () => {
@@ -15,27 +12,7 @@ const ProductListSideBar = () => {
     { title: "Cấu hình", data: [], expanded: true, showMoreClicked: false },
   ]);
 
-  const dispatch = useDispatch();
-  const { category } = useSelector((state) => state.query);
-  const {
-    data: products,
-    error,
-    isLoading,
-  } = useGetBrandByNameQuery({ category });
-
   // Cập nhật options dựa trên dữ liệu từ API
-  useEffect(() => {
-    if (products?.brands) {
-      setOptions((prevOptions) =>
-        prevOptions.map((option) => {
-          if (option.title === "Thương hiệu") {
-            return { ...option, data: products.brands };
-          }
-          return option;
-        })
-      );
-    }
-  }, [products]);
 
   const handleToggleExpand = (title) => {
     setOptions((prevOptions) =>

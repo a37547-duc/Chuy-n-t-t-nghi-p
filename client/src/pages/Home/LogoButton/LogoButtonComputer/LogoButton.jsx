@@ -1,18 +1,31 @@
-const logos = [
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Asus.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Lenovo.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/MSI.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/acer.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/HP.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Dell.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/LG.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/masstel-mobile-logo022.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/MSI-1.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:30/plain/https://cellphones.com.vn/media/wysiwyg/Icon/brand_logo/Huawei.png",
-  "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:50/q:90/plain/https://cellphones.com.vn/media/icons/brands/brand-macbook-2.svg"
-];
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setBrandName } from "../../../../features/Client/ClientFilterSlice";
 
 export default function LogonButtonComputer() {
+  const dispatch = useDispatch();
+  const [logos, setLogos] = useState([]);
+
+  // Gọi API khi component được mount
+  useEffect(() => {
+    const fetchLogos = async () => {
+      try {
+        const response = await fetch("https://laptech4k.onrender.com/api/v1/products/brand");
+        const data = await response.json();
+        setLogos(data?.brands || []); // Đảm bảo có dữ liệu hợp lệ
+      } catch (error) {
+        console.error("Error fetching logos:", error);
+      }
+    };
+
+    fetchLogos();
+  }, []);
+
+  const handleProductClick = (brandName) => {
+    dispatch(setBrandName(brandName));
+  };
+
   return (
     <div className="">
       <div className="max-w-[1100px] mx-auto">
@@ -21,13 +34,21 @@ export default function LogonButtonComputer() {
         </div>
         <div className="flex flex-wrap gap-2 justify-center">
           {logos.map((logo, index) => (
-            <button
+            <Link
               key={index}
-              className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg max-w-[120px]"
-              style={{ flexBasis: 'calc(25% - 0.5rem)'}}
+              to={{
+                pathname: "/productList",
+                search: `?brandName=${logo.name}`,
+              }
+                // `/productList?brandName=${logo.name}`
+                }
+                state={{ from: "LogoButton" }}
+              onClick={() => handleProductClick(logo.name)}
+              className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg max-w-[120px] max-h-[38.49px]"
+              style={{ flexBasis: 'calc(25% - 0.5rem)' }}
             >
-              <img src={logo} alt={`Logo ${index + 1}`} className="w-full" />
-            </button>
+              <img src={logo.image} alt={logo.name} className="w-full" />
+            </Link>
           ))}
         </div>
       </div>

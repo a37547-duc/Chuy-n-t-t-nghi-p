@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addVariation } from "../../../features/Admin/adminVariationsSlice";
@@ -16,14 +17,31 @@ const AddLaptopVariation = ({ onClose, productId }) => {
     storage: "",
   });
 
+  const [displayPrice, setDisplayPrice] = useState("");
   const [errors, setErrors] = useState({});
+
+  const formatPrice = (value) => {
+    if (!value) return "";
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
+    if (name === "price") {
+      // Xử lý định dạng giá
+      const numericValue = value.replaceAll(",", "").replace(/\D/g, ""); // Loại bỏ dấu phẩy và ký tự không phải số
+      setDisplayPrice(formatPrice(numericValue, ",")); // Định dạng lại với dấu phẩy
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        price: numericValue, // Lưu giá trị không chứa dấu phẩy
+      }));
+    } else {
+      // Xử lý các trường khác
+      setNewProduct((prevProduct) => ({
+        ...prevProduct,
+        [name]: value,
+      }));
+    }
   };
 
   const handleNestedChange = (e, field, subField) => {
@@ -126,10 +144,10 @@ const AddLaptopVariation = ({ onClose, productId }) => {
           <div className="flex-1">
             <label className="block text-sm font-medium">Giá</label>
             <input
-              type="number"
+              type="text" // Sử dụng type="text" để hiển thị dấu chấm
               name="price"
-              value={newProduct.price}
-              onChange={handleChange}
+              value={displayPrice} // Hiển thị giá trị có dấu chấm
+              onChange={handleChange} // Cập nhật giá trị
               className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
             />
             {errors.price && <p className="text-red-500 text-sm">{errors.price}</p>}

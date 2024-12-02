@@ -183,7 +183,7 @@ const ProductVariation = () => {
                       )}
                     </div>
                   </td>
-                  <td className="p-4 text-sm">{variation.price} VNĐ</td>
+                  <td className="p-4 text-sm">{variation.price?.toLocaleString()} VNĐ</td>
                   <td className="p-4 text-sm">{variation.stock_quantity}</td>
                   <td className="p-4 text-sm">
                     <div className="flex space-x-2">

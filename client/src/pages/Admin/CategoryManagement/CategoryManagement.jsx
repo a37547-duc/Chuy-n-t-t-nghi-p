@@ -9,14 +9,18 @@ import UpdateCategory from "../../../components/admin/Category/UpdateCategory";
 import DeleteCategory from "../../../components/admin/Category/DeleteCategory";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategories } from "../../../features/category/categoriesSlice";
+import { getAllProducts } from "../../../features/product/productsSlice";
+import { Link } from 'react-router-dom';
 
 const CategoryManagement = () => {
   const dispatch = useDispatch();
   //Truy xuất dữ liệu
   const { categories, loading, error } = useSelector((state) => state.category);
-  useEffect(() => {
-    console.log("Category: ", categories)
-  },[categories])
+  const { products } = useSelector((state) => state.product);
+  // useEffect(() => {
+  //   console.log("Category: ", categories)
+  //   console.log("ProductAdmin: ", products)
+  // },[categories, products])
 
   //Phân trang
   const [page, setPage] = useState(0);
@@ -28,6 +32,8 @@ const CategoryManagement = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [categoryToUpdate, setCategoryToUpdate] = useState(null);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
 
   //CheckBox
   const [selectAll, setSelectAll] = useState(false);
@@ -42,9 +48,19 @@ const CategoryManagement = () => {
   // Gọi API để lấy danh mục
   useEffect(() => {
     dispatch(getAllCategories());
+    dispatch(getAllProducts());
   }, [dispatch]);
 
-  
+  const productCountByCategory = useMemo(() => {
+    const count = {};
+    products.forEach((product) => {
+      const categoryId = product.category?._id;
+      if (categoryId) {
+        count[categoryId] = (count[categoryId] || 0) + 1;
+      }
+    });
+    return count;
+  }, [products]);
 
   // Filter categories based on search term
   const filteredCategories = useMemo(() => {
@@ -73,6 +89,7 @@ const CategoryManagement = () => {
 
   const indexOfLastCategory = (page + 1) * categoryPerPage;
   const indexOfFirstCategory = indexOfLastCategory - categoryPerPage;
+  
   const currentCategories = sortedCategories.slice(indexOfFirstCategory, indexOfLastCategory);
 
   const handleSortClick = () => {
@@ -120,6 +137,13 @@ const CategoryManagement = () => {
   const handleCloseAddModal = () => setIsAddModalOpen(false);
 
   const handleOpenDeleteModal = (category) => {
+    const productCount = productCountByCategory[category._id] || 0;
+
+    if (productCount > 0) {
+      setWarningMessage("Có sản phẩm đang tồn tại. Hãy xóa sản phẩm trước khi xóa danh mục.");
+      setIsWarningModalOpen(true); // Hiển thị thông báo cảnh báo
+      return;
+    }
     setCategoryToDelete(category);
     setIsDeleteModalOpen(true);
   };
@@ -148,7 +172,7 @@ const CategoryManagement = () => {
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
           <input
             type="text"
-            placeholder="Search for categories"
+            placeholder="Tìm kiếm danh mục..."
             value={searchTerm}
             onChange={handleSearchChange}
             className="flex-grow px-4 py-2 border border-gray-200 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
@@ -161,7 +185,7 @@ const CategoryManagement = () => {
           onClick={handleOpenAddModal}
           className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600"
         >
-          <span className="mr-2">+ Add category</span>
+          <span className="mr-2">+ Thêm danh mục</span>
         </button>
       </div>
 
@@ -205,7 +229,7 @@ const CategoryManagement = () => {
                 />
               </th>
               <th className="p-4">id</th>
-              <th className="p-4 cursor-pointer" onClick={handleSortClick}>Category Name
+              <th className="p-4 cursor-pointer" onClick={handleSortClick}>Tên danh mục
                   <FontAwesomeIcon
                     icon={faUpLong}
                     className={`ml-2 text-xs ${sortCategory === "asc" ? "text-black" : "text-gray-300"}`}
@@ -215,7 +239,9 @@ const CategoryManagement = () => {
                     className={`ml-1 text-xs ${sortCategory === "desc" ? "text-black" : "text-gray-300"}`}
                   />
                 </th>
-              <th className="p-4">actions</th>
+                <th className="p-4">Ảnh</th>
+                <th className="p-4">Số lượng sản phẩm</th>
+                <th className="p-4"></th>
             </tr>
           </thead>
           <tbody>
@@ -235,6 +261,12 @@ const CategoryManagement = () => {
                     <div className="flex flex-col">
                       <span className="font-semibold text-sm uppercase">{category.name}</span>
                     </div>
+                  </td>
+                  <td className="p-1 text-sm">
+                  <img src={category.image} alt={category.name} className="h-10 w-20 object-contain" />
+                </td>
+                  <td className="p-4 text-sm text-center">
+                    {productCountByCategory[category._id] || 0}
                   </td>
                   <td className="p-4 text-sm">
                     <div className="flex space-x-2">
@@ -258,7 +290,7 @@ const CategoryManagement = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="text-center text-red-500 py-4">Danh mục không tồn tại</td>
+                <td colSpan="6" className="text-center text-red-500 py-4">Danh mục không tồn tại</td>
               </tr>
             )}
           </tbody>
@@ -266,7 +298,7 @@ const CategoryManagement = () => {
           {/* Pagination & Count within table footer */}
           <tfoot>
             <tr>
-              <td colSpan="4" className="p-4">
+              <td colSpan="6" className="p-4">
                 <div className="flex justify-between items-center">
                   {/* Left: Count display */}
                   <div className="text-sm text-gray-500">
@@ -326,6 +358,21 @@ const CategoryManagement = () => {
         ) : (
           <p>Lỗi Delete rồi kiểm tra đê...</p>
         )}
+      </BasicModal>
+      <BasicModal isOpen={isWarningModalOpen} onRequestClose={() => setIsWarningModalOpen(false)}>
+        <div className="p-4 text-center">
+          <h2 className="text-lg font-bold text-red-500 mb-4">Cảnh báo</h2>
+          <p className="text-gray-700">{warningMessage}</p>
+          <button
+            onClick={() => setIsWarningModalOpen(false)}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Đóng
+          </button>
+          <Link to="/admin/products" 
+            className="ml-2 h-[40px] mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" 
+            >Tới trang sản phẩm</Link>
+        </div>
       </BasicModal>
     </div>
   );

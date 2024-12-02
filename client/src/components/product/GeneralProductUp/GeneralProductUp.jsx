@@ -3,6 +3,7 @@ import "./GeneralProductUp.css";
 import BrandImageLogo from "../../BrandImageLogo/BrandImageLogo";
 import OnDemand from "../OnDemand/OnDemand";
 const GeneralProductUp = ({image, choose}) => {
+  // console.log("BrandLogo: ", image);
   return (
     <div className="opacity-100 bg-white mb-0 p-3 px-4">
       <div className="flex items-baseline justify-start flex-wrap opacity-100 bg-white">
@@ -16,7 +17,7 @@ const GeneralProductUp = ({image, choose}) => {
 
       <BrandImageLogo image={image} />
         
-      <OnDemand choose={choose} />
+      {/* <OnDemand choose={choose} /> */}
     </div>
   );
 }

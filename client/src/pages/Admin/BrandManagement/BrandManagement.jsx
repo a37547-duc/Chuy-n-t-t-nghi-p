@@ -9,14 +9,18 @@ import UpdateBrand from "../../../components/admin/Brands/UpdateBrand";
 import DeleteBrand from "../../../components/admin/Brands/DeleteBrand";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
+import { getAllProducts } from "../../../features/product/productsSlice";
+import { Link } from 'react-router-dom';
 
 const BrandManagement = () => {
   const dispatch = useDispatch();
   //Truy xuất dữ liệu
   const { brands, loading, error } = useSelector((state) => state.brand);
-  useEffect(() => {
-    console.log("Brand: ", brands);
-  }, [brands]);
+  const { products } = useSelector((state) => state.product);
+  // useEffect(() => {
+  //   console.log("Brand: ", brands);
+  // console.log("ProductAdmin: ", products);
+  // }, [brands]);
 
   //Phân trang
   const [page, setPage] = useState(0);
@@ -28,6 +32,8 @@ const BrandManagement = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [brandToUpdate, setBrandToUpdate] = useState(null);
   const [brandToDelete, setBrandToDelete] = useState(null);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
 
   //CheckBox
   const [selectAll, setSelectAll] = useState(false);
@@ -42,10 +48,20 @@ const BrandManagement = () => {
   //Gọi API lấy brand
   useEffect(() => {
     dispatch(getAllBrands());
+    dispatch(getAllProducts());
   }, [dispatch]);
-  
-  
 
+  const productCountByBrand = useMemo(() => {
+    const count = {};
+    products.forEach((product) => {
+      const brandId = product.brand?._id;
+      if (brandId) {
+        count[brandId] = (count[brandId] || 0) + 1;
+      }
+    });
+    return count;
+  }, [products]);
+  
   // Filter brand based on search term
   const filteredBrand = useMemo(() => {
     if (searchTerm) {
@@ -117,6 +133,13 @@ const BrandManagement = () => {
   const handleCloseAddModal = () => setIsAddModalOpen(false);
 
   const handleOpenDeleteModal = (brand) => {
+    const productCount = productCountByBrand[brand._id] || 0;
+
+    if (productCount > 0) {
+      setWarningMessage("Có sản phẩm đang tồn tại. Hãy xóa sản phẩm trước khi xóa thương hiệu.");
+      setIsWarningModalOpen(true); // Hiển thị thông báo cảnh báo
+      return;
+    }
     setBrandToDelete(brand); 
     setIsDeleteModalOpen(true); 
   };
@@ -140,14 +163,12 @@ const BrandManagement = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-2xl font-bold">Danh sách thương hiệu</h1>
 
-      {error && <p className="text-red-500">Error: {error}</p>}
-
       {/* Search Bar & Add Button */}
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center bg-white p-2 shadow-sm rounded-lg w-full md:w-1/3">
           <input
             type="text"
-            placeholder="Search for brands"
+            placeholder="Tìm kiếm thương hiệu..."
             value={searchTerm}
             onChange={handleSearchChange}
             className="flex-grow px-4 py-2 border border-gray-200 rounded-md"
@@ -168,7 +189,7 @@ const BrandManagement = () => {
           className="bg-blue-500 text-white px-4 py-2 rounded flex items-center hover:bg-blue-600"
           onClick={handleOpenAddModal}
           >
-          <span className="mr-2">+ Add brand</span>
+          <span className="mr-2">+ Thêm thương hiệu</span>
         </button>
       </div>
 
@@ -212,7 +233,7 @@ const BrandManagement = () => {
                 />
               </th>
               <th className="p-4">id</th>
-              <th className="p-4 cursor-pointer" onClick={handleSortClick}>Brand Name
+              <th className="p-4 cursor-pointer" onClick={handleSortClick}>Tên thương hiệu
                   <FontAwesomeIcon
                     icon={faUpLong}
                     className={`ml-2 text-xs ${sortBrand === "asc" ? "text-black" : "text-gray-300"}`}
@@ -223,7 +244,8 @@ const BrandManagement = () => {
                   />
                 </th>
               <th className="p-4">logo</th>
-              <th className="p-4">actions</th>
+              <th className="p-4">Số lượng sản phẩm</th>
+              <th className="p-4"></th>
             </tr>
           </thead>
           <tbody>
@@ -246,6 +268,9 @@ const BrandManagement = () => {
                 <td className="p-1 text-sm">
                   <img src={brand.image} alt={brand.name} className="h-10 w-20 object-contain" />
                 </td>
+                <td className="p-4 text-sm text-center">
+                    {productCountByBrand[brand._id] || 0}
+                  </td>
                 <td className="p-4 text-sm">
                   <div className="flex space-x-2">
                     <button 
@@ -268,7 +293,7 @@ const BrandManagement = () => {
             ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center text-red-500 py-4">Thương hiệu không tồn tại</td>
+                <td colSpan="6" className="text-center text-red-500 py-4">Thương hiệu không tồn tại</td>
               </tr>
             )}
           </tbody>
@@ -276,7 +301,7 @@ const BrandManagement = () => {
           {/* Pagination & Count within table footer */}
           <tfoot>
             <tr>
-              <td colSpan="5" className="p-4">
+              <td colSpan="6" className="p-4">
                 <div className="flex justify-between items-center">
                   {/* Left: Count display */}
                   <div className="text-sm text-gray-500">
@@ -332,6 +357,21 @@ const BrandManagement = () => {
             onClose={handleCloseDeleteModal}
           />
         )}
+      </BasicModal>
+      <BasicModal isOpen={isWarningModalOpen} onRequestClose={() => setIsWarningModalOpen(false)}>
+        <div className="p-4 text-center">
+          <h2 className="text-lg font-bold text-red-500 mb-4">Cảnh báo</h2>
+          <p className="text-gray-700">{warningMessage}</p>
+          <button
+            onClick={() => setIsWarningModalOpen(false)}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Đóng
+          </button>
+          <Link to="/admin/products" 
+            className="ml-2 h-[40px] mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" 
+            >Tới trang sản phẩm</Link>
+        </div>
       </BasicModal>
     </div>
   );

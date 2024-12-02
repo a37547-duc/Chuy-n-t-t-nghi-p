@@ -20,12 +20,6 @@ const TopHomeComputer = () => {
               <Link to="/admin" className="bg-[#fff] ml-1">
                 Trang Admin
               </Link>
-              {/* <Link to="checkouts" className="bg-[#fff] ml-1">
-                Trang Checkouts
-              </Link>
-              <Link to="account" className="bg-[#fff] ml-1">
-                Trang Account
-              </Link> */}
             </div>
           </div>
         </div>
