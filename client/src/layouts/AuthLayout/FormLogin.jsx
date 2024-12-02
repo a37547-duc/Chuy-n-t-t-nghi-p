@@ -102,6 +102,7 @@ function FormLogin() {
                 id="email"
                 name="email"
                 // type="email"
+                tabIndex="1"
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="Nhập email của bạn"
@@ -126,6 +127,7 @@ function FormLogin() {
               <input
                 id="password"
                 name="password"
+                tabIndex="2"
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={handleInputChange}

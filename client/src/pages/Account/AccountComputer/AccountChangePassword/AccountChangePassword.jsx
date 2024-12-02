@@ -4,20 +4,75 @@ const AccountChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const handlePasswordChange = (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    const whiteSpaceRegex = /\s/;
+
+    if (!currentPassword.trim()) {
+      newErrors.currentPassword = "Mật khẩu hiện tại không được để trống";
+    }
+    if (!newPassword.trim()) {
+      newErrors.newPassword = "Mật khẩu mới không được để trống";
+    } else if (newPassword.length < 8) {
+      newErrors.newPassword = "Mật khẩu mới phải chứa ít nhất 8 ký tự";
+    } else if (!specialCharRegex.test(newPassword)) {
+      newErrors.newPassword = "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt (!@#$%^&*...)";
+    } else if (whiteSpaceRegex.test(newPassword)) {
+      newErrors.newPassword = "Mật khẩu mới không được chứa khoảng trắng";
+    }
+    if (!confirmPassword.trim()) {
+      newErrors.confirmPassword = "Nhập lại mật khẩu mới không được để trống";
+    } else if (newPassword !== confirmPassword) {
+      newErrors.confirmPassword = "Mật khẩu mới và xác nhận mật khẩu không khớp";
+    }
+    return newErrors;
+  };
+
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
-    // Logic để thay đổi mật khẩu, kiểm tra mật khẩu có khớp hay không
-    if (newPassword !== confirmPassword) {
-      alert('Mật khẩu mới và xác nhận mật khẩu không khớp');
+
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
-    // Thực hiện gọi API hoặc logic xử lý thay đổi mật khẩu
-    console.log('Mật khẩu đã được thay đổi thành công');
+
+    setErrors({});
+    const formData = {
+      currentPassword,
+      newPassword,
+    };
+
+    // try {
+    //   const response = await fetch('/api/change-password', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(formData),
+    //   });
+
+    //   if (!response.ok) {
+    //     const errorData = await response.json();
+    //     alert(`Lỗi: ${errorData.message || 'Không thể thay đổi mật khẩu'}`);
+    //     return;
+    //   }
+
+    //   alert('Mật khẩu đã được thay đổi thành công');
+    //   setCurrentPassword('');
+    //   setNewPassword('');
+    //   setConfirmPassword('');
+    // } catch (error) {
+    //   console.error('Lỗi khi gọi API:', error);
+    //   alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+    // }
   };
 
   return (
-    <div className=" p-4">
+    <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Thay đổi mật khẩu</h2>
       <form onSubmit={handlePasswordChange}>
         <div className="mb-4">
@@ -32,6 +87,9 @@ const AccountChangePassword = () => {
             onChange={(e) => setCurrentPassword(e.target.value)}
             required
           />
+          {errors.currentPassword && (
+            <p className="text-red-500 text-sm mt-1">{errors.currentPassword}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -46,6 +104,9 @@ const AccountChangePassword = () => {
             onChange={(e) => setNewPassword(e.target.value)}
             required
           />
+          {errors.newPassword && (
+            <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -60,6 +121,9 @@ const AccountChangePassword = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+          )}
         </div>
 
         <button
