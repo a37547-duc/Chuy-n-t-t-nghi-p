@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCategory } from "../../../features/Admin/adminCategorySlice";
 import { getAllCategories } from "../../../features/category/categoriesSlice";
+import ImageUploadOne from "../../images/ImageUploadOne";
 
 const UpdateCategory = ({ editCategory, onClose }) => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
   const [error, setError] = useState(""); // State để lưu lỗi
   const [updatedCategory, setUpdatedCategory] = useState({
     name: "",
+    image: null,
   });
 
   // Gán dữ liệu từ editCategory vào form khi mở modal
@@ -20,6 +22,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
     if (editCategory) {
       setUpdatedCategory({
         name: editCategory.name || "",
+        image: editCategory.image || null,
       });
       setError(""); // Xóa lỗi cũ nếu có
     }
@@ -38,6 +41,10 @@ const UpdateCategory = ({ editCategory, onClose }) => {
     setUpdatedCategory((prev) => ({ ...prev, [name]: value }));
     setError(""); 
   }, []);
+
+  const handleImageUpload = useCallback((url) => {
+    setUpdatedCategory((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+  },[]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -62,7 +69,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
             editCategory: updatedCategory,
           })
         ).unwrap();
-
+        setUpdatedCategory({ name: "", image: null });
         dispatch(getAllCategories());
         onClose();
       } catch (error) {
@@ -86,6 +93,13 @@ const UpdateCategory = ({ editCategory, onClose }) => {
             required
           />
           {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
+        <div>
+          <label className="block text-sm font-medium">Logo</label>
+          <ImageUploadOne onUploadComplete={handleImageUpload} existingUrl={updatedCategory.image} />
         </div>
       </div>
 

@@ -8,6 +8,7 @@ import { LineChart, Line } from 'recharts';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { customRange } from '../../../features/Admin/statistical';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const DashBoard = () => {
   const dispatch = useDispatch();
@@ -64,11 +65,45 @@ const DashBoard = () => {
     }
   };
 
+  const handleTimeRangeChange = (range) => {
+    const today = new Date();
+    let start, end;
+  
+    switch (range) {
+      case 'week':
+        start = new Date(today);
+        start.setDate(today.getDate() - 7);
+        break;
+      case 'month':
+        start = new Date(today);
+        start.setMonth(today.getMonth() - 1);
+        break;
+      case 'year':
+        start = new Date(today);
+        start.setFullYear(today.getFullYear() - 1);
+        break;
+      default:
+        start = today;
+    }
+  
+    setStartDate(start);
+    setEndDate(today);
+  
+    const formattedStartDate = formatDate(start);
+    const formattedEndDate = formatDate(today);
+  
+    const data = {
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+    };
+  
+    dispatch(customRange(data));
+  };
+
   return (
-    <div className="p-4">
-      <div className="flex justify-start items-center mb-4 ml-4">
+    <div className="p-6 bg-gray-50 min-h-screen overflow-hidden">
+      <div className="flex justify-between items-center mb-4 ml-4">
         <div className="flex space-x-4 mr-4">
-          {/* Start Date Picker */}
           <div className="flex items-center space-x-1">
             <label className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">Start Date</label>
             <DatePicker
@@ -79,8 +114,6 @@ const DashBoard = () => {
               placeholderText="Select start date"
             />
           </div>
-
-          {/* End Date Picker */}
           <div className="flex items-center space-x-1">
             <label className="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600">End Date</label>
             <DatePicker
@@ -91,13 +124,28 @@ const DashBoard = () => {
               placeholderText="Select end date"
             />
           </div>
-        </div>
-        <button
+          <button
           onClick={handleSubmit}
           className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
-        >
-          Submit Data
-        </button>
+          >
+            Submit Data
+          </button>
+        </div>
+        <div className="w-56 bg-white">
+        <FormControl fullWidth className="w-full" size="small">
+          <InputLabel id="time-range-label">Chọn khoảng thời gian</InputLabel>
+          <Select
+            labelId="time-range-label"
+            id="time-range"
+            label="Chọn khoảng thời gian"
+            onChange={(e) => handleTimeRangeChange(e.target.value)}
+          >
+            <MenuItem value="week">Thống kê theo tuần</MenuItem>
+            <MenuItem value="month">Thống kê theo tháng</MenuItem>
+            <MenuItem value="year">Thống kê theo năm</MenuItem>
+          </Select>
+        </FormControl>
+        </div>
       </div>
 
       {/* Cards */}

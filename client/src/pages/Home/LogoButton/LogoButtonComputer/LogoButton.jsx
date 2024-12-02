@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setBrandName } from "../../../../features/Client/ClientFilterSlice";
 
 export default function LogonButtonComputer() {
   const dispatch = useDispatch();
   const [logos, setLogos] = useState([]);
-  const navigate = useNavigate();
 
   // Gọi API khi component được mount
   useEffect(() => {
@@ -25,8 +24,6 @@ export default function LogonButtonComputer() {
 
   const handleProductClick = (brandName) => {
     dispatch(setBrandName(brandName));
-    navigate(`/productList/${brandName}`);
-    localStorage.setItem("selectedBrand", brandName);
   };
 
   return (
@@ -37,18 +34,21 @@ export default function LogonButtonComputer() {
         </div>
         <div className="flex flex-wrap gap-2 justify-center">
           {logos.map((logo, index) => (
-            <a key={index}
-            onClick={() => handleProductClick(logo.name)}
+            <Link
+              key={index}
+              to={{
+                pathname: "/productList",
+                search: `?brandName=${logo.name}`,
+              }
+                // `/productList?brandName=${logo.name}`
+                }
+                state={{ from: "LogoButton" }}
+              onClick={() => handleProductClick(logo.name)}
+              className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg max-w-[120px] max-h-[38.49px]"
+              style={{ flexBasis: 'calc(25% - 0.5rem)' }}
             >
-              <button
-                
-                className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg max-w-[120px] max-h-[38.49px]"
-                style={{ flexBasis: 'calc(25% - 0.5rem)'}}
-              >
-                <img src={logo.image} alt={logo.name} className="w-full" />
-              </button>
-            </a>
-            
+              <img src={logo.image} alt={logo.name} className="w-full" />
+            </Link>
           ))}
         </div>
       </div>

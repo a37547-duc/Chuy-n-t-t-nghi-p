@@ -32,6 +32,7 @@ import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManage
 
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
+import EmailVerify from "./components/verify/EmailVerify";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/collections",
         element: <Collections></Collections>,
+      },
+      {
+        path: "/users/:id/verify/:token",
+        element: <EmailVerify></EmailVerify>,
       },
       {
         path: "/productList",

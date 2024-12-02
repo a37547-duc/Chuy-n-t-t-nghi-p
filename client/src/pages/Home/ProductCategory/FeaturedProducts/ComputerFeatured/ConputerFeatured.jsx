@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ComputerFeatured = ({ currentProducts }) => {
@@ -26,7 +26,7 @@ const ComputerFeatured = ({ currentProducts }) => {
                   <div className="relative pb-[100%]">
                     <div className="inline-block overflow-hidden h-full w-full transition-transform duration-300 absolute inset-0 object-contain flex justify-center items-center">
                       <img
-                        className="w-[90%] h-full object-contain transition-transform duration-300 hover:scale-105"
+                        className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
                         loading="lazy"
                         decoding="async"
                         alt={product.name}
@@ -52,7 +52,7 @@ const ComputerFeatured = ({ currentProducts }) => {
                 </div>
               </div>
               <div className="relative mt-1 mb-1 pr-0">
-                <div className="flex flex-col items-start h-10">
+                <div className="flex items-start h-10">
                   <div
                     className={`m-0 p-0 border-none font-bold text-[15px] leading-[24px] overflow-hidden ${
                       product.status === "out of stock"

@@ -24,7 +24,7 @@ export default function SearchBar() {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          "https://laptech4k.onrender.com/api/v1/admin/products"
+          "https://laptech4k.onrender.com/api/v1/products"
         );
         const data = await response.json();
         setProducts(data);

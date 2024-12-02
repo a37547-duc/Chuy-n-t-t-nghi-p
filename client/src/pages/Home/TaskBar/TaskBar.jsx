@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLaptop, faDesktop, faGamepad, faComputer } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLaptop,
+  faDesktop,
+  faGamepad,
+  faComputer,
+} from "@fortawesome/free-solid-svg-icons";
 import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
-import { setCategoryName } from "../../../features/Client/ClientFilterSlice";
+import { Link } from "react-router-dom"; // Import Link
 import { useDispatch } from "react-redux";
-
-
+import { setCategoryName } from "../../../features/Client/ClientFilterSlice";
 import "./Taskbar.css";
 const Taskbar = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [categories, setCategories] = useState([]); // Lưu trữ danh sách category từ API
   const [activeIndex, setActiveIndex] = useState(null);
 
@@ -28,7 +29,9 @@ const Taskbar = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("https://laptech4k.onrender.com/api/v1/products/category");
+        const response = await fetch(
+          "https://laptech4k.onrender.com/api/v1/products/category"
+        );
         const data = await response.json();
         setCategories(data?.category || []); // Đảm bảo dữ liệu trả về hợp lệ
       } catch (error) {
@@ -48,23 +51,26 @@ const Taskbar = () => {
   };
 
   const handleProductClick = (categoryName) => {
-    dispatch(setCategoryName(categoryName));
-    navigate(`/productList/${categoryName}`);
+    dispatch(setCategoryName(categoryName)); // Dispatch brand name vào Redux
   };
-
   return (
     <div
       className="taskbar w-full max-w-[1100px] max-h-[376px] h-full top-[20px] relative bg-white flex flex-col z-10 rounded-md border border-[#ddd] text-[12px]"
       onMouseLeave={handleMouseLeave}
     >
       {categories.map((category, index) => (
-        <div
+        <Link
           key={index}
-          onClick={() => handleProductClick(category.name)}
+          to={{
+            pathname: "/productList",
+            search: `?categoryName=${category.name}`,
+          }}
+          state={{ from: "Taskbar" }} // Thêm state để xác định nguồn điều hướng
           className={`menu-item flex items-center px-[20px] py-[10px] text-[#333] cursor-pointer transition-colors duration-300 ${
             activeIndex === index ? "hover" : ""
           }`}
           onMouseEnter={() => handleMouseEnter(index)}
+          onClick={() => handleProductClick(category.name)} // Dispatch category name vào Redux
         >
           <FontAwesomeIcon
             icon={iconMap[category.name] || faComputer} // Hiển thị icon dựa trên tên category
@@ -76,10 +82,10 @@ const Taskbar = () => {
             className="ml-auto"
             style={{ fontSize: "12px", color: "rgba(0, 0, 0, 0.3)" }}
           />
-        </div>
+        </Link>
       ))}
 
-      {activeIndex !== null && (
+      {/* {activeIndex !== null && (
         <div
           className="submenu-container block absolute left-full top-0 h-[376px] min-w-[550px] w-auto w-[58vw] bg-white border-2 border-[#ddd] shadow-md z-20 rounded-r-md"
           onMouseLeave={handleMouseLeave}
@@ -87,13 +93,12 @@ const Taskbar = () => {
           <div className="submenu flex w-full p-2.5 justify-between">
             <div className="submenu-item w-full px-5 text-[#333] cursor-pointer text-left border-l border-[#ddd]">
               <div className="submenu-title font-bold mb-2.5 text-center">
-                {/* Bạn có thể hiển thị thông tin chi tiết của category ở đây */}
                 Submenu Content
               </div>
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

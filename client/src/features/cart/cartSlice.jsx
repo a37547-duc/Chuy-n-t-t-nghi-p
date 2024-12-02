@@ -35,7 +35,7 @@ const cartSlice = createSlice({
         state.cartTotalQuantity += (quantity - existingItem.quantity);
         existingItem.quantity = quantity;
         state.totalAmount += priceDifference;
-        toast.success("Cập nhập sản phẩm thành công");
+        // toast.success("Cập nhập sản phẩm thành công");
         localStorage.setItem("cart", JSON.stringify(state));
       }
     },
@@ -46,7 +46,6 @@ const cartSlice = createSlice({
         state.totalAmount -= existingItem.price * existingItem.quantity;
         state.cartTotalQuantity -= existingItem.quantity;
         state.items = state.items.filter(item => item._id !== itemId);
-
         localStorage.setItem("cart", JSON.stringify(state));
       }
     },

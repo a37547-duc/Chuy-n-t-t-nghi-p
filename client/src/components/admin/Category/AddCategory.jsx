@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategories } from "../../../features/Admin/adminCategorySlice";
 import { getAllCategories } from "../../../features/category/categoriesSlice";
+import ImageUploadOne from "../../images/ImageUploadOne";
 
 // eslint-disable-next-line react/prop-types
 const AddCategory = ({ onClose }) => {
@@ -10,6 +11,7 @@ const AddCategory = ({ onClose }) => {
   const [error, setError] = useState(""); // State để hiển thị lỗi
   const [newCategory, setNewCategory] = useState({
     name: "",
+    image: null,
   });
 
   const handleChange = useCallback((e) => {
@@ -20,6 +22,10 @@ const AddCategory = ({ onClose }) => {
     }));
     setError(""); // Reset lỗi khi người dùng nhập
   }, []);
+
+  const handleImageUpload = useCallback((url) => {
+    setNewCategory((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+  },[]);
 
   const handleSubmit = useCallback( 
     async (e) => {
@@ -54,7 +60,7 @@ const AddCategory = ({ onClose }) => {
         console.log("Added category:", newCategory);
         console.log("Category added successfully");
         dispatch(getAllCategories());
-        setNewCategory({ name: "" });
+        setNewCategory({ name: "", image: null });
         onClose();
       } catch (error) {
         console.error("Error adding category:", error);
@@ -82,6 +88,13 @@ const AddCategory = ({ onClose }) => {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 gap-4">
+        <div>
+          <label className="block text-sm font-medium">Ảnh</label>
+          <ImageUploadOne onUploadComplete={handleImageUpload} existingUrl={newCategory.image} />
+        </div>
+      </div>
+
       <div className="flex justify-end space-x-2">
         <button
           type="submit"
@@ -90,7 +103,6 @@ const AddCategory = ({ onClose }) => {
           Save
         </button>
         <button
-          type="button" // Đổi thành type="button" để không gửi form
           onClick={onClose}
           className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
         >

@@ -66,7 +66,6 @@ const adminVariationSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Add
       .addCase(addVariation.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -81,7 +80,6 @@ const adminVariationSlice = createSlice({
         state.error = action.payload;
         toast.error("Thêm biến thể thất bại. Vui lòng thử lại!");
       })
-      // Update
       .addCase(updateVariation.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -101,7 +99,6 @@ const adminVariationSlice = createSlice({
         state.error = action.payload;
         toast.error(action.payload || "Cập nhật biến thể thất bại. Vui lòng thử lại!");
       })
-      // Delete
       .addCase(deleteVariation.pending, (state) => {
         state.loading = true;
         state.error = null;

@@ -54,7 +54,7 @@ const BrandManagement = () => {
   const productCountByBrand = useMemo(() => {
     const count = {};
     products.forEach((product) => {
-      const brandId = product.brand?.name;
+      const brandId = product.brand?._id;
       if (brandId) {
         count[brandId] = (count[brandId] || 0) + 1;
       }
@@ -133,7 +133,7 @@ const BrandManagement = () => {
   const handleCloseAddModal = () => setIsAddModalOpen(false);
 
   const handleOpenDeleteModal = (brand) => {
-    const productCount = productCountByBrand[brand.name] || 0;
+    const productCount = productCountByBrand[brand._id] || 0;
 
     if (productCount > 0) {
       setWarningMessage("Có sản phẩm đang tồn tại. Hãy xóa sản phẩm trước khi xóa thương hiệu.");
@@ -269,7 +269,7 @@ const BrandManagement = () => {
                   <img src={brand.image} alt={brand.name} className="h-10 w-20 object-contain" />
                 </td>
                 <td className="p-4 text-sm text-center">
-                    {productCountByBrand[brand.name] || 0}
+                    {productCountByBrand[brand._id] || 0}
                   </td>
                 <td className="p-4 text-sm">
                   <div className="flex space-x-2">

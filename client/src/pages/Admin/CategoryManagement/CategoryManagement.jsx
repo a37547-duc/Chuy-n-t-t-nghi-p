@@ -54,7 +54,7 @@ const CategoryManagement = () => {
   const productCountByCategory = useMemo(() => {
     const count = {};
     products.forEach((product) => {
-      const categoryId = product.category?.name;
+      const categoryId = product.category?._id;
       if (categoryId) {
         count[categoryId] = (count[categoryId] || 0) + 1;
       }
@@ -137,7 +137,7 @@ const CategoryManagement = () => {
   const handleCloseAddModal = () => setIsAddModalOpen(false);
 
   const handleOpenDeleteModal = (category) => {
-    const productCount = productCountByCategory[category.name] || 0;
+    const productCount = productCountByCategory[category._id] || 0;
 
     if (productCount > 0) {
       setWarningMessage("Có sản phẩm đang tồn tại. Hãy xóa sản phẩm trước khi xóa danh mục.");
@@ -239,9 +239,9 @@ const CategoryManagement = () => {
                     className={`ml-1 text-xs ${sortCategory === "desc" ? "text-black" : "text-gray-300"}`}
                   />
                 </th>
-                <th>Số lượng sản phẩm</th>
-                <th></th>
-              <th className="p-4"></th>
+                <th className="p-4">Ảnh</th>
+                <th className="p-4">Số lượng sản phẩm</th>
+                <th className="p-4"></th>
             </tr>
           </thead>
           <tbody>
@@ -262,8 +262,11 @@ const CategoryManagement = () => {
                       <span className="font-semibold text-sm uppercase">{category.name}</span>
                     </div>
                   </td>
+                  <td className="p-1 text-sm">
+                  <img src={category.image} alt={category.name} className="h-10 w-20 object-contain" />
+                </td>
                   <td className="p-4 text-sm text-center">
-                    {productCountByCategory[category.name] || 0}
+                    {productCountByCategory[category._id] || 0}
                   </td>
                   <td className="p-4 text-sm">
                     <div className="flex space-x-2">
@@ -287,7 +290,7 @@ const CategoryManagement = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center text-red-500 py-4">Danh mục không tồn tại</td>
+                <td colSpan="6" className="text-center text-red-500 py-4">Danh mục không tồn tại</td>
               </tr>
             )}
           </tbody>
@@ -295,7 +298,7 @@ const CategoryManagement = () => {
           {/* Pagination & Count within table footer */}
           <tfoot>
             <tr>
-              <td colSpan="5" className="p-4">
+              <td colSpan="6" className="p-4">
                 <div className="flex justify-between items-center">
                   {/* Left: Count display */}
                   <div className="text-sm text-gray-500">

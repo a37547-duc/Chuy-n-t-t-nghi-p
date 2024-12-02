@@ -43,7 +43,7 @@ export default function AuthButtons() {
                   Thông tin tài khoản
                 </div>
               </Link>
-              <Link to="/account/order/emptyDelivery" aria-label="Go to orders">
+              <Link to="/account/order" aria-label="Go to orders">
                 <div className="px-4 py-2 text-xs text-gray-700 hover:bg-gray-200 flex items-center" role="menuitem">
                   <FontAwesomeIcon icon={faRectangleList} className="mr-2" />
                   Quản lý đơn hàng

@@ -2,10 +2,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  categoryName: null,  // Lưu tên danh mục
-  brandName: localStorage.getItem("selectedBrand") || null,     // Lưu tên thương hiệu
-  minPrice: null,      // Lưu giá tối thiểu
-  maxPrice: null,      // Lưu giá tối đa
+  categoryName: null, 
+  brandName: null,
+  minPrice: null,
+  maxPrice: null,
 };
 
 const filterSlice = createSlice({
@@ -16,7 +16,7 @@ const filterSlice = createSlice({
       state.categoryName = action.payload;
     },
     setBrandName: (state, action) => {
-      localStorage.setItem("selectedBrand", action.payload);
+      state.brandName = action.payload;
     },
     setMinPrice: (state, action) => {
       state.minPrice = action.payload;
@@ -24,8 +24,12 @@ const filterSlice = createSlice({
     setMaxPrice: (state, action) => {
       state.maxPrice = action.payload;
     },
+    resetFilter: () => {
+      console.log("Filters have been reset");
+      return initialState;
+    },
   },
 });
 
-export const { setCategoryName, setBrandName, setMinPrice, setMaxPrice } = filterSlice.actions;
+export const { setCategoryName, setBrandName, setMinPrice, setMaxPrice, resetFilter } = filterSlice.actions;
 export default filterSlice.reducer;

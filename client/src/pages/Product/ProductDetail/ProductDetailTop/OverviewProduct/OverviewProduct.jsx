@@ -28,13 +28,13 @@ const OverviewProduct = ({ data, onVariantChange }) => {
   return (
     <div>
       <div>
-        <h1 className='mb-2 text-[24px] font-bold leading-tight text-[#333]'>{data.product.name}</h1>
+        <h1 className='mb-2 text-[24px] font-bold leading-tight text-[#333]'>{data?.product?.name}</h1>
         <div className='text-[14px] mt-[-4px] text-[#82869E]'>
           Thương hiệu:
           <a 
             href='#'
             className='cursor-pointer'>
-            <span className='text-blue-700 font-bold uppercase'> {data.product.brand.name}</span>
+            <span className='text-blue-700 font-bold uppercase'> {data?.product?.brand?.name}</span>
           </a>
           <span className='mx-2'>|</span>
           SKU: 0123456789
@@ -54,21 +54,21 @@ const OverviewProduct = ({ data, onVariantChange }) => {
           <div className='flex flex-wrap mt-[8px]'>
             {data?.variants?.map((variant) => (
               <a
-                key={variant._id}
-                onClick={() => variant.stock_quantity > 1 && handleCpuChange(variant)}  // Chỉ gọi handleCpuChange nếu stock_quantity > 1
+                key={variant?._id}
+                onClick={() => variant?.stock_quantity > 0 && handleCpuChange(variant)}  // Chỉ gọi handleCpuChange nếu stock_quantity > 1
                 className={`px-4 py-2 rounded-md border-2 text-[12px] mr-2 mb-2 cursor-pointer text-center w-[130px] overflow-hidden whitespace-nowrap truncate
                   ${selectedCpu === variant._id 
                     ? 'border-blue-500 text-blue-500'  // Phần tử được chọn
                     : 'border-gray-300 text-gray-500'   // Phần tử chưa chọn
                   }
-                  ${variant.stock_quantity <= 1 ? 'cursor-not-allowed opacity-50' : ''}  // Vô hiệu hóa bấm và giảm độ sáng khi stock_quantity <= 1
+                  ${variant?.stock_quantity <= 0 ? 'cursor-not-allowed opacity-50' : ''}  // Vô hiệu hóa bấm và giảm độ sáng khi stock_quantity <= 1
                 `}
               >
-                {variant.ram?.capacity}
+                {variant?.ram?.capacity}
                 <br />
-                {variant.cpu?.name}
+                {variant?.cpu?.name}
                 <br />
-                {variant.gpu?.name}
+                {variant?.gpu?.name}
               </a>
             ))}
           </div>

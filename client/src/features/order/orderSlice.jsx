@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from "../../api/apiConfig";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 // Thunk to get all orders
 export const getAllOrders = createAsyncThunk(
   'order/getAllOrders',
@@ -34,7 +33,7 @@ export const submitOrderPayment = createAsyncThunk(
   'order/submitOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/order-payment', orderData);
+      const response = await api.post('/user/order-payment', orderData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -46,7 +45,7 @@ export const submitOrderCod = createAsyncThunk(
   'order/submitOrderCod',
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/order-payment', orderData);
+      const response = await api.post('/user/order-payment', orderData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -69,6 +68,7 @@ const orderSlice = createSlice({
 },
   extraReducers: (builder) => {
     builder
+      // Đặt hàng qua MoMo
       .addCase(submitOrderPayment.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -81,9 +81,9 @@ const orderSlice = createSlice({
       })
       .addCase(submitOrderPayment.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-        toast.error("Đặt hàng không thành công");
+        state.error = action.payload.error;
       })
+      // Đặt hàng Cod
       .addCase(submitOrderCod.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -92,13 +92,13 @@ const orderSlice = createSlice({
         state.loading = false;
         state.orderInfo = action.payload
         toast.success("Đặt hàng thành công");
-        window.location.href = `/`
+        window.location.href = `/account/order`
       })
       .addCase(submitOrderCod.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-        toast.error("Đặt hàng không thành công");
+        state.error = action.payload.error;
       })
+      // Get Danh sách đơn hàng
       .addCase(getAllOrders.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -112,6 +112,7 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      // Thay đổi trạng thái
       .addCase(changeOrderStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
