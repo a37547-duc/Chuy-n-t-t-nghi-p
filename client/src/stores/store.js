@@ -42,7 +42,7 @@ export const store = configureStore({
     ordersUser: authOrdersUserReducer,
     clientProduct: clientProductReducer,
     filter: ClientFilterReducer,
-    [productApi.reducerPath]: productApi.reducer,  // Thêm API reducer đúng cách
+    [productApi.reducerPath]: productApi.reducer, 
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productApi.middleware),  // Thêm middleware của API
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productApi.middleware),
 });

@@ -34,6 +34,8 @@ import CategoryManagement  from "./pages/Admin/CategoryManagement/CategoryManage
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import EmailVerify from "./components/verify/EmailVerify";
+import ForgotPassword from "./components/password/ForgotPassword";
+import ResetPassword from "./components/password/resetPassword";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
       {
         path: "/users/:id/verify/:token",
         element: <EmailVerify></EmailVerify>,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword></ForgotPassword>,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword></ResetPassword>,
       },
       {
         path: "/productList",

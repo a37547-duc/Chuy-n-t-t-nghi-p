@@ -28,7 +28,7 @@ function Header({ toggleSidebar, toggleDarkMode }) {
   };
 
   return (
-    <header className="bg-white border-b px-5 py-5 shadow-sm w-full sticky top-0">
+    <header className="bg-white border-b px-5 py-5 shadow-sm w-full sticky top-0 z-[999]">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <button 

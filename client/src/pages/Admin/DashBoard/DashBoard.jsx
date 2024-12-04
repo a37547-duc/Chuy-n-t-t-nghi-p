@@ -17,6 +17,10 @@ const DashBoard = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [totalCanceledOrders, setTotalCanceledOrders] = useState(0);
+
   useEffect(() => {
     const today = new Date();
     setStartDate(today);
@@ -28,6 +32,18 @@ const DashBoard = () => {
     }
     dispatch(customRange(data));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const totalRev = data.reduce((acc, item) => acc + item["Doanh thu"], 0);
+      const totalOrd = data.reduce((acc, item) => acc + item["Đơn hàng"], 0);
+      const totalCanceled = data.reduce((acc, item) => acc + item["Đơn hàng đã hủy"], 0);
+
+      setTotalRevenue(totalRev);
+      setTotalOrders(totalOrd);
+      setTotalCanceledOrders(totalCanceled);
+    }
+  }, [data]);
 
   const formatDate = (date) => {
     if (date) {
@@ -156,7 +172,7 @@ const DashBoard = () => {
             <div className="flex items-center">
               <i className="fas fa-shopping-cart text-4xl text-blue-500"></i>
               <div className="ml-4">
-                <h2 className="text-4xl font-bold">{data?.totalRevenue || 0}</h2>
+                <h2 className="text-4xl font-bold">{totalRevenue || 0}</h2>
                 <p className="text-gray-600">Tổng doanh thu</p>
               </div>
             </div>
@@ -169,7 +185,7 @@ const DashBoard = () => {
             <div className="flex items-center">
               <i className="fas fa-store text-4xl text-red-500"></i>
               <div className="ml-4">
-                <h2 className="text-4xl font-bold">{data?.totalOrders || 0}</h2>
+                <h2 className="text-4xl font-bold">{totalOrders || 0}</h2>
                 <p className="text-gray-600">Đơn hàng mới</p>
               </div>
             </div>
@@ -182,7 +198,7 @@ const DashBoard = () => {
             <div className="flex items-center">
               <i className="fas fa-boxes text-4xl text-yellow-500"></i>
               <div className="ml-4">
-                <h2 className="text-4xl font-bold">{data?.canceledOrders || 0}</h2>
+                <h2 className="text-4xl font-bold">{totalCanceledOrders || 0}</h2>
                 <p className="text-gray-600">Đơn hàng đã hủy</p>
               </div>
             </div>
@@ -193,11 +209,11 @@ const DashBoard = () => {
       {/* Charts */}
       <div className="grid grid-cols-2 gap-4 p-4">
         {/* Bar Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold mb-4">Doanh thu và Đơn hàng</h3>
           <BarChart width={500} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="Thời gian" />
             <YAxis />
             <Tooltip />
             <Legend />
@@ -211,7 +227,7 @@ const DashBoard = () => {
           <h3 className="text-xl font-semibold mb-4"></h3>
           <LineChart width={500} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="Thời gian" />
             <YAxis />
             <Tooltip />
             <Legend />
