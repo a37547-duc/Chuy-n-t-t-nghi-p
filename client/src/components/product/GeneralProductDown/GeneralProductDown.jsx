@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./GeneralProductDown.css";
+
 const GeneralProductDown = ({data}) => {
+  // console.log("Data: ", data)
   const navigate = useNavigate();
   const sortOptions = [
     "Khuyến mãi tốt nhất",
@@ -11,15 +13,38 @@ const GeneralProductDown = ({data}) => {
     "Sản phẩm mới nhất",
   ];
 
-  const [visibleProducts, setVisibleProducts] = useState(10); // Khởi tạo số lượng sản phẩm hiển thị ban đầu
+  const [visibleProducts, setVisibleProducts] = useState(10);
+  const [sortOrder, setSortOrder] = useState(null);
+  const [activeSort, setActiveSort] = useState(""); // State để lưu lựa chọn sắp xếp hiện tại
 
-  const handleShowMore = () => {
-    setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 10); // Mỗi lần bấm tăng thêm 10 sản phẩm
+  // useEffect để reset lại các state khi data thay đổi
+  useEffect(() => {
+    // Reset các lựa chọn sắp xếp khi data thay đổi
+    setSortOrder(null);
+    setActiveSort("");
+    setVisibleProducts(10);
+  }, [data]);
+
+  const handleSortChange = (option) => {
+    setActiveSort(option); // Cập nhật tùy chọn sắp xếp hiện tại
+    setSortOrder(option); // Cập nhật trạng thái sắp xếp
   };
 
-  const currentProducts = data.slice(0, visibleProducts); // Hiển thị sản phẩm từ đầu đến số lượng hiện tại
+  // Sắp xếp dữ liệu dựa trên tùy chọn đã chọn
+  const sortedData = [...data];
+  if (sortOrder === "Giá tăng dần") {
+    sortedData.sort((a, b) => (a?.product_variants?.price ?? 0) - (b?.product_variants?.price ?? 0));
+  } else if (sortOrder === "Giá giảm dần") {
+    sortedData.sort((a, b) => (b?.product_variants?.price ?? 0) - (a?.product_variants?.price ?? 0));
+  }
+  
+  const currentProducts = sortedData.slice(0, visibleProducts); // Hiển thị sản phẩm từ đầu đến số lượng hiện tại
 
-  const handleProductClick = (productId) => {navigate(`/products/${productId}`);};
+  const handleShowMore = () => {
+    setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 10);
+  };
+
+  const handleProductClick = (productId) => { navigate(`/products/${productId}`);};
 
   return (
     <div className="border-none rounded-lg border opacity-100 bg-white w-full">
@@ -29,7 +54,12 @@ const GeneralProductDown = ({data}) => {
             Sắp xếp theo
           </div>
           {sortOptions.map((option, index) => (
-            <div key={index} className="mr-4 p-2 rounded border border-gray-300 bg-white relative overflow-hidden cursor-pointer select-non">
+            <div
+              key={index}
+              className={`mr-4 p-2 rounded border border-gray-300 bg-white relative overflow-hidden cursor-pointer select-none 
+                ${activeSort === option ? "bg-blue-700" : ""}`} // Thêm lớp active
+              onClick={() => handleSortChange(option)}
+            >
               <div className="m-0 p-0 border border-transparent opacity-100 text-inherit font-normal text-[13px] leading-5 overflow-hidden transition-colors duration-300">
                 {option}
               </div>

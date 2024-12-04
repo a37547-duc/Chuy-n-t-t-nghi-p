@@ -45,9 +45,9 @@ const ProductList = () => {
 
   useEffect(() => {window.scrollTo(0, 0);}, [location]);
 
-  useEffect(() => {
-    console.log("Data: ", productsState);
-  }, [productsState]);
+  // useEffect(() => {
+  //   console.log("Data: ", productsState);
+  // }, [productsState]);
 
   useEffect(() => {
     console.log("Current Path:", location.pathname);

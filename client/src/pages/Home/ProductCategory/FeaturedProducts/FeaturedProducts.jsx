@@ -15,7 +15,7 @@ const FeaturedProducts = () => {
   const dispatch = useDispatch();
 
   // Lấy dữ liệu từ Redux store
-  const { products, loading, error } = useSelector((state) => state.product);
+  const { products, loading, error } = useSelector((state) => state.clientProduct);
 
   const [page, setPage] = useState(0);
   const [productsPerPage] = useState(10);

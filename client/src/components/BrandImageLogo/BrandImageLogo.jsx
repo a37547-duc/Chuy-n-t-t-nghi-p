@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
-import { useDispatch } from "react-redux"; // Import useDispatch
-import { setBrandName } from "../../features/Client/ClientFilterSlice"; // Import action
+import { useDispatch } from "react-redux";
+import { setBrandName } from "../../features/Client/ClientFilterSlice";
+import { useState } from "react";
 
 const BrandImageLogo = ({ image }) => {
-  const dispatch = useDispatch(); // Tạo dispatch
+  const dispatch = useDispatch();
+  const [activeLogo, setActiveLogo] = useState(null);
 
   // Hàm xử lý khi click vào logo
   const handleLogoClick = (logo) => {
     dispatch(setBrandName(logo)); // Dispatch action để set brand đã chọn
+    setActiveLogo(logo);
     console.log("Logo clicked:", logo); // Kiểm tra logo khi click
   };
 
@@ -17,7 +20,9 @@ const BrandImageLogo = ({ image }) => {
         {image.map((logo, index) => (
           <button
             key={index}
-            className="opacity-100 w-[88px] h-10 p-1 rounded border border-[#e4e5f0] bg-transparent relative flex items-center justify-center outline-none min-w-[2.5rem] cursor-pointer transition duration-[80ms] transition-bg"
+            className={`opacity-100 w-[88px] h-10 p-1 rounded border border-[#e4e5f0] bg-transparent relative flex items-center justify-center outline-none min-w-[2.5rem] cursor-pointer transition duration-[80ms] transition-bg ${
+              activeLogo === logo.name ? "border-blue-500" : "" // Thêm class active khi logo được chọn
+            }`}
             onClick={() => handleLogoClick(logo.name)} // Gọi handleLogoClick khi click vào logo
           >
             <div className="relative inline-block overflow-hidden h-full w-[100px]">

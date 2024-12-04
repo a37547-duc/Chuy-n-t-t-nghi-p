@@ -11,7 +11,7 @@ const AddBrand = ({ onClose }) => {
   useEffect(() => {
     console.log("AddBrand: ",brands)
   },[brands])
-  const [error, setError] = useState(""); // State để hiển thị lỗi
+  const [error, setError] = useState("");
   const [newBrand, setNewBrand] = useState({
     name: "",
     image: null,
@@ -67,7 +67,7 @@ const AddBrand = ({ onClose }) => {
             } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
-          {error && <p className="mt-1 text-sm text-red-500">{error}</p>} {/* Hiển thị lỗi */}
+          {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
         </div>
       </div>
 

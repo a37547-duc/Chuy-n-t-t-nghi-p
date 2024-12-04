@@ -7,8 +7,8 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 // eslint-disable-next-line react/prop-types
 const AddCategory = ({ onClose }) => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.category.categories); // Lấy danh sách danh mục từ Redux
-  const [error, setError] = useState(""); // State để hiển thị lỗi
+  const categories = useSelector((state) => state.category.categories);
+  const [error, setError] = useState("");
   const [newCategory, setNewCategory] = useState({
     name: "",
     image: null,
@@ -84,7 +84,7 @@ const AddCategory = ({ onClose }) => {
             } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
-          {error && <p className="mt-1 text-sm text-red-500">{error}</p>} {/* Hiển thị lỗi */}
+          {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
         </div>
       </div>
 

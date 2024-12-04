@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import DetailsProduct from "./DetailsProduct/DetailsProduct";
+import CommentClient from "../../../../components/product/CommentClient/CommentClient";
+
 import "./ProductMiddle.css";
 
-const ProductDetailMiddle = ({product, selectedVariant}) => {
-  
+const ProductDetailMiddle = ({product, selectedVariant}) => {  
+  // console.log("Data:", product)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const handleResize = () => {
@@ -18,7 +20,7 @@ const ProductDetailMiddle = ({product, selectedVariant}) => {
 
   return (
     <div id="product-detail-middle" className="flex justify-center mx-auto scroll-mt-[150px] md:scroll-mt-[100px]">
-      <div className="flexBox w-full max-w-[1100px] h-[420px] rounded bg-white mb-4">
+      <div className="flexBox w-full max-w-[1100px] h-auto rounded bg-white mb-4">
         {/* Phần trên / Phần dưới */}
         {isMobile ? (
           <>
@@ -39,12 +41,15 @@ const ProductDetailMiddle = ({product, selectedVariant}) => {
           <>
             {/* Phần mô tả sản phẩm ở trên */}
             <div className="w-full md:w-[60%] flex-shrink-0 pl-[5px]">
-              <div className="h-[56px] flex px-4">
-                <div className="py-4 font-bold text-[20px]">Mô tả sản phẩm</div>
+              <div className="min-h-[400px] bg-blue-100">
+                <div className="h-[56px] flex px-4">
+                  <div className="py-4 font-bold text-[20px]">Mô tả sản phẩm</div>
+                </div>
+                <div className="p-4">
+                  <div className="text-[14px]">{product?.product?.description}</div>
+                </div>
               </div>
-              <div className="p-4">
-                <div className="text-[14px]">{product?.product?.description}</div>
-              </div>
+              <CommentClient product={product} />
             </div>
 
             {/* Phần chi tiết sản phẩm ở dưới */}

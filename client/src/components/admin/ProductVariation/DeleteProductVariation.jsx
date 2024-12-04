@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
 import { deleteVariation } from "../../../features/Admin/adminVariationsSlice";
 import { getAllProductVariations } from "../../../features/product/productVariationSlice";

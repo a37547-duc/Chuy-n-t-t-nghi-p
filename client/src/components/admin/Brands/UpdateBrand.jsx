@@ -13,7 +13,7 @@ const UpdateBrand = ({ editBrand, onClose }) => {
     console.log('Brand:', editBrand);
   }, [brands, editBrand]);
 
-  const [error, setError] = useState(""); // State để lưu lỗi
+  const [error, setError] = useState("");
   const [updatedBrand, setUpdatedBrand] = useState({
     name: "",
     image: null,

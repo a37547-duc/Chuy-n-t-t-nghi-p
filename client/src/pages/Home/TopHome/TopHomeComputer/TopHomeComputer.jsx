@@ -17,9 +17,9 @@ const TopHomeComputer = () => {
               <Link to="/productList" className="bg-[#fff] ml-1">
                 Danh sách sản phẩm
               </Link>
-              <Link to="/admin" className="bg-[#fff] ml-1">
+              {/* <Link to="/admin" className="bg-[#fff] ml-1">
                 Trang Admin
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

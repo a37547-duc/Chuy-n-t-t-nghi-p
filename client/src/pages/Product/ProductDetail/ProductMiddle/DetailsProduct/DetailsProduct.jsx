@@ -14,11 +14,11 @@ const DetailsProduct = ({ data, selectedVariant }) => {
 
     return {
       brand: data.product?.brand?.name || "N/A",
-      color: selectedVariant.color || "N/A",
-      cpu: selectedVariant.cpu?.name || "N/A",
-      gpu: selectedVariant.gpu?.name || "N/A",
-      ram: selectedVariant.ram?.capacity || "N/A",
-      storage: selectedVariant.storage || "N/A",
+      color: selectedVariant?.color || "N/A",
+      cpu: selectedVariant?.cpu?.name || "N/A",
+      gpu: selectedVariant?.gpu?.name || "N/A",
+      ram: selectedVariant?.ram?.capacity || "N/A",
+      storage: selectedVariant?.storage || "N/A",
     };
   }, [data, selectedVariant]);
 

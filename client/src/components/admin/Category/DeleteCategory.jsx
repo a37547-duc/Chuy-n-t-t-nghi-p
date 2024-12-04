@@ -12,8 +12,8 @@ const DeleteCategory = ({categoryId, categoryName, onClose }) => {
       .unwrap()
       .then(() => {
         console.log("Danh mục đã được xóa thành công.");
-        dispatch(getAllCategories()); // Cập nhật danh sách sau khi xóa
-        onClose(); // Đóng modal
+        dispatch(getAllCategories());
+        onClose();
       })
       .catch((error) => {
         console.error("Lỗi khi xóa danh mục:", error);

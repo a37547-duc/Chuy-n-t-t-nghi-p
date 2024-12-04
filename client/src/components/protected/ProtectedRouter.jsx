@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 
 const ProtectedRouter = ({ children }) => {
   const location = useLocation()
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  if (!isAuthenticated) {
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  if (!isAuthenticated || user?.role !== "user") {
     return <Navigate to="/login" state={{ from: location}} replace />;
   }
   return children;

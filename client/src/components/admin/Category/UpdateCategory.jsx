@@ -7,11 +7,11 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 
 const UpdateCategory = ({ editCategory, onClose }) => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.category.categories); // Lấy danh sách danh mục từ Redux
+  const categories = useSelector((state) => state.category.categories);
   useEffect(() => {
     console.log("UpdateCate: ", categories)
   },[categories])
-  const [error, setError] = useState(""); // State để lưu lỗi
+  const [error, setError] = useState("");
   const [updatedCategory, setUpdatedCategory] = useState({
     name: "",
     image: null,

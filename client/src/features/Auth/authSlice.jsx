@@ -52,22 +52,25 @@ const authSlice = createSlice({
     user: JSON.parse(localStorage.getItem('user')) || null,
     profileBgColor: localStorage.getItem("profile_bg_color") || null,
     loginLoading: false,
-    error: null,    registerLoading: false,
-
+    error: null,   
+    registerLoading: false,
     registerError: null,
     isAuthenticated: !!localStorage.getItem('access_token'),
   },
   reducers: {
     setUserInfo: (state, action) => {
-      state.token = action.payload.user.token;
+      state.token = action.payload.token;
       state.user = {
-        username: action.payload.user.username,
-        email: action.payload.user.email,
+        username: action.payload.name,
+        email: action.payload.email,
+        role: "user"
       };
       state.isAuthenticated = true;
-    
-      localStorage.setItem("access_token", action.payload.user.token);
+      localStorage.setItem("access_token", action.payload.token);
       localStorage.setItem("user", JSON.stringify(state.user));
+      const randomColor = generateRandomColor();
+      state.profileBgColor = randomColor;
+      localStorage.setItem("profile_bg_color", randomColor);
     },
     logoutUser: (state) => {
       state.token = null;
@@ -114,7 +117,6 @@ const authSlice = createSlice({
         const randomColor = generateRandomColor();
         state.profileBgColor = randomColor;
         localStorage.setItem("profile_bg_color", randomColor);
-        
         toast.success("Đăng nhập thành công");
       })
       .addCase(loginUser.rejected, (state, action) => {

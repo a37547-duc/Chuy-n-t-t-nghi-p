@@ -1,6 +1,10 @@
 import FormLogin from '../../layouts/AuthLayout/FormLogin'
-
+import { useEffect } from 'react';
 function Login() {
+  useEffect(() => {
+    // Cuộn lên đầu trang khi trang này được render
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <FormLogin></FormLogin>
   )

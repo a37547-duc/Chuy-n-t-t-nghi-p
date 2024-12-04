@@ -18,10 +18,12 @@ import authReducer from "../features/Auth/authSlice";
 import authProfileReducer from "../features/Auth/authProfileSlice";
 import authOrdersUserReducer from "../features/Auth/authOrdersUserSlice";
 
-import clientProductReducer from "../features/Client/ClientProductSlice";
 
 import { productApi } from "../features/Client/ClientProductQuery";
+import ClientProductReducer from "../features/Client/ClientProductSlice";
 import ClientFilterReducer from '../features/Client/ClientFilterSlice';
+import ClientCommentReducer from '../features/Client/ClientCommentSlice';
+import CommentReducer from "../features/Client/Comment";
 
 export const store = configureStore({
   reducer: {
@@ -40,7 +42,9 @@ export const store = configureStore({
     auth: authReducer,
     profile: authProfileReducer,
     ordersUser: authOrdersUserReducer,
-    clientProduct: clientProductReducer,
+    clientProduct: ClientProductReducer,
+    clientComment: ClientCommentReducer,
+    comment: CommentReducer,
     filter: ClientFilterReducer,
     [productApi.reducerPath]: productApi.reducer,  // Thêm API reducer đúng cách
   },
