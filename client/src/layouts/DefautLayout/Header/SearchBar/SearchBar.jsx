@@ -17,6 +17,8 @@ export default function SearchBar() {
   const [dataSearch, setDataSearch] = useState([]);
   const [showList, setShowList] = useState(false);
   const handleProductClick = (product) => {
+    const data = dataSearch;
+    console.log(data);
     navigate("/products", { state: { product } });
   };
 
@@ -68,17 +70,20 @@ export default function SearchBar() {
       {showList && (
         <div className="search-list absolute z-[80] w-96 rounded-lg top-full text-xs">
           {dataSearch?.length > 0 ? (
-            <div className="overflow-y-auto rounded-lg max-h-[50vh] bg-gray-200">
+            <div className="overflow-y-auto rounded-lg max-h-[50vh] bg-white">
               {dataSearch.slice(0, 5).map((i) => (
                 <Link to={`/products/${i._id}`} key={i._id}>
-                  <div className="flex px-4 py-2 hover:bg-white hover:cursor-pointer">
+                  <div className="flex px-4 py-2 hover:bg-gray-200 hover:cursor-pointer">
                     <img className="w-12 h-12 mr-2 rounded-lg object-cover" src={i.images[0]} />
                     <div>{i?.name}</div>
                   </div>
                 </Link>
               ))}
               {dataSearch.length > 5 && (
-                <div className="px-4 py-2 text-gray-600 justify-center text-center hover:cursor-pointer">
+                <div 
+                  className="px-4 py-2 text-gray-600 justify-center text-center hover:cursor-pointer hover:text-red-500"
+                  onClick={handleProductClick}
+                >
                   Xem thêm {dataSearch.length - 5} sản phẩm khác
                 </div>
               )}

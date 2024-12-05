@@ -9,8 +9,8 @@ const BasicModal = ({ isOpen, onRequestClose, children }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="fixed inset-0 flex items-center justify-center p-4"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      className="fixed inset-0 flex items-center justify-center p-4" 
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50  z-[99999]"
       shouldCloseOnOverlayClick={true}
       shouldCloseOnEsc={true}
     >

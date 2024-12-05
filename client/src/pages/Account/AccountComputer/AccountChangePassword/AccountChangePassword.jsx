@@ -1,23 +1,78 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changePassword } from '../../../../features/user/userSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AccountChangePassword = () => {
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.user);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const handlePasswordChange = (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    const whiteSpaceRegex = /\s/;
+
+    if (!currentPassword.trim()) {
+      newErrors.currentPassword = "Mật khẩu hiện tại không được để trống";
+    }
+    if (!newPassword.trim()) {
+      newErrors.newPassword = "Mật khẩu mới không được để trống";
+    } else if (newPassword.length < 8) {
+      newErrors.newPassword = "Mật khẩu mới phải chứa ít nhất 8 ký tự";
+    } else if (!specialCharRegex.test(newPassword)) {
+      newErrors.newPassword = "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt (!@#$%^&*...)";
+    } else if (whiteSpaceRegex.test(newPassword)) {
+      newErrors.newPassword = "Mật khẩu mới không được chứa khoảng trắng";
+    }
+    if (!confirmPassword.trim()) {
+      newErrors.confirmPassword = "Nhập lại mật khẩu mới không được để trống";
+    } else if (newPassword !== confirmPassword) {
+      newErrors.confirmPassword = "Mật khẩu mới và xác nhận mật khẩu không khớp";
+    }
+    return newErrors;
+  };
+
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
-    // Logic để thay đổi mật khẩu, kiểm tra mật khẩu có khớp hay không
-    if (newPassword !== confirmPassword) {
-      alert('Mật khẩu mới và xác nhận mật khẩu không khớp');
+
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
-    // Thực hiện gọi API hoặc logic xử lý thay đổi mật khẩu
-    console.log('Mật khẩu đã được thay đổi thành công');
+
+    setErrors({});
+    const formData = {
+      currentPassword,
+      newPassword,
+    };
+
+    dispatch(changePassword(formData))
+    .then((result) => {
+      if (result) {
+        if (!result.error) {
+          toast.success('Mật khẩu đã được thay đổi thành công');
+        } else if (result.error) {
+          console.log(result)
+          toast.error(result.payload.error);
+        }
+      } else {
+        toast.error('Đã có lỗi xảy ra. Vui lòng thử lại sau.');
+      }
+    })
+    .catch((error) => {
+      console.log('Lỗi kết nối. Vui lòng thử lại.', error)
+      toast.error('Lỗi kết nối. Vui lòng thử lại.');
+    });
   };
 
   return (
-    <div className=" p-4">
+    <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Thay đổi mật khẩu</h2>
       <form onSubmit={handlePasswordChange}>
         <div className="mb-4">
@@ -30,8 +85,10 @@ const AccountChangePassword = () => {
             className="w-full px-3 py-2 border rounded-md"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
-            required
           />
+          {errors.currentPassword && (
+            <p className="text-red-500 text-sm mt-1">{errors.currentPassword}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -44,8 +101,10 @@ const AccountChangePassword = () => {
             className="w-full px-3 py-2 border rounded-md"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            required
           />
+          {errors.newPassword && (
+            <p className="text-red-500 text-sm mt-1">{errors.newPassword}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -58,15 +117,18 @@ const AccountChangePassword = () => {
             className="w-full px-3 py-2 border rounded-md"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required
           />
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+          )}
         </div>
 
         <button
           type="submit"
           className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+          disabled={loading}
         >
-          Thay đổi mật khẩu
+          {loading ? 'Đang thay đổi...' : 'Thay đổi mật khẩu'}
         </button>
       </form>
     </div>
