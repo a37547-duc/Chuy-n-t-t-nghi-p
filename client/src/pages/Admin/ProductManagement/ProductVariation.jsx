@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,6 +22,7 @@ const ProductVariation = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [id, setId] = useState(null);
   const [initVariant, setInitVariant] = useState(null);
+  const [searchVariant, setSearchVariant] = useState("");
   
   const [selectAll, setSelectAll] = useState(false);
   const [selectedVariations, setSelectedVariations] = useState([]);
@@ -32,6 +33,12 @@ const ProductVariation = () => {
       dispatch(getAllProductVariations(productId));
     }
   }, [dispatch, productId]);
+
+  const filteredVariants = useMemo(() => {
+    return variations.filter((variation) =>
+      variation._id.toLowerCase().includes(searchVariant.toLowerCase())
+    );
+  }, [variations, searchVariant]);
   const totalVariations = variations.length;
   const totalPages = Math.ceil(totalVariations / variationsPerPage);
 
@@ -41,7 +48,7 @@ const ProductVariation = () => {
 
   const indexOfLastVariation = (page + 1) * variationsPerPage;
   const indexOfFirstVariation = indexOfLastVariation - variationsPerPage;
-  const currentVariations = variations.slice(indexOfFirstVariation, indexOfLastVariation);
+  const currentVariations = filteredVariants.slice(indexOfFirstVariation, indexOfLastVariation);
 
   // Handle select all checkbox
   const handleSelectAll = (e) => {
@@ -84,6 +91,8 @@ const ProductVariation = () => {
             type="text"
             placeholder="Search for variations"
             className="flex-grow px-4 py-2 border border-gray-200 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md"
+            value={searchVariant}
+            onChange={(e) => setSearchVariant(e.target.value)}
             // Implement search functionality as needed
           />
           <button className="ml-2 p-2 bg-gray-200 rounded-md">
@@ -169,22 +178,22 @@ const ProductVariation = () => {
                   <td className="p-4 text-sm">{variation._id}</td>
                   <td className="p-4">
                     <div className="flex flex-col">
-                    {variation.color && (
+                    {variation?.color && (
                         <span className="font-semibold text-sm">Màu sắc: {variation.color}</span>
                       )}
-                      {variation.cpu && (
-                        <span className="font-semibold text-sm">CPU: {variation.cpu.name}</span>
+                      {variation?.cpu && (
+                        <span className="font-semibold text-sm">CPU: {variation.cpu?.name}</span>
                       )}
-                      {variation.ram && (
-                        <span className="font-semibold text-sm">RAM: {variation.ram.type}</span>
+                      {variation?.ram && (
+                        <span className="font-semibold text-sm">RAM: {variation.ram?.type}</span>
                       )}
-                      {variation.gpu && (
-                        <span className="font-semibold text-sm">GPU: {variation.gpu.name}</span>
+                      {variation?.gpu && (
+                        <span className="font-semibold text-sm">GPU: {variation.gpu?.name}</span>
                       )}
                     </div>
                   </td>
-                  <td className="p-4 text-sm">{variation.price?.toLocaleString()} VNĐ</td>
-                  <td className="p-4 text-sm">{variation.stock_quantity}</td>
+                  <td className="p-4 text-sm">{variation?.price?.toLocaleString()} VNĐ</td>
+                  <td className="p-4 text-sm">{variation?.stock_quantity}</td>
                   <td className="p-4 text-sm">
                     <div className="flex space-x-2">
                       <button 

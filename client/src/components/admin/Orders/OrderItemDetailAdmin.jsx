@@ -49,14 +49,26 @@ const OrderItemDetailAdmin = ({ data, onClose }) => {
             />
           </div>
         </div>
-
-        <label className="block font-semibold">Phương thức thanh toán:</label>
-        <input
-          type="text"
-          value={data.paymentMethod}
-          readOnly
-          className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
-        />
+        <div className="flex gap-4 mb-2">
+          <div className="w-1/2">
+            <label className="block font-semibold">Phương thức thanh toán:</label>
+            <input
+              type="text"
+              value={data.paymentMethod}
+              readOnly
+              className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
+            />
+          </div>
+          <div className="w-1/2">
+            <label className="block font-semibold">Trạng thái thanh toán:</label>
+            <input
+              type="text"
+              value={data.paymentStatus}
+              readOnly
+              className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
+            />
+          </div>
+        </div>
       </div>
       
       <h3 className="text-lg font-semibold mb-2">Chi tiết đơn hàng:</h3>

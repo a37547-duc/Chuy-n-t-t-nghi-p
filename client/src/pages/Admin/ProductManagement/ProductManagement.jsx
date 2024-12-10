@@ -175,14 +175,15 @@ const ProductManagement = () => {
               </th>
               <th className="p-4 w-1/12">ID</th>
               <th className="p-4 w-3/12">Tên sản phẩm</th>
-              <th className="p-4 w-2/12">Ảnh sản phẩm</th>
+              <th className="p-4 w-2/12">Ảnh</th>
               <th className="p-4 w-2/12">Danh mục</th>
               <th className="p-4 w-2/12">Thương hiệu</th>
               <th className="p-4 w-2/12"></th>
             </tr>
           </thead>
           <tbody>
-            {currentProducts.map((products, index) => (
+          {currentProducts.length > 0 ? (
+            currentProducts.map((products, index) => (
               <tr key={index} className="border-b border-gray-200 text-gray-700 hover:bg-gray-100">
                 <td className="p-4">
                   <input
@@ -236,7 +237,12 @@ const ProductManagement = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="text-center text-red-500 py-4">Sản phẩm không tồn tại</td>
+            </tr>
+          )}
           </tbody>
 
           {/* Pagination & Count within table footer */}

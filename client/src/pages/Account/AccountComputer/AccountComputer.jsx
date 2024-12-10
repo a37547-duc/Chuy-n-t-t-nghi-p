@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 const AccountComputer = () => {
   return (
-    <div className="bg-[#F5F5F5] text-[#333333]">
+    <div className="bg-[#F5F5F5] text-[#333333] min-h-screen">
             <div className="flex justify-center mx-auto">
                 <div className="flex w-full max-w-[1100px] h-420px flex-nowrap my-6 p-6">
                     <div className="w-[20%]">
