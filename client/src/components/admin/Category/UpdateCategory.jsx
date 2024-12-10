@@ -7,11 +7,11 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 
 const UpdateCategory = ({ editCategory, onClose }) => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.category.categories); // Lấy danh sách danh mục từ Redux
+  const categories = useSelector((state) => state.category.categories);
   useEffect(() => {
     console.log("UpdateCate: ", categories)
   },[categories])
-  const [error, setError] = useState(""); // State để lưu lỗi
+  const [error, setError] = useState("");
   const [updatedCategory, setUpdatedCategory] = useState({
     name: "",
     image: null,
@@ -108,13 +108,13 @@ const UpdateCategory = ({ editCategory, onClose }) => {
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Update
+          Cập nhật danh mục
         </button>
         <button
           onClick={onClose}
           className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
         >
-          Close
+          Đóng
         </button>
       </div>
     </form>

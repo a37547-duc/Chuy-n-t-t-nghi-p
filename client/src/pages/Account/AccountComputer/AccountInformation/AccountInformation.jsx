@@ -5,9 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 const AccountInformation = () => {
   const dispatch = useDispatch();
   const { useProfile, loading, error } = useSelector((state) => state.profile);
-  // console.log("User: ", useProfile)
 
-  // State để lưu thông tin user
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -18,7 +16,6 @@ const AccountInformation = () => {
   const [isChanged, setIsChanged] = useState(false);
   const [phoneError, setPhoneError] = useState("");
 
-  // Lấy thông tin người dùng từ Redux store khi component mount
   useEffect(() => {
     dispatch(getUserProfile());
   }, [dispatch]);
@@ -92,11 +89,9 @@ const AccountInformation = () => {
     return true;
   };
 
-  // Hàm xử lý gửi form
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Kiểm tra số điện thoại trước khi gửi
     if (!validatePhoneNumber(user.phoneNumber)) {
       return;
     }
@@ -151,7 +146,7 @@ const AccountInformation = () => {
             <label className="text-[13px] block mb-1">Họ Tên:</label>
             <input
               type="text"
-              name="username" // sửa lại thành "username"
+              name="username"
               value={user.username}
               onChange={handleInputChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
@@ -160,13 +155,6 @@ const AccountInformation = () => {
 
           <div>
             <label className="text-[13px] block mb-1 ">Email:</label>
-            {/* <input
-              type="email"
-              name="email"
-              value={user.email}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
-            /> */}
             <p className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px] bg-gray-200 text-gray-700">
               {user.email}
             </p>
@@ -176,7 +164,7 @@ const AccountInformation = () => {
             <label className="text-[13px] block mb-1 ">Số điện thoại:</label>
             <input
               type="tel"
-              name="phoneNumber" // sửa lại thành "phoneNumber"
+              name="phoneNumber"
               value={user.phoneNumber}
               onChange={handleInputChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
@@ -189,7 +177,7 @@ const AccountInformation = () => {
             <input
               type="date"
               name="DateOfBirth"
-              value={user.DateOfBirth || ""} // Giữ giá trị hợp lệ, tránh undefined
+              value={user.DateOfBirth || ""}
               onChange={handleInputChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
             />
@@ -201,7 +189,7 @@ const AccountInformation = () => {
               <label className="text-[13px] inline-flex items-center">
                 <input
                   type="radio"
-                  name="gender" // sửa lại thành "gender"
+                  name="gender"
                   value="Nam"
                   checked={user.gender === "Nam"}
                   onChange={handleRadioChange}
@@ -213,7 +201,7 @@ const AccountInformation = () => {
               <label className="text-[13px] inline-flex items-center">
                 <input
                   type="radio"
-                  name="gender" // sửa lại thành "gender"
+                  name="gender"
                   value="Nữ"
                   checked={user.gender === "Nữ"}
                   onChange={handleRadioChange}
@@ -225,7 +213,7 @@ const AccountInformation = () => {
               <label className="text-[13px] inline-flex items-center">
                 <input
                   type="radio"
-                  name="gender" // sửa lại thành "gender"
+                  name="gender"
                   value="Khác"
                   checked={user.gender === "Khác"}
                   onChange={handleRadioChange}

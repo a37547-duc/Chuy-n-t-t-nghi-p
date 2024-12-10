@@ -14,7 +14,7 @@ const DeleteBrand = ({ brandId, brandName, onClose }) => {
       .then(() => {
         console.log("Danh mục đã được xóa thành công.");
         dispatch(getAllBrands()); // Cập nhật danh sách sau khi xóa
-        onClose(); // Đóng modal
+        onClose();
       })
       .catch((error) => {
         console.error("Lỗi khi xóa danh mục:", error);

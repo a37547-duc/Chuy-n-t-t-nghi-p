@@ -96,64 +96,67 @@ const AccountOrder = () => {
       {!loading && !error && (
         <div className="rounded-md mt-4">
           {orders && orders.length > 0 ? (
-            orders.map((order) => (
-              <div key={order.id} className="border-t pt-4">
-                <div className="bg-white p-4 flex justify-between rounded-md">
-                  <div className="flex items-start space-x-4">
-                    <img
-                      src={order.products[0]?.image}
-                      alt={order.products[0]?.name}
-                      className="w-16 h-16 object-cover"
-                    />
-                    <div className="space-y-2">
-                      <p className="text-md font-bold">{order.products[0]?.name}</p>
-                      <p className="text-sm text-gray-500">{order.orderDate}</p>
-                      <div>
-                        <p
-                          className={`text-sm font-medium inline-block p-1 px-2 rounded-md ${
-                            order.orderStatus === "Đã giao hàng"
-                              ? "text-green-700 bg-green-200"
-                              : order.orderStatus === "Đã hủy"
-                              ? "text-red-700 bg-red-200"
-                              : "text-yellow-700 bg-yellow-200"
-                          }`}
-                        >
-                          {order.orderStatus}
+            <div className="max-h-[700px] overflow-y-auto">
+              {orders.map((order) => (
+                <div key={order.id} className="border-t pt-4">
+                  <div className="bg-white p-4 flex justify-between rounded-md">
+                    <div className="flex items-start space-x-4 w-[502.6px]">
+                      <img
+                        src={order.products[0]?.image}
+                        alt={order.products[0]?.name}
+                        className="w-16 h-16 object-cover"
+                      />
+                      <div className="space-y-2">
+                        <p className="text-md font-bold">{order.products[0]?.name}</p>
+                        <p className="text-sm text-gray-500">{order.orderDate}</p>
+                        <div>
+                          <p
+                            className={`text-sm font-medium inline-block p-1 px-2 rounded-md ${
+                              order.orderStatus === "Đã giao hàng"
+                                ? "text-green-700 bg-green-200"
+                                : order.orderStatus === "Đã hủy"
+                                ? "text-red-700 bg-red-200"
+                                : "text-yellow-700 bg-yellow-200"
+                            }`}
+                          >
+                            {order.orderStatus}
+                          </p>
+                        </div>
+                        <p className="text-red-600 font-bold">
+                          {order.products
+                            .reduce(
+                              (total, product) => total + product.price * product.quantity,
+                              0
+                            )
+                            .toLocaleString()}{" "}
+                          VND
                         </p>
                       </div>
-                      <p className="text-red-600 font-bold">
-                        {order.products.reduce(
-                          (total, product) => total + product.price * product.quantity,
-                          0
-                        ).toLocaleString()}{" "}
-                        VND
-                      </p>
+                    </div>
+                    <div className="flex flex-col justify-end text-right">
+                      <div className="mt-auto">
+                        <button className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md mb-2 border-2 border-red-600">
+                          Xem hóa đơn
+                        </button>
+                        <button
+                          className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md border-2 border-red-600"
+                          onClick={() => {
+                            handleOpenOrderDetailModal();
+                            setInitOrder(order);
+                          }}
+                        >
+                          Xem chi tiết
+                        </button>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="flex flex-col justify-end text-right">
-                    <div className="mt-auto">
-                      <button className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md mb-2 border-2 border-red-600">
-                        Xem hóa đơn
-                      </button>
-                      <button
-                      className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md border-2 border-red-600"
-                      onClick={() => {
-                        handleOpenOrderDetailModal();
-                        setInitOrder(order);
-                      }}
-                      >
-                        Xem chi tiết
-                      </button>
-                    </div>
-                  </div>
+                  <BasicModal className="mt-10" isOpen={isOrderDetailModalOpen} onRequestClose={handleCloseOrderDetailModal}>
+                    <OrderItemDetailAdmin
+                      data={initOrder} onClose={handleCloseOrderDetailModal} />
+                  </BasicModal>
                 </div>
-                <BasicModal className="mt-10" isOpen={isOrderDetailModalOpen} onRequestClose={handleCloseOrderDetailModal}>
-                  <OrderItemDetailAdmin
-                  data={initOrder} onClose={handleCloseOrderDetailModal} />
-                </BasicModal>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
             <EmptyPage label={navItems[activeIndex]?.label} />
           )}

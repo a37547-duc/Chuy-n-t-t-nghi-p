@@ -1,26 +1,17 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector  } from "react-redux";
 import { setBrandName } from "../../../../features/Client/ClientFilterSlice";
+import { getAllBrandsClient } from "../../../../features/Client/ClientBrandSlice";
 
 export default function LogonButtonComputer() {
   const dispatch = useDispatch();
-  const [logos, setLogos] = useState([]);
+  const { data: logos} = useSelector((state) => state.clientBrand);
 
   // Gọi API khi component được mount
   useEffect(() => {
-    const fetchLogos = async () => {
-      try {
-        const response = await fetch("https://laptech4k.onrender.com/api/v1/products/brand");
-        const data = await response.json();
-        setLogos(data?.brands || []); // Đảm bảo có dữ liệu hợp lệ
-      } catch (error) {
-        console.error("Error fetching logos:", error);
-      }
-    };
-
-    fetchLogos();
-  }, []);
+    dispatch(getAllBrandsClient());
+  }, [dispatch]);
 
   const handleProductClick = (brandName) => {
     dispatch(setBrandName(brandName));

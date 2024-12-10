@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { setCategoryName } from "../../../features/Client/ClientFilterSlice"; // Import action
+import { useState } from "react";
 
 const OnDemand = ({ choose }) => {
   const dispatch = useDispatch(); // Tạo dispatch
+  const [activeCategory, setActiveCategory] = useState(null);
 
   // Hàm xử lý khi click vào category
   const handleCategoryClick = (category) => {
     dispatch(setCategoryName(category)); // Dispatch action để set category đã chọn
+    setActiveCategory(category);
     console.log("Category clicked:", category); // Kiểm tra category khi click
   };
 
@@ -22,7 +25,9 @@ const OnDemand = ({ choose }) => {
           {choose.map((chose, index) => (
             <button
               key={index}
-              className="rounded-md border border-gray-300 opacity-100 w-[88px] h-[125px] p-1 flex flex-col gap-0 justify-start items-center hover:cursor-pointer hover:border-blue-500 transition-colors duration-300"
+              className={`rounded-md border opacity-100 w-[88px] h-[125px] p-1 flex flex-col gap-0 justify-start items-center hover:cursor-pointer transition-colors duration-300 ${
+                activeCategory === chose.name ? "border-blue-500" : "border-gray-300"
+              }`} 
               onClick={() => handleCategoryClick(chose.name)} // Gọi handleCategoryClick khi nhấn
             >
               <div className="relative inline-block overflow-hidden h-[72px] w-[72px]">

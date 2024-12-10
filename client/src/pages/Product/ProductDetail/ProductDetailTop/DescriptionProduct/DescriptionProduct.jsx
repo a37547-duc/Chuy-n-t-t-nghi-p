@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
 
 const DescriptionProduct = ({data}) => {
-  console.log("Data: ", data);
-
-  
+  // console.log("Data: ", data);
   
   const handleScrollToMiddle = () => {
     const element = document.getElementById("product-detail-middle");
@@ -23,9 +21,6 @@ const DescriptionProduct = ({data}) => {
           <br />
           - Màu: {data?.color}
           <br />
-          - Core: {data?.cpu?.cores}
-          <br />
-          - Giá: {data?.price}
         </div>
       )}
 

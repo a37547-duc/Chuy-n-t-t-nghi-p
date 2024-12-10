@@ -13,7 +13,7 @@ const UpdateBrand = ({ editBrand, onClose }) => {
     console.log('Brand:', editBrand);
   }, [brands, editBrand]);
 
-  const [error, setError] = useState(""); // State để lưu lỗi
+  const [error, setError] = useState("");
   const [updatedBrand, setUpdatedBrand] = useState({
     name: "",
     image: null,
@@ -103,13 +103,13 @@ const UpdateBrand = ({ editBrand, onClose }) => {
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Update
+          Cập nhật thương hiệu
         </button>
         <button
           onClick={onClose}
           className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
         >
-          Close
+          Đóng
         </button>
       </div>
     </form>

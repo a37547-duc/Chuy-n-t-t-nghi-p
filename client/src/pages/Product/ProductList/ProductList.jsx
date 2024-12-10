@@ -17,12 +17,13 @@ const ProductList = () => {
   const isFromTaskbar = state?.from === "Taskbar";
   const isFromLogoButton = state?.from === "LogoButton";
 
-  const { categoryName, brandName } = useSelector((state) => state.filter);
+  const { categoryName, brandName, searchName } = useSelector((state) => state.filter);
 
   const searchParams = new URLSearchParams(location.search);
   const params = {
     brandName: brandName || searchParams.get("brandName") || null,
     categoryName: categoryName || searchParams.get("categoryName") || null,
+    searchName: searchName || searchParams.get("searchName") || null,
   };
 
   // Gọi API để lấy sản phẩm
@@ -36,21 +37,16 @@ const ProductList = () => {
   // Kiểm tra lỗi và cập nhật productsState thành mảng rỗng nếu có lỗi
   useEffect(() => {
     if (isError) {
-      console.log("Error fetching products:", error);
       setProductsState([]); // Cập nhật mảng rỗng khi có lỗi
     } else if (products.length > 0) {
       setProductsState(products); // Cập nhật dữ liệu sản phẩm khi không có lỗi
     }
-  }, [isError, error, products]); // Chỉ chạy khi isError, error hoặc products thay đổi
+  }, [isError, error, products]);
 
   useEffect(() => {window.scrollTo(0, 0);}, [location]);
 
   useEffect(() => {
-    console.log("Data: ", productsState);
-  }, [productsState]);
-
-  useEffect(() => {
-    console.log("Current Path:", location.pathname);
+    // console.log("Current Path:", location.pathname);
     if (location.pathname === "/") {
       console.log("Resetting filters...");
       dispatch(resetFilter());

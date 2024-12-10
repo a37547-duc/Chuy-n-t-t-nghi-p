@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+// import { useState } from "react";
 import { deleteProduct } from "../../../features/Admin/adminProductsSlice";
 import { getAllProducts } from "../../../features/product/productsSlice";
 

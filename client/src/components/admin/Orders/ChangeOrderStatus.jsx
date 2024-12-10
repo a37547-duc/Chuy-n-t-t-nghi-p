@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeOrderStatus, getAllOrders } from '../../../features/order/orderSlice';
 

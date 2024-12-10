@@ -11,7 +11,7 @@ import PromotionProduct from './PromotionProduct/PromotionProduct';
 import ButtonBuyProduct from './ButtonBuyProduct/BottonBuyProduct';
 
 const ProductDetailTop = ({ product, onVariantChange }) => {
-  console.log("Varinant: ", onVariantChange)
+  // console.log("Varinant: ", onVariantChange)
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 540);
   const [selectedVariant, setSelectedVariant] = useState(product?.variants?.[0]);
 

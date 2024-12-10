@@ -1,46 +1,21 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLaptop,
-  faDesktop,
-  faGamepad,
-  faComputer,
-} from "@fortawesome/free-solid-svg-icons";
+import { faComputer } from "@fortawesome/free-solid-svg-icons";
 import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom"; // Import Link
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setCategoryName } from "../../../features/Client/ClientFilterSlice";
+import { getAllCategoriesClient } from "../../../features/Client/ClientCategorySlice";
 import "./Taskbar.css";
 const Taskbar = () => {
   const dispatch = useDispatch();
-  const [categories, setCategories] = useState([]); // Lưu trữ danh sách category từ API
-  const [activeIndex, setActiveIndex] = useState(null);
+  const { data: categories} = useSelector((state) => state.clientCategory);
 
-  // Map icon theo tên category
-  const iconMap = {
-    "Laptop văn phòng": faLaptop,
-    "Laptop doanh nhân": faDesktop,
-    "Laptop Gaming": faGamepad,
-    "Phụ kiện": faComputer,
-    // Thêm các mapping khác nếu cần
-  };
-
-  // Gọi API để lấy danh sách category
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(
-          "https://laptech4k.onrender.com/api/v1/products/category"
-        );
-        const data = await response.json();
-        setCategories(data?.category || []); // Đảm bảo dữ liệu trả về hợp lệ
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
+    dispatch(getAllCategoriesClient());
+  }, [dispatch]);
 
-    fetchCategories();
-  }, []);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const handleMouseEnter = (index) => {
     setActiveIndex(index);
@@ -72,11 +47,19 @@ const Taskbar = () => {
           onMouseEnter={() => handleMouseEnter(index)}
           onClick={() => handleProductClick(category.name)} // Dispatch category name vào Redux
         >
-          <FontAwesomeIcon
-            icon={iconMap[category.name] || faComputer} // Hiển thị icon dựa trên tên category
-            className="mr-2"
-          />
-          {category.name} {/* Hiển thị tên category */}
+          {category.image ? (
+            <img
+              src={category.image}
+              alt={category.name}
+              className="mr-2 w-5 h-5 object-contain" // Tùy chỉnh kích thước của ảnh
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faComputer} // Hiển thị icon mặc định nếu không có ảnh
+              className="mr-2"
+            />
+          )}
+          {category.name}
           <FontAwesomeIcon
             icon={faGreaterThan}
             className="ml-auto"

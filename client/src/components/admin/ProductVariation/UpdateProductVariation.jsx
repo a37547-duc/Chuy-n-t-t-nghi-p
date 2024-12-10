@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllProductVariations } from "../../../features/product/productVariationSlice";
 import { updateVariation } from "../../../features/Admin/adminVariationsSlice";
