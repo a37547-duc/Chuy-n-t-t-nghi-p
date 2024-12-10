@@ -87,7 +87,7 @@ const FeaturedProducts = () => {
         </div>
 
         {loading && (
-          <div className="flex justify-center items-center mt-6">
+          <div className="flex justify-center items-center my-6">
             <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle
                 className="opacity-25"

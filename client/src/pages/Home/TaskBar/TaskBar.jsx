@@ -3,30 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComputer } from "@fortawesome/free-solid-svg-icons";
 import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCategoryName } from "../../../features/Client/ClientFilterSlice";
+import { getAllCategoriesClient } from "../../../features/Client/ClientCategorySlice";
 import "./Taskbar.css";
 const Taskbar = () => {
   const dispatch = useDispatch();
-  const [categories, setCategories] = useState([]);
-  // console.log("TaskBar: ", categories)
-  const [activeIndex, setActiveIndex] = useState(null);
+  const { data: categories} = useSelector((state) => state.clientCategory);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(
-          "https://laptech4k.onrender.com/api/v1/products/category"
-        );
-        const data = await response.json();
-        setCategories(data?.category || []); // Đảm bảo dữ liệu trả về hợp lệ
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
+    dispatch(getAllCategoriesClient());
+  }, [dispatch]);
 
-    fetchCategories();
-  }, []);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const handleMouseEnter = (index) => {
     setActiveIndex(index);

@@ -21,9 +21,6 @@ const DescriptionProduct = ({data}) => {
           <br />
           - Màu: {data?.color}
           <br />
-          - Core: {data?.cpu?.cores}
-          <br />
-          - Giá: {data?.price}
         </div>
       )}
 

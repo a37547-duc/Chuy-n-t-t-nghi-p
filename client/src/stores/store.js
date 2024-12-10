@@ -18,11 +18,12 @@ import authReducer from "../features/Auth/authSlice";
 import authProfileReducer from "../features/Auth/authProfileSlice";
 import authOrdersUserReducer from "../features/Auth/authOrdersUserSlice";
 
-
 import { productApi } from "../features/Client/ClientProductQuery";
 import ClientProductReducer from "../features/Client/ClientProductSlice";
 import ClientFilterReducer from '../features/Client/ClientFilterSlice';
 import ClientCommentReducer from '../features/Client/ClientCommentSlice';
+import ClientBrandReducer from '../features/Client/ClientBrandSlice';
+import ClientCategoryReducer from "../features/Client/ClientCategorySlice";
 import CommentReducer from "../features/Client/Comment";
 
 export const store = configureStore({
@@ -44,6 +45,8 @@ export const store = configureStore({
     ordersUser: authOrdersUserReducer,
     clientProduct: ClientProductReducer,
     clientComment: ClientCommentReducer,
+    clientBrand: ClientBrandReducer,
+    clientCategory: ClientCategoryReducer,
     comment: CommentReducer,
     filter: ClientFilterReducer,
     [productApi.reducerPath]: productApi.reducer, 

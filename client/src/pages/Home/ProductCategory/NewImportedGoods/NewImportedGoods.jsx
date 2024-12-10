@@ -1,30 +1,34 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsClient } from "../../../../features/Client/ClientProductSlice";
+import { getAllCategoriesClient } from "../../../../features/Client/ClientCategorySlice";
 import NewImportedLaptop from "./NewImportedLaptop/NewImportedLaptop";
-// import NewImportedGamingGear from "./NewImportedGamingGear/NewImportedGamingGear";
 
 const NewImportedGoods =() => {
   const dispatch = useDispatch();
-
-  // Lấy dữ liệu từ Redux store
-  const { products, loading, error } = useSelector((state) => state.clientProduct);
-
+  const { products, loading: productsLoading, error: productsError } = useSelector((state) => state.clientProduct);
+  const { data: categories, loading: categoriesLoading, error: categoriesError} = useSelector((state) => state.clientCategory);
+  const colors = ["bg-[#D32F2F]", "bg-blue-700", "bg-gray-500", "bg-green-500"];
   useEffect(() => {
     dispatch(getAllProductsClient());
+    dispatch(getAllCategoriesClient());
   }, [dispatch]);
-
-  const GamingProducts = products.filter((product) => product.category?.name === "Gaming").slice(-10).reverse();
-  const BusinessProducts = products.filter((product) => product.category?.name === "Business").slice(-10).reverse();
-  const OfficeProducts = products.filter((product) => product.category?.name === "Office").slice(-10).reverse();
-  const StudentProducts = products.filter((product) => product.category?.name === "Student").slice(-10).reverse();
   
-  const limitedProducts = products.slice(-10).reverse();
+  const getProductsByCategory = (categoryName) =>
+    products.filter((product) => product.category?.name === categoryName).slice(-10).reverse();
 
+  const categoryConfigs = categories.map((category, index) =>({
+    title: `Laptop ${category.name} mới nhập`,
+    categoryName: category.name,
+    bgColor: colors[index % colors.length], // Thay đổi màu sắc tùy ý
+    path: "/productList",
+    search: `?categoryName=${category.name}`,
+  }));
+  
   return (
     <div>
-      {loading && (
-        <div className="flex justify-center items-center mt-6">
+      {(productsLoading || categoriesLoading) && (
+        <div className="flex justify-center items-center my-6">
           <svg className="animate-spin h-8 w-8 text-black-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle
               className="opacity-25"
@@ -44,46 +48,39 @@ const NewImportedGoods =() => {
         </div>
       )}
 
-      {error && (
+      {(productsError || categoriesError) && (
         <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
-          <p>Lỗi: {error.message || error}</p>
+          <p>
+            Lỗi: {productsError?.message || productsError || categoriesError?.message || categoriesError}
+          </p>
         </div>
       )}
 
-      {!loading && !error && (
+      {!productsLoading && !categoriesLoading && !productsError && !categoriesError && (
         <>
           <NewImportedLaptop 
             title="Laptop mới nhập"
-            products={limitedProducts}
+            products={products.slice(-10).reverse()}
             bgColor="bg-pink-500"
+            path="/productList"
           />
 
-          <NewImportedLaptop 
-            title="Laptop Gaming mới nhập"
-            products={GamingProducts}
-            bgColor="bg-[#D32F2F]"
-          />
-
-          <NewImportedLaptop 
-            title="Laptop Business mới nhập"
-            products={BusinessProducts}
-            bgColor="bg-blue-700"
-          />
-
-          <NewImportedLaptop 
-            title="Laptop Office mới nhập"
-            products={OfficeProducts}
-            bgColor="bg-gray-500"
-          />
-
-          <NewImportedLaptop 
-            title="Laptop Student mới nhập"
-            products={StudentProducts}
-            bgColor="bg-green-500"
-          />
+          {categoryConfigs.map((config, index) => {
+            const filteredProducts = getProductsByCategory(config.categoryName);
+            return (
+              <NewImportedLaptop
+                key={index}
+                title={config.title}
+                categoryName={config.categoryName}
+                products={filteredProducts}
+                bgColor={config.bgColor}
+                path={config.path}
+                search={config.search}
+              />
+            );
+          })}
         </>
       )}
-      {/* <NewImportedGamingGear/> */}
     </div>
   );
 }
