@@ -16,7 +16,6 @@ const GeneralProductUp = ({image, choose}) => {
       </div>
 
       <BrandImageLogo image={image} />
-        
       {/* <OnDemand choose={choose} /> */}
     </div>
   );

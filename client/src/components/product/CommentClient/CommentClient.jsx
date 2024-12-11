@@ -9,18 +9,19 @@ import { getCommentsByProductId } from "../../../features/Client/ClientCommentSl
 
 const CommentClient = ({ product }) => {
   const dispatch = useDispatch();
-  const { totalRatings, starCounts, ratings, loading, error } = useSelector(
-    (state) => state.clientComment
-  );
+  const { totalRatings, starCounts, ratings } = useSelector((state) => state.clientComment);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const [openModal, setOpenModal] = useState(false); // Đánh giá modal
-  const [openLoginModal, setOpenLoginModal] = useState(false); // Đăng nhập modal
+  const [openModal, setOpenModal] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [visibleRatingsCount, setVisibleRatingsCount] = useState(5);
 
   useEffect(() => {
     if (product.product?._id) {
       dispatch(getCommentsByProductId(product.product._id));
     }
   }, [dispatch, product.product?._id]);
+
+  const ratingSort = ratings.slice().reverse();
 
   // const totalRatings = ratings.reduce((total, rating) => total + rating.count, 0);
   const averageRating =
@@ -45,20 +46,10 @@ const CommentClient = ({ product }) => {
           <p className="text-[1.5rem] text-[#363636] font-semibold leading-[1.125]">
             {averageRating.toFixed(1)}/5
           </p>
-          {/* <div className="flex">
-            {[...Array(5)].map((_, index) => (
-              <span
-                key={index}
-                className={`h-[24px] w-[24px] ${index < Math.round(averageRating) ? "text-yellow-400" : "text-gray-300"}`}
-              >
-                ★
-              </span>
-            ))}
-          </div> */}
           <Rating
             value={averageRating} // Điểm trung bình
-            precision={0.1} // Hiển thị đến 0.1 sao
-            readOnly // Chỉ hiển thị, không cho chỉnh sửa
+            precision={0.1}
+            readOnly
             size="large"
           />
           <p className="text-blue-500 text-sm cursor-pointer mt-2">{totalRatings} đánh giá</p>
@@ -81,7 +72,7 @@ const CommentClient = ({ product }) => {
               <div className="w-full h-2 mx-2 bg-gray-300 rounded-md relative">
                 <div
                   className="h-full bg-red-500 rounded-md"
-                  style={{width: totalRatings > 0 ? `${(starCounts[star] / totalRatings) * 100}%` : "0%",}}
+                  style={{width: totalRatings > 0 ? `${(starCounts[star] / totalRatings) * 100}%` : "0%"}}
                 ></div>
               </div>
               <span className="text-sm text-gray-600 whitespace-nowrap">{starCounts[star] || 0} đánh giá</span>
@@ -100,9 +91,9 @@ const CommentClient = ({ product }) => {
             className="font-medium bg-[#d7000e] text-white border-none rounded-md mx-auto my-2 px-8 py-2 text-center cursor-pointer inline-flex justify-center text-base h-10 leading-6 shadow-none"
             onClick={() => {
               if (isAuthenticated && user?.role === "user") {
-                setOpenModal(true); // Mở ModalReviews nếu người dùng đã đăng nhập và có quyền
+                setOpenModal(true);
               } else {
-                setOpenLoginModal(true); // Mở LoginCheckModal nếu người dùng chưa đăng nhập
+                setOpenLoginModal(true);
               }
             }}
           >
@@ -122,8 +113,8 @@ const CommentClient = ({ product }) => {
 
       {/* Danh sách nhận xét */}
       <div className="mt-[30px] w-full">
-      {ratings.length > 0 ? (
-          ratings.map((rating) => (
+        {ratingSort.length > 0 ? (
+          ratingSort.slice(0, visibleRatingsCount).map((rating) => (
             <div key={rating._id} className="border-b border-[#919EAB] opacity-75 mb-4 pb-4">
               <div className="flex">
                 <div className="flex items-center">
@@ -164,7 +155,18 @@ const CommentClient = ({ product }) => {
             </div>
           ))
         ) : (
-          <div className="text-center text-gray-600 mt-4">Hiện tại sản phẩm chưa có đánh giá nào.</div>
+          <div className="text-center text-gray-600 mt-4">Hãy là người đầu tiên đánh giá sản phẩm này của chúng tôi!!!</div>
+        )}
+
+        {ratingSort.length > visibleRatingsCount && (
+          <div className="text-center mt-4">
+            <button
+              className="bg-red-500 text-white px-8 py-2 rounded-lg text-[13px] hover:underline transition duration-200 font-medium"
+              onClick={() => setVisibleRatingsCount(visibleRatingsCount + 5)}
+            >
+              Xem thêm
+            </button>
+          </div>
         )}
       </div>
     </div>

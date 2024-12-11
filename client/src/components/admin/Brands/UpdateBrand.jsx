@@ -8,6 +8,7 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 const UpdateBrand = ({ editBrand, onClose }) => {
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.brand.brands);
+
   useEffect(() => {
     console.log("UpdateBrand: ", brands);
     console.log('Brand:', editBrand);
@@ -25,15 +26,13 @@ const UpdateBrand = ({ editBrand, onClose }) => {
         name: editBrand.name || "",
         image: editBrand.image || null,
       });
-      setError(""); // Xóa lỗi cũ nếu có
+      setError("");
     }
   }, [editBrand]);
 
   const duplicateCategory = useMemo(() => {
     return brands.find(
-      (cat) =>
-        cat.name.toLowerCase().trim() === updatedBrand.name.toLowerCase().trim() &&
-        cat._id !== editBrand._id
+      (cat) => cat.name.toLowerCase().trim() === updatedBrand.name.toLowerCase().trim() && cat._id !== editBrand._id
     );
   }, [brands, updatedBrand.name, editBrand._id]);
 
@@ -43,7 +42,7 @@ const UpdateBrand = ({ editBrand, onClose }) => {
   },[]);
 
   const handleImageUpload = useCallback((url) => {
-    setUpdatedBrand((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+    setUpdatedBrand((prev) => ({ ...prev, image: url }));
   },[]);
 
   const handleSubmit = useCallback(
@@ -51,12 +50,10 @@ const UpdateBrand = ({ editBrand, onClose }) => {
       e.preventDefault();
 
       if (duplicateCategory) {
-        setError("Thương hiệu đã tồn tại."); // Hiển thị lỗi nếu trùng
+        setError("Thương hiệu đã tồn tại.");
         return;
       }
-    // console.log("Updated brand:", updatedBrand);
       try {
-        // Gửi yêu cầu cập nhật danh mục
         await dispatch(
           updateBrand({
             id: editBrand._id,
@@ -67,7 +64,7 @@ const UpdateBrand = ({ editBrand, onClose }) => {
         dispatch(getAllBrands());
         onClose();
       } catch (error) {
-        setError("Error edit category", error); // Hiển thị lỗi nếu cập nhật thất bại
+        setError("Error edit category", error);
       }
     },[dispatch, updatedBrand, editBrand._id, duplicateCategory, onClose]
   );

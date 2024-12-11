@@ -6,7 +6,6 @@ import CommentClient from "../../../../components/product/CommentClient/CommentC
 import "./ProductMiddle.css";
 
 const ProductDetailMiddle = ({product, selectedVariant}) => {  
-  // console.log("Data:", product)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const handleResize = () => {

@@ -19,7 +19,7 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
   const handleProductClick = (productId) => {navigate(`/products/${productId}`);};
 
   // Tính toán giá trị translateX
-  const translateX = currentIndex * -100; // Mỗi sản phẩm chiếm 100% chiều rộng
+  const translateX = currentIndex * -100;
 
   return (
     <div className="p-3 relative w-full box-border text-[#333333]">

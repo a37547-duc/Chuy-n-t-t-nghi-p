@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { useGetAllProductsQuery, useGetBrandsQuery, useGetCategoriesQuery } from "../../../features/Client/ClientProductQuery";
 import { resetFilter } from "../../../features/Client/ClientFilterSlice";
+import { useGetAllProductsQuery, useGetBrandsQuery, useGetCategoriesQuery } from "../../../features/Client/ClientProductQuery";
 import ProductListSideBar from "../ProductListSideBar/ProductListSideBar";
 import GeneralProductMiddle from "../../../components/product/GeneralProductMiddle/GeneralProductMiddle";
 import GeneralProductDown from "../../../components/product/GeneralProductDown/GeneralProductDown";
@@ -11,14 +11,13 @@ import OnDemand from "../../../components/product/OnDemand/OnDemand";
 
 const ProductList = () => {
   const dispatch = useDispatch();
-  
   const location = useLocation();
   const { state } = location;
+
   const isFromTaskbar = state?.from === "Taskbar";
   const isFromLogoButton = state?.from === "LogoButton";
-
+  
   const { categoryName, brandName, searchName } = useSelector((state) => state.filter);
-
   const searchParams = new URLSearchParams(location.search);
   const params = {
     brandName: brandName || searchParams.get("brandName") || null,
@@ -26,18 +25,16 @@ const ProductList = () => {
     searchName: searchName || searchParams.get("searchName") || null,
   };
 
-  // Gọi API để lấy sản phẩm
-  const { data: products = [], isLoading, isError, error } = useGetAllProductsQuery(params);
+  const { data: products = [], isError, error } = useGetAllProductsQuery(params);
   const { data: logos } = useGetBrandsQuery();
   const { data: logoCategory } = useGetCategoriesQuery();
 
-  // Tạo state để lưu trữ sản phẩm, nếu có lỗi thì sẽ trả về mảng rỗng
   const [productsState, setProductsState] = useState(products);
 
   // Kiểm tra lỗi và cập nhật productsState thành mảng rỗng nếu có lỗi
   useEffect(() => {
     if (isError) {
-      setProductsState([]); // Cập nhật mảng rỗng khi có lỗi
+      setProductsState([]);
     } else if (products.length > 0) {
       setProductsState(products); // Cập nhật dữ liệu sản phẩm khi không có lỗi
     }

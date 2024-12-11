@@ -8,7 +8,6 @@ import OrderItemDetailAdmin from "../../../../components/admin/Orders/OrderItemD
 const AccountOrder = () => {
   const dispatch = useDispatch();
   const { orders, loading, error } = useSelector((state) => state.ordersUser);
-  console.log("Data: ",orders)
 
   // State lưu trạng thái đơn hàng đang được chọn
   const [status, setStatus] = useState("");
@@ -135,9 +134,6 @@ const AccountOrder = () => {
                     </div>
                     <div className="flex flex-col justify-end text-right">
                       <div className="mt-auto">
-                        <button className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md mb-2 border-2 border-red-600">
-                          Xem hóa đơn
-                        </button>
                         <button
                           className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md border-2 border-red-600"
                           onClick={() => {

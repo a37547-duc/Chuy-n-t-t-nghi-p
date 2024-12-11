@@ -14,18 +14,14 @@ function Header({ toggleSidebar, toggleDarkMode }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
+  const handleLogout = () => {dispatch(logoutUser());};
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
     toggleDarkMode();
   };
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!isDropdownOpen);
-  };
+  const toggleDropdown = () => {setDropdownOpen(!isDropdownOpen);};
 
   return (
     <header className="bg-white border-b px-5 py-5 shadow-sm w-full sticky top-0 z-[999]">
