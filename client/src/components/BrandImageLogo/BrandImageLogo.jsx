@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// Cần hiển thị ngay không dùng lazy
 import { useDispatch } from "react-redux";
 import { setBrandName } from "../../features/Client/ClientFilterSlice";
 import { useState } from "react";
@@ -30,8 +31,6 @@ const BrandImageLogo = ({ image }) => {
             <div className="relative inline-block overflow-hidden h-full w-[100px]">
               <img
                 className="w-full h-full object-contain absolute top-0 left-0"
-                loading="lazy"
-                decoding="async"
                 src={logo.image}
                 alt={`Logo ${logo.name}`}
               />

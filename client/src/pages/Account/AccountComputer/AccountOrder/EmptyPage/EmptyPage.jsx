@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 const EmptyPage =({ label }) => {
     return (
         <div className="mt-[8rem] text-center">
@@ -11,9 +10,7 @@ const EmptyPage =({ label }) => {
                 </img>
             </div>
             <div className="mt-6 text-base">
-            {label === "Tất cả"
-                ? "Bạn chưa mua hàng."
-                : `Bạn không có đơn hàng trong trạng thái "${label}"!!!`}
+                {label === "Tất cả" ? "Bạn chưa mua hàng." : `Bạn không có đơn hàng trong trạng thái "${label}"!!!`}
             </div>
         </div>
     );

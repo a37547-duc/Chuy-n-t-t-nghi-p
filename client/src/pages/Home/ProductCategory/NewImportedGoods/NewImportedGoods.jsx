@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProductsClient } from "../../../../features/Client/ClientProductSlice";
 import { getAllCategoriesClient } from "../../../../features/Client/ClientCategorySlice";
+import { getAllProductsClient } from "../../../../features/Client/ClientProductSlice";
 import NewImportedLaptop from "./NewImportedLaptop/NewImportedLaptop";
 
 const NewImportedGoods =() => {
@@ -15,20 +15,20 @@ const NewImportedGoods =() => {
   }, [dispatch]);
   
   const getProductsByCategory = (categoryName) =>
-    products.filter((product) => product.category?.name === categoryName).slice(-10).reverse();
+    products.filter((product) => product?.category?.name === categoryName).slice(-10).reverse();
 
   const categoryConfigs = categories.map((category, index) =>({
-    title: `Laptop ${category.name} mới nhập`,
-    categoryName: category.name,
+    title: `Laptop ${category?.name} mới nhập`,
+    categoryName: category?.name,
     bgColor: colors[index % colors.length], // Thay đổi màu sắc tùy ý
     path: "/productList",
-    search: `?categoryName=${category.name}`,
+    search: `?categoryName=${category?.name}`,
   }));
   
   return (
     <div>
       {(productsLoading || categoriesLoading) && (
-        <div className="flex justify-center items-center my-6">
+        <div className="flex justify-center items-center my-6 min-h-[200px]">
           <svg className="animate-spin h-8 w-8 text-black-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle
               className="opacity-25"
@@ -66,16 +66,16 @@ const NewImportedGoods =() => {
           />
 
           {categoryConfigs.map((config, index) => {
-            const filteredProducts = getProductsByCategory(config.categoryName);
+            const filteredProducts = getProductsByCategory(config?.categoryName);
             return (
               <NewImportedLaptop
                 key={index}
-                title={config.title}
-                categoryName={config.categoryName}
+                title={config?.title}
+                categoryName={config?.categoryName}
                 products={filteredProducts}
-                bgColor={config.bgColor}
-                path={config.path}
-                search={config.search}
+                bgColor={config?.bgColor}
+                path={config?.path}
+                search={config?.search}
               />
             );
           })}

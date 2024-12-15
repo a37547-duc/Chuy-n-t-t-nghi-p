@@ -16,10 +16,10 @@ const CommentClient = ({ product }) => {
   const [visibleRatingsCount, setVisibleRatingsCount] = useState(5);
 
   useEffect(() => {
-    if (product.product?._id) {
-      dispatch(getCommentsByProductId(product.product._id));
+    if (product?.product?._id) {
+      dispatch(getCommentsByProductId(product?.product?._id));
     }
-  }, [dispatch, product.product?._id]);
+  }, [dispatch, product?.product?._id]);
 
   const ratingSort = ratings.slice().reverse();
 
@@ -29,7 +29,7 @@ const CommentClient = ({ product }) => {
 
   // Hàm để tạo màu ngẫu nhiên dựa trên _id
   const generateRandomColor = (userId) => {
-    const hash = userId.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const hash = userId?.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const colors = ['#502d43', '#d7000e', '#5a2d6a', '#3b7b38', '#f47b02'];
     return colors[hash % colors.length];  // Chọn màu dựa trên giá trị hash
   };
@@ -115,22 +115,22 @@ const CommentClient = ({ product }) => {
       <div className="mt-[30px] w-full">
         {ratingSort.length > 0 ? (
           ratingSort.slice(0, visibleRatingsCount).map((rating) => (
-            <div key={rating._id} className="border-b border-[#919EAB] opacity-75 mb-4 pb-4">
+            <div key={rating?._id} className="border-b border-[#919EAB] opacity-75 mb-4 pb-4">
               <div className="flex">
                 <div className="flex items-center">
                   {/* Hiển thị chữ cái đầu tiên */}
                   <p
                     className="text-white rounded-full font-semibold h-8 w-8 flex items-center justify-center mr-2"
-                    style={{ backgroundColor: generateRandomColor(rating.userId._id) }}
+                    style={{ backgroundColor: generateRandomColor(rating?.userId?._id) }}
                   >
-                    {rating.userId.username[0].toUpperCase()}
+                    {rating?.userId?.username[0]?.toUpperCase()}
                   </p>
                   <div>
                     <div className="flex items-center gap-4">
-                      <span className="text-[15px] font-semibold">{rating.userId.username}</span>
+                      <span className="text-[15px] font-semibold">{rating?.userId?.username}</span>
                       <p className="flex items-center text-[#707070] text-[12px] gap-1 pt-1 text-right">
                         <FaRegClock className="flex" />
-                        {rating.createdAt}
+                        {rating?.createdAt}
                       </p>
                     </div>
                   </div>
@@ -141,14 +141,14 @@ const CommentClient = ({ product }) => {
               <div className="ml-10 px-4 pt-2 w-[calc(100%-40px)]">
                 <div className="text-[12px] gap-2 items-center">
                   <Rating
-                    value={rating.rating} // Điểm đánh giá của người dùng
+                    value={rating?.rating} // Điểm đánh giá của người dùng
                     readOnly
                     size="small"
                   />
                 </div>
                 <div className="flex flex-col justify-between text-[12px] mt-2">
                   <div className="w-full text-[13px]">
-                    <p>{rating.comment}</p>
+                    <p>{rating?.comment}</p>
                   </div>
                 </div>
               </div>

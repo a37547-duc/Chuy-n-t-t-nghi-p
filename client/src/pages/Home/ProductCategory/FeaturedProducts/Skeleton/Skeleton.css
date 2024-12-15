@@ -1,0 +1,5 @@
+@keyframes reflect {
+  to {
+    transform: translateX(200%);
+  }
+}

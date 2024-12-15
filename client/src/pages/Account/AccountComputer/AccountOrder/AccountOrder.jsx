@@ -52,11 +52,7 @@ const AccountOrder = () => {
             <button
               key={index}
               onClick={() => handleItemClick(index, item.label)}
-              className={`w-[140px] py-2 rounded-md ${
-                activeIndex === index
-                  ? "bg-red-600 text-white"
-                  : "bg-white border-2 border-gray-300"
-              }`}
+              className={`w-[140px] py-2 rounded-md ${activeIndex === index ? "bg-red-600 text-white" : "bg-white border-2 border-gray-300"}`}
             >
               {item.label}
             </button>
@@ -122,13 +118,8 @@ const AccountOrder = () => {
                           </p>
                         </div>
                         <p className="text-red-600 font-bold">
-                          {order.products
-                            .reduce(
-                              (total, product) => total + product.price * product.quantity,
-                              0
-                            )
-                            .toLocaleString()}{" "}
-                          VND
+                          {order.products.reduce((total, product) => total + product.price * product.quantity,0).toLocaleString()}{" "}
+                          VNĐ
                         </p>
                       </div>
                     </div>
@@ -147,8 +138,7 @@ const AccountOrder = () => {
                     </div>
                   </div>
                   <BasicModal className="mt-10" isOpen={isOrderDetailModalOpen} onRequestClose={handleCloseOrderDetailModal}>
-                    <OrderItemDetailAdmin
-                      data={initOrder} onClose={handleCloseOrderDetailModal} />
+                    <OrderItemDetailAdmin data={initOrder} onClose={handleCloseOrderDetailModal} />
                   </BasicModal>
                 </div>
               ))}
