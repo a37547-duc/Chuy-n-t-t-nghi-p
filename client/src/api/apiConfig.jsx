@@ -25,7 +25,10 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.clear();
-      toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại");
+      if (!toast.isActive("getSessionExpiredError")) {
+        toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại", { toastId: "getSessionExpiredError" });
+      }
+      // toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại");
       setTimeout(() => {
         window.location.href = "/login";
       }, 1000);

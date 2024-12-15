@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// Cần hiển thị ngay không dùng lazy
 import { useDispatch } from "react-redux";
 import { setBrandName } from "../../features/Client/ClientFilterSlice";
 import { useState } from "react";
@@ -7,11 +8,14 @@ const BrandImageLogo = ({ image }) => {
   const dispatch = useDispatch();
   const [activeLogo, setActiveLogo] = useState(null);
 
-  // Hàm xử lý khi click vào logo
   const handleLogoClick = (logo) => {
-    dispatch(setBrandName(logo)); // Dispatch action để set brand đã chọn
-    setActiveLogo(logo);
-    console.log("Logo clicked:", logo); // Kiểm tra logo khi click
+    if (activeLogo === logo) {
+      dispatch(setBrandName(null));
+      setActiveLogo(null);
+    } else {
+      dispatch(setBrandName(logo));
+      setActiveLogo(logo);
+    }
   };
 
   return (
@@ -21,15 +25,12 @@ const BrandImageLogo = ({ image }) => {
           <button
             key={index}
             className={`opacity-100 w-[88px] h-10 p-1 rounded border border-[#e4e5f0] bg-transparent relative flex items-center justify-center outline-none min-w-[2.5rem] cursor-pointer transition duration-[80ms] transition-bg ${
-              activeLogo === logo.name ? "border-blue-500" : "" // Thêm class active khi logo được chọn
-            }`}
-            onClick={() => handleLogoClick(logo.name)} // Gọi handleLogoClick khi click vào logo
+            activeLogo === logo.name ? "border-blue-500" : ""}`}
+            onClick={() => handleLogoClick(logo.name)}
           >
             <div className="relative inline-block overflow-hidden h-full w-[100px]">
               <img
                 className="w-full h-full object-contain absolute top-0 left-0"
-                loading="lazy"
-                decoding="async"
                 src={logo.image}
                 alt={`Logo ${logo.name}`}
               />

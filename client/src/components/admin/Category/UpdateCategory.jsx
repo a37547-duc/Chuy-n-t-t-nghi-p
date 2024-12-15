@@ -8,9 +8,11 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 const UpdateCategory = ({ editCategory, onClose }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
+
   useEffect(() => {
     console.log("UpdateCate: ", categories)
   },[categories])
+
   const [error, setError] = useState("");
   const [updatedCategory, setUpdatedCategory] = useState({
     name: "",
@@ -30,9 +32,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
 
   const duplicateCategory = useMemo(() => {
     return categories.find(
-      (cat) =>
-        cat.name.toLowerCase().trim() === updatedCategory.name.toLowerCase().trim() &&
-        cat._id !== editCategory._id
+      (cat) => cat.name.toLowerCase().trim() === updatedCategory.name.toLowerCase().trim() && cat._id !== editCategory._id
     );
   }, [categories, updatedCategory.name, editCategory]);
 
@@ -43,26 +43,19 @@ const UpdateCategory = ({ editCategory, onClose }) => {
   }, []);
 
   const handleImageUpload = useCallback((url) => {
-    setUpdatedCategory((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+    setUpdatedCategory((prev) => ({ ...prev, image: url }));
   },[]);
 
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
 
-      // Kiểm tra trùng tên danh mục
-      // const duplicateCategory = categories.find(
-      //   (cat) =>
-      //     cat.name.toLowerCase().trim() === updatedCategory.name.toLowerCase().trim() && cat._id !== editCategory._id
-      // );
-
       if (duplicateCategory) {
-        setError("Danh mục đã tồn tại."); // Hiển thị lỗi nếu trùng
+        setError("Danh mục đã tồn tại.");
         return;
       }
 
       try {
-        // Gửi yêu cầu cập nhật danh mục
         await dispatch(
           updateCategory({
             id: editCategory._id,
@@ -73,7 +66,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
         dispatch(getAllCategories());
         onClose();
       } catch (error) {
-        setError("Error edit category", error); // Hiển thị lỗi nếu cập nhật thất bại
+        setError("Error edit category", error);
       }
     },[duplicateCategory, dispatch, editCategory, updatedCategory, onClose]
   );

@@ -22,9 +22,7 @@ const DeleteProduct = ({ data, onClose }) => {
 
   return (
     <div className="space-y-4">
-      <h2 className="mb-4 text-xl font-semibold tracking-wide text-red-500">
-        Xóa sản phẩm
-      </h2>
+      <h2 className="mb-4 text-xl font-semibold tracking-wide text-red-500">Xóa sản phẩm</h2>
       <p className="text-gray-700">
         Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này
         không thể hoàn tác.

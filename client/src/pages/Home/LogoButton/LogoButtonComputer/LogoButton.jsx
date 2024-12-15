@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector  } from "react-redux";
 import { setBrandName } from "../../../../features/Client/ClientFilterSlice";
 import { getAllBrandsClient } from "../../../../features/Client/ClientBrandSlice";
+import { Skeleton } from "@mui/material";
 
 export default function LogonButtonComputer() {
   const dispatch = useDispatch();
-  const { data: logos} = useSelector((state) => state.clientBrand);
+  const { data: logos, loading} = useSelector((state) => state.clientBrand);
 
-  // Gọi API khi component được mount
   useEffect(() => {
     dispatch(getAllBrandsClient());
   }, [dispatch]);
@@ -24,23 +24,42 @@ export default function LogonButtonComputer() {
           <h2 className="text-[24px] font-bold my-[20px] mx-[10px]">Laptop - Máy tính xách tay</h2>
         </div>
         <div className="flex flex-wrap gap-2 justify-center">
-          {logos.map((logo, index) => (
-            <Link
-              key={index}
-              to={{
-                pathname: "/productList",
-                search: `?brandName=${logo.name}`,
-              }
+          {loading ? (
+            <div className="flex flex-wrap gap-2">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="p-2 border rounded-md bg-white shadow-md flex-grow"
+                  style={{ flexBasis: "calc(12.5% - 1rem)", minWidth: "120px" }}
+                >
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={20}
+                    animation="wave"
+                    className="rounded"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            logos.map((logo, index) => (
+              <Link
+                key={index}
+                to={{
+                  pathname: "/productList",
+                  search: `?brandName=${logo.name}`,
+                }}
                 // `/productList?brandName=${logo.name}`
-                }
                 state={{ from: "LogoButton" }}
-              onClick={() => handleProductClick(logo.name)}
-              className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg max-w-[120px] max-h-[38.49px]"
-              style={{ flexBasis: 'calc(25% - 0.5rem)' }}
-            >
-              <img src={logo.image} alt={logo.name} className="w-full" />
-            </Link>
-          ))}
+                onClick={() => handleProductClick(logo.name)}
+                className="flex-shrink-0 p-2 border rounded-md bg-white shadow-md hover:shadow-lg max-w-[120px] max-h-[38.49px]"
+                // style={{ flexBasis: "calc(25% - 0.5rem)" }}
+              >
+                <img src={logo.image} alt={logo.name} className="w-full" />
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </div>

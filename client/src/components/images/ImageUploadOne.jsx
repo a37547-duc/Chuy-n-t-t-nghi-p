@@ -38,30 +38,6 @@ const ImageUploadOne = ({ onUploadComplete, existingUrl = "" }) => {
     }
   };
 
-  // const handleUpload = () => {
-  //   if (image) {
-  //     const storageRef = ref(storage, `images/${image.name}`);
-  //     uploadBytes(storageRef, image)
-  //       .then(() => {
-  //         // Khi upload hoàn tất, lấy URL của hình ảnh
-  //         getDownloadURL(storageRef)
-  //           .then((downloadURL) => {
-  //             setUrl(downloadURL); // Lưu URL vào state
-  //             // onUploadComplete(downloadURL);
-  //             console.log("File available at", downloadURL);
-  //           })
-  //           .catch((error) => {
-  //             console.error("Error getting download URL: ", error);
-  //           });
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error uploading file: ", error);
-  //       });
-  //   } else {
-  //     console.error("No file selected");
-  //   }
-  // };
-
   return (
     <div className="flex flex-col items-center gap-4 max-w-md mx-auto p-5 border border-gray-300 rounded-lg shadow-md">
       {/* Upload Button */}

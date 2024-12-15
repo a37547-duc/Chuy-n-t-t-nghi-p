@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import React from "react";
 import { PiCaretRight } from "react-icons/pi";
 import NewImportedProducts from "../../../../../components/home/NewImportedProducts/NewImportedProducts";
 import { setCategoryName } from "../../../../../features/Client/ClientFilterSlice";
@@ -6,10 +7,10 @@ import { useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-const NewImportedLaptop = ({ title, categoryName, products, bgColor, path, search }) => {
+const NewImportedLaptop = React.memo(({ title, categoryName, products, bgColor, path, search }) => {
   const dispatch = useDispatch();
   const handleProductClick = (categoryName) => {
-    dispatch(setCategoryName(categoryName)); // Dispatch brand name vào Redux
+    dispatch(setCategoryName(categoryName));
   };
 
   if (!products || products.length === 0) {
@@ -42,6 +43,7 @@ const NewImportedLaptop = ({ title, categoryName, products, bgColor, path, searc
       </div>
     </div>
   );
-}
+});
+NewImportedLaptop.displayName = "NewImportedLaptop";
 
 export default NewImportedLaptop;

@@ -8,7 +8,6 @@ import OrderItemDetailAdmin from "../../../../components/admin/Orders/OrderItemD
 const AccountOrder = () => {
   const dispatch = useDispatch();
   const { orders, loading, error } = useSelector((state) => state.ordersUser);
-  console.log("Data: ",orders)
 
   // State lưu trạng thái đơn hàng đang được chọn
   const [status, setStatus] = useState("");
@@ -53,11 +52,7 @@ const AccountOrder = () => {
             <button
               key={index}
               onClick={() => handleItemClick(index, item.label)}
-              className={`w-[140px] py-2 rounded-md ${
-                activeIndex === index
-                  ? "bg-red-600 text-white"
-                  : "bg-white border-2 border-gray-300"
-              }`}
+              className={`w-[140px] py-2 rounded-md ${activeIndex === index ? "bg-red-600 text-white" : "bg-white border-2 border-gray-300"}`}
             >
               {item.label}
             </button>
@@ -123,21 +118,13 @@ const AccountOrder = () => {
                           </p>
                         </div>
                         <p className="text-red-600 font-bold">
-                          {order.products
-                            .reduce(
-                              (total, product) => total + product.price * product.quantity,
-                              0
-                            )
-                            .toLocaleString()}{" "}
-                          VND
+                          {order.products.reduce((total, product) => total + product.price * product.quantity,0).toLocaleString()}{" "}
+                          VNĐ
                         </p>
                       </div>
                     </div>
                     <div className="flex flex-col justify-end text-right">
                       <div className="mt-auto">
-                        <button className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md mb-2 border-2 border-red-600">
-                          Xem hóa đơn
-                        </button>
                         <button
                           className="w-[130px] bg-gray-100 text-sm px-4 py-1 rounded-md border-2 border-red-600"
                           onClick={() => {
@@ -151,8 +138,7 @@ const AccountOrder = () => {
                     </div>
                   </div>
                   <BasicModal className="mt-10" isOpen={isOrderDetailModalOpen} onRequestClose={handleCloseOrderDetailModal}>
-                    <OrderItemDetailAdmin
-                      data={initOrder} onClose={handleCloseOrderDetailModal} />
+                    <OrderItemDetailAdmin data={initOrder} onClose={handleCloseOrderDetailModal} />
                   </BasicModal>
                 </div>
               ))}

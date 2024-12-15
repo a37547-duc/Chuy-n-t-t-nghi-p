@@ -8,6 +8,7 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 const AddCategory = ({ onClose }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
+  
   const [error, setError] = useState("");
   const [newCategory, setNewCategory] = useState({
     name: "",
@@ -20,11 +21,11 @@ const AddCategory = ({ onClose }) => {
       ...prevCategory,
       [name]: value,
     }));
-    setError(""); // Reset lỗi khi người dùng nhập
+    setError("");
   }, []);
 
   const handleImageUpload = useCallback((url) => {
-    setNewCategory((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+    setNewCategory((prev) => ({ ...prev, image: url }));
   },[]);
 
   const handleSubmit = useCallback( 

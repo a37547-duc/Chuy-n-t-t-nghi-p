@@ -4,10 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import "./GeneralProductDown.css";
 
 const GeneralProductDown = ({data}) => {
-  // console.log("Data: ", data)
   const navigate = useNavigate();
   const sortOptions = [
-    "Khuyến mãi tốt nhất",
     "Giá tăng dần",
     "Giá giảm dần",
     "Sản phẩm mới nhất",
@@ -15,30 +13,37 @@ const GeneralProductDown = ({data}) => {
 
   const [visibleProducts, setVisibleProducts] = useState(10);
   const [sortOrder, setSortOrder] = useState(null);
-  const [activeSort, setActiveSort] = useState(""); // State để lưu lựa chọn sắp xếp hiện tại
+  const [activeSort, setActiveSort] = useState("");
 
   // useEffect để reset lại các state khi data thay đổi
   useEffect(() => {
-    // Reset các lựa chọn sắp xếp khi data thay đổi
     setSortOrder(null);
     setActiveSort("");
     setVisibleProducts(10);
   }, [data]);
 
   const handleSortChange = (option) => {
-    setActiveSort(option); // Cập nhật tùy chọn sắp xếp hiện tại
-    setSortOrder(option); // Cập nhật trạng thái sắp xếp
+    if (activeSort === option) {
+      // Nếu tùy chọn đã được chọn, bỏ active và reset
+      setSortOrder(null);
+      setActiveSort("");
+    } else {
+      // Nếu tùy chọn chưa được chọn, cập nhật tùy chọn sắp xếp
+      setActiveSort(option);
+      setSortOrder(option);
+    }
   };
 
-  // Sắp xếp dữ liệu dựa trên tùy chọn đã chọn
   const sortedData = [...data];
   if (sortOrder === "Giá tăng dần") {
     sortedData.sort((a, b) => (a?.product_variants?.price ?? 0) - (b?.product_variants?.price ?? 0));
   } else if (sortOrder === "Giá giảm dần") {
     sortedData.sort((a, b) => (b?.product_variants?.price ?? 0) - (a?.product_variants?.price ?? 0));
+  } else if (sortOrder === "Sản phẩm mới nhất") {
+    sortedData.reverse();
   }
   
-  const currentProducts = sortedData.slice(0, visibleProducts); // Hiển thị sản phẩm từ đầu đến số lượng hiện tại
+  const currentProducts = sortedData.slice(0, visibleProducts);
 
   const handleShowMore = () => {
     setVisibleProducts((prevVisibleProducts) => prevVisibleProducts + 10);
@@ -56,8 +61,8 @@ const GeneralProductDown = ({data}) => {
           {sortOptions.map((option, index) => (
             <div
               key={index}
-              className={`mr-4 p-2 rounded border border-gray-300 bg-white relative overflow-hidden cursor-pointer select-none 
-                ${activeSort === option ? "bg-blue-700" : ""}`} // Thêm lớp active
+              className={`mr-4 p-2 rounded border border-gray-300 relative overflow-hidden cursor-pointer select-none 
+                ${activeSort === option ? "bg-blue-700 text-white" : ""}`}
               onClick={() => handleSortChange(option)}
             >
               <div className="m-0 p-0 border border-transparent opacity-100 text-inherit font-normal text-[13px] leading-5 overflow-hidden transition-colors duration-300">
@@ -105,8 +110,8 @@ const GeneralProductDown = ({data}) => {
                     <div className="flex items-start">
                       <div 
                         className={`m-0 p-0 border-none opacity-100 font-bold no-underline text-[13px] leading-6 overflow-hidden transition-colors duration-300
-                        ${product.status === "out of stock" ? "text-[#ff0000]" : "text-[rgb(20,53,195)]"
-                        }`}
+                        ${product.status === "out of stock" ? "text-[#ff0000]" : "text-[rgb(20,53,195)]"}`
+                        }
                       >
                         {product.status === "out of stock" ? "Hết hàng" : `${product?.product_variants?.price?.toLocaleString()} VNĐ`}
                       </div>

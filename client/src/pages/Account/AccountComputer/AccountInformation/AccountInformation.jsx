@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getUserProfile, updateUserProfile } from "../../../../features/Auth/authProfileSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,6 +11,7 @@ const AccountInformation = () => {
     email: "",
     phoneNumber: "",
     gender: "",
+    dateOfBirth: "",
   });
 
   const [isChanged, setIsChanged] = useState(false);
@@ -28,36 +29,31 @@ const AccountInformation = () => {
         email: useProfile.data.email || "",
         phoneNumber: useProfile.data.phoneNumber || "",
         gender: useProfile.data.gender || "",
+        dateOfBirth: useProfile.data.dateOfBirth || "",
       });
     }
   }, [useProfile]);
 
   // Hàm kiểm tra xem thông tin có thay đổi không
-  const checkIfChanged = (newUser) => {
-    return JSON.stringify(newUser) !== JSON.stringify({
-      username: useProfile?.data.username || "",
-      email: useProfile?.data.email || "",
-      phoneNumber: useProfile?.data.phoneNumber || "",
-      gender: useProfile?.data.gender || "",
-    });
-  };
+  const checkIfChanged = useCallback((newUser) => {
+    return JSON.stringify(newUser) !== JSON.stringify(user);
+  }, [user]);
 
   // Hàm xử lý thay đổi giá trị trong form
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     // Cập nhật giá trị mới cho các trường nhập liệu, đảm bảo không có giá trị undefined
     setUser((prevUser) => {
-      const newUser = { ...prevUser, [name]: value !== undefined ? value : "" }; // Tránh giá trị undefined, thay bằng chuỗi rỗng
-      setIsChanged(checkIfChanged(newUser)); // Kiểm tra xem thông tin có thay đổi không
+      const newUser = { ...prevUser, [name]: value !== undefined ? value : "" };
+      setIsChanged(checkIfChanged(newUser));
       return newUser;
     });
 
     if (name === "phoneNumber") {
-      validatePhoneNumber(value); // Kiểm tra số điện thoại ngay khi nhập
+      validatePhoneNumber(value);
     }
   };
 
-  // Hàm xử lý thay đổi radio button
   const handleRadioChange = (e) => {
     const { value } = e.target;
     setUser((prevUser) => {
@@ -85,7 +81,7 @@ const AccountInformation = () => {
       setPhoneError("Số điện thoại phải gồm đúng 10 chữ số và chỉ chứa số.");
       return false;
     }
-    setPhoneError(""); // Không có lỗi
+    setPhoneError("");
     return true;
   };
 
@@ -97,9 +93,7 @@ const AccountInformation = () => {
     }
 
     dispatch(updateUserProfile(user))
-      .then(() => {
-        dispatch(getUserProfile());
-      })
+      .then(() => {dispatch(getUserProfile());})
       .catch((error) => {
         console.log("Có lỗi xảy ra khi cập nhật thông tin:", error);
       });
@@ -176,51 +170,29 @@ const AccountInformation = () => {
             <label className="text-[13px] block mb-1 ">Ngày sinh:</label>
             <input
               type="date"
-              name="DateOfBirth"
-              value={user.DateOfBirth || ""}
+              name="dateOfBirth"
+              value={user.dateOfBirth || ""}
               onChange={handleInputChange}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 min-h-[16px] h-[40px]"
             />
           </div>
 
           <div>
-            <label className="text-[13px] block mb-1 ">Giới tính:</label>
+            <label className="text-[13px] block mb-1">Giới tính:</label>
             <div className="flex items-center space-x-4">
-              <label className="text-[13px] inline-flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Nam"
-                  checked={user.gender === "Nam"}
-                  onChange={handleRadioChange}
-                  className="form-radio text-blue-500"
-                />
-                <span className="ml-2">Nam</span>
-              </label>
-
-              <label className="text-[13px] inline-flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Nữ"
-                  checked={user.gender === "Nữ"}
-                  onChange={handleRadioChange}
-                  className="form-radio text-blue-500"
-                />
-                <span className="ml-2">Nữ</span>
-              </label>
-
-              <label className="text-[13px] inline-flex items-center">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="Khác"
-                  checked={user.gender === "Khác"}
-                  onChange={handleRadioChange}
-                  className="form-radio text-blue-500"
-                />
-                <span className="ml-2">Khác</span>
-              </label>
+              {["Nam", "Nữ", "Khác"].map((genderOption) => (
+                <label key={genderOption} className="text-[13px] inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value={genderOption}
+                    checked={user.gender === genderOption}
+                    onChange={handleRadioChange}
+                    className="form-radio text-blue-500"
+                  />
+                  <span className="ml-2">{genderOption}</span>
+                </label>
+              ))}
             </div>
           </div>
 
