@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 
 const CategoryManagement = () => {
   const dispatch = useDispatch();
-  //Truy xuất dữ liệu
   const { categories, loading, error } = useSelector((state) => state.category);
   const { products } = useSelector((state) => state.product);
   // useEffect(() => {
@@ -263,8 +262,8 @@ const CategoryManagement = () => {
                     </div>
                   </td>
                   <td className="p-1 text-sm">
-                  <img src={category.image} alt={category.name} className="h-10 w-20 object-contain" />
-                </td>
+                    <img src={category.image} alt={category.name} className="h-10 w-20 object-contain" />
+                  </td>
                   <td className="p-4 text-sm text-center">
                     {productCountByCategory[category._id] || 0}
                   </td>

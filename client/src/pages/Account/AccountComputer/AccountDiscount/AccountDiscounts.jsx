@@ -2,31 +2,22 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserTier } from "../../../../features/Client/ClientDiscountSlice";
 import { GiMedalSkull } from "react-icons/gi";
-import { getUserProfile } from "../../../../features/Auth/authProfileSlice";
 
 const AccountDiscounts = () => {
   const dispatch = useDispatch();
-  const { totalSpent, tier, tiers, loading:discountLoading, error:discountError } = useSelector((state) => state.clientDiscount);
-  const { useProfile, loading:userLoading, error:userError } = useSelector((state) => state.profile);
+  const { totalSpent, tier, tiers, loading, error } = useSelector((state) => state.clientDiscount);
+  const [activeTier, setActiveTier] = useState("");
 
   useEffect(() => {
-    dispatch(getUserTier(useProfile?.data?._id));
-    dispatch(getUserProfile());
-  }, [dispatch,useProfile?.data?._id]);
-
-  const [activeTier, setActiveTier] = useState("Bronze");
+    dispatch(getUserTier());
+    setActiveTier(tier)
+  }, [dispatch, tier]);
 
   const handleTierClick = (tier) => {
     setActiveTier(tier);
   };
 
   const activeTierData = tiers.find((item) => item.name === activeTier);
-
-  const tierIcons = {
-    Bronze: { icon: <GiMedalSkull />, color: "text-amber-800" },
-    Silver: { icon: <GiMedalSkull />, color: "text-gray-400" },
-    Gold: { icon: <GiMedalSkull />, color: "text-yellow-500" },
-  };
 
   const formatMoney = (amount) => {
     if (amount >= 1_000_000) {
@@ -37,7 +28,7 @@ const AccountDiscounts = () => {
 
   return (
     <div className="p-6">
-      {(discountLoading || userLoading) && (
+      {(loading) && (
         <div className="flex justify-center items-center my-6 min-h-[400px]">
           <svg className="animate-spin h-8 w-8 text-black-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle
@@ -58,15 +49,15 @@ const AccountDiscounts = () => {
         </div>
       )}
 
-      {(discountError || userError) && (
+      {(error) && (
         <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
           <p>
-            Lỗi: {userError?.message || userError || userError?.message || userError}
+            Lỗi: {error?.message || error}
           </p>
         </div>
       )}
 
-      {!discountLoading && !userLoading && !discountError && !userError && (
+      {!loading && !error && (
         <>
           <div className="rounded-lg shadow-none border border-[#eaedef] mx-auto p-1 relative w-full z-[1] mb-10">
             <div className="pb-4 justify-around flex">
@@ -92,11 +83,10 @@ const AccountDiscounts = () => {
               >
                 {/* Icon với màu sắc tương ứng */}
                 <div
-                  className={`text-[50px] mb-2 flex justify-center items-center ${
-                    tierIcons[item.name] ? tierIcons[item.name].color : "text-gray-400"
-                  }`}
+                  className="text-[50px] mb-2 flex justify-center items-center"
+                  style={{ color: item.color || "#000" }} // Lấy màu từ dữ liệu
                 >
-                  {tierIcons[item.name] ? tierIcons[item.name].icon : <GiMedalSkull />}
+                  <GiMedalSkull />
                 </div>
 
                 <p className={`text-sm font-bold mt-2 ${activeTier === item.name ? "text-red-500" : "text-gray-400"}`}>

@@ -1,6 +1,6 @@
 import { useEffect  } from "react";
 import { FiUsers, FiPackage, FiTag, FiGrid, FiBox, FiHome } from "react-icons/fi";
-import { MdOutlineRestoreFromTrash } from "react-icons/md";
+import { SiLevelsdotfyi } from "react-icons/si";
 import { Link, useLocation, useNavigate  } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isDarkMode  }) => {
     { path: "/admin/users", label: "Users", icon: FiUsers },
     { path: "/admin/brand", label: "Brands", icon: FiTag },
     { path: "/admin/category", label: "Category", icon: FiGrid },
-    { path: "/admin/restore", label: "Restore", icon: MdOutlineRestoreFromTrash },
+    { path: "/admin/tiers", label: "Membership level", icon: SiLevelsdotfyi },
   ];
   
   return (

@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios"; // Import axios
+import { api } from "../../api/apiConfig";
 
 export const getUserTier = createAsyncThunk(
   "userTier/getUserTier",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://laptech4k.onrender.com/${userId}/tier`);
+      const response = await api.get(`/user/tier`);
+      // console.log("Data: ", response.data.data)
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);
@@ -16,7 +17,6 @@ export const getUserTier = createAsyncThunk(
 const userTierSlice = createSlice({
   name: "userTier",
   initialState: {
-    userId: "",
     username: "",
     totalSpent: 0,
     tier: "",
@@ -33,7 +33,6 @@ const userTierSlice = createSlice({
       })
       .addCase(getUserTier.fulfilled, (state, action) => {
         state.loading = false;
-        state.userId = action.payload.userId;
         state.username = action.payload.username;
         state.totalSpent = action.payload.totalSpent;
         state.tier = action.payload.tier;
