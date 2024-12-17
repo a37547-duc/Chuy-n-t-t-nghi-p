@@ -112,7 +112,7 @@ const AccountDiscounts = () => {
             <h3 className="font-bold text-red-500 mb-2">ĐIỀU KIỆN</h3>
             <p className="text-gray-700 text-sm flex items-center text-[20px]">
               <span className="mr-2">🛒</span>
-              {activeTierData ? activeTierData.description : "Không có thông tin điều kiện"}
+              {activeTierData ? activeTierData.description : "Thành viên lần đầu mua hàng"}
             </p>
           </div>
 
@@ -125,7 +125,12 @@ const AccountDiscounts = () => {
                   <span className="mr-2 text-[20px]">🎁</span>
                   {benefit}
                 </li>
-              )) || <li>Không có thông tin ưu đãi</li>}
+              )) || 
+              <ul>
+                <li><span className="mr-2 text-[20px]">🎁</span> Giảm 10% trên mỗi sản phẩm</li>
+                <li><span className="mr-2 text-[20px]">🎁</span> Miễn phí vận chuyển trong khu vực thành phố Hà Nội</li>
+                <li><span className="mr-2 text-[20px]">🎁</span> Hỗ trợ cài đặt ứng dụng và bảo hành</li>
+              </ul>}
             </ul>
           </div>
         </>

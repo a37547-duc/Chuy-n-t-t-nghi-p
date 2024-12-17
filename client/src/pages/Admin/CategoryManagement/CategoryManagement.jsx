@@ -16,10 +16,6 @@ const CategoryManagement = () => {
   const dispatch = useDispatch();
   const { categories, loading, error } = useSelector((state) => state.category);
   const { products } = useSelector((state) => state.product);
-  // useEffect(() => {
-  //   console.log("Category: ", categories)
-  //   console.log("ProductAdmin: ", products)
-  // },[categories, products])
 
   //Phân trang
   const [page, setPage] = useState(0);
@@ -189,7 +185,7 @@ const CategoryManagement = () => {
       </div>
 
       {loading && (
-        <div className="flex justify-center items-center mt-6">
+        <div className="flex justify-center items-center mt-6 min-h[200px]">
           <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle
               className="opacity-25"
@@ -229,18 +225,18 @@ const CategoryManagement = () => {
               </th>
               <th className="p-4">id</th>
               <th className="p-4 cursor-pointer" onClick={handleSortClick}>Tên danh mục
-                  <FontAwesomeIcon
-                    icon={faUpLong}
-                    className={`ml-2 text-xs ${sortCategory === "asc" ? "text-black" : "text-gray-300"}`}
-                  />
-                  <FontAwesomeIcon
-                    icon={faDownLong}
-                    className={`ml-1 text-xs ${sortCategory === "desc" ? "text-black" : "text-gray-300"}`}
-                  />
-                </th>
-                <th className="p-4">Ảnh</th>
-                <th className="p-4">Số lượng sản phẩm</th>
-                <th className="p-4"></th>
+                <FontAwesomeIcon
+                  icon={faUpLong}
+                  className={`ml-2 text-xs ${sortCategory === "asc" ? "text-black" : "text-gray-300"}`}
+                />
+                <FontAwesomeIcon
+                  icon={faDownLong}
+                  className={`ml-1 text-xs ${sortCategory === "desc" ? "text-black" : "text-gray-300"}`}
+                />
+              </th>
+              <th className="p-4">Ảnh</th>
+              <th className="p-4">Số lượng sản phẩm</th>
+              <th className="p-4"></th>
             </tr>
           </thead>
           <tbody>
