@@ -8,9 +8,11 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 const AddBrand = ({ onClose }) => {
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.brand.brands);
+
   useEffect(() => {
     console.log("AddBrand: ",brands)
   },[brands])
+  
   const [error, setError] = useState("");
   const [newBrand, setNewBrand] = useState({
     name: "",

@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategoryName } from "../../../features/Client/ClientFilterSlice";
 import { getAllCategoriesClient } from "../../../features/Client/ClientCategorySlice";
+import { Skeleton } from "@mui/material";
+
 import "./Taskbar.css";
 const Taskbar = () => {
   const dispatch = useDispatch();
-  const { data: categories} = useSelector((state) => state.clientCategory);
+  const { data: categories, loading} = useSelector((state) => state.clientCategory);
 
   useEffect(() => {
     dispatch(getAllCategoriesClient());
@@ -26,47 +28,66 @@ const Taskbar = () => {
   };
 
   const handleProductClick = (categoryName) => {
-    dispatch(setCategoryName(categoryName)); // Dispatch brand name vào Redux
+    dispatch(setCategoryName(categoryName));
   };
   return (
     <div
       className="taskbar w-full max-w-[1100px] max-h-[376px] h-full top-[20px] relative bg-white flex flex-col z-10 rounded-md border border-[#ddd] text-[12px]"
       onMouseLeave={handleMouseLeave}
     >
-      {categories.map((category, index) => (
-        <Link
-          key={index}
-          to={{
-            pathname: "/productList",
-            search: `?categoryName=${category.name}`,
-          }}
-          state={{ from: "Taskbar" }} // Thêm state để xác định nguồn điều hướng
-          className={`menu-item flex items-center px-[20px] py-[10px] text-[#333] cursor-pointer transition-colors duration-300 ${
-            activeIndex === index ? "hover" : ""
-          }`}
-          onMouseEnter={() => handleMouseEnter(index)}
-          onClick={() => handleProductClick(category.name)} // Dispatch category name vào Redux
-        >
-          {category.image ? (
-            <img
-              src={category.image}
-              alt={category.name}
-              className="mr-2 w-5 h-5 object-contain" // Tùy chỉnh kích thước của ảnh
-            />
-          ) : (
+      {loading ? (
+        <div className="">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div
+              key={index}
+              className="p-2 border rounded-md bg-white shadow-md flex-grow"
+            >
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height={20}
+                animation="wave"
+                className="rounded"
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        categories.map((category, index) => (
+          <Link
+            key={index}
+            to={{
+              pathname: "/productList",
+              search: `?categoryName=${category.name}`,
+            }}
+            state={{ from: "Taskbar" }}
+            className={`menu-item flex items-center px-[20px] py-[10px] text-[#333] cursor-pointer transition-colors duration-300 ${
+              activeIndex === index ? "hover" : ""
+            }`}
+            onMouseEnter={() => handleMouseEnter(index)}
+            onClick={() => handleProductClick(category.name)}
+          >
+            {category.image ? (
+              <img
+                src={category.image}
+                alt={category.name}
+                className="mr-2 w-5 h-5 object-contain"
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faComputer}
+                className="mr-2"
+              />
+            )}
+            {category.name}
             <FontAwesomeIcon
-              icon={faComputer} // Hiển thị icon mặc định nếu không có ảnh
-              className="mr-2"
+              icon={faGreaterThan}
+              className="ml-auto"
+              style={{ fontSize: "12px", color: "rgba(0, 0, 0, 0.3)" }}
             />
-          )}
-          {category.name}
-          <FontAwesomeIcon
-            icon={faGreaterThan}
-            className="ml-auto"
-            style={{ fontSize: "12px", color: "rgba(0, 0, 0, 0.3)" }}
-          />
-        </Link>
-      ))}
+          </Link>
+        ))
+      )}
 
       {/* {activeIndex !== null && (
         <div

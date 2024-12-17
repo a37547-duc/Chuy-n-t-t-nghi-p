@@ -1,25 +1,29 @@
 /* eslint-disable react/prop-types */
+import React from "react";
+import { useCallback } from "react";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./NewImportedProducts.css";
 
-const NewImportedProducts = ({ data, itemsPerPage }) => {
+const NewImportedProducts = React.memo(({ data, itemsPerPage }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const handleArrowClick = (direction) => {
+  const handleArrowClick = useCallback((direction) => {
     setCurrentIndex(prevIndex => {
       return direction === 'left' ? Math.max(0, prevIndex - 1) : Math.min(totalPages - 1, prevIndex + 1);
     });
-  };
+  }, [totalPages]);
 
-  const handleProductClick = (productId) => {navigate(`/products/${productId}`);};
+  const handleProductClick = useCallback((productId) => {
+    navigate(`/products/${productId}`);
+  }, [navigate]);
 
   // Tính toán giá trị translateX
-  const translateX = currentIndex * -100; // Mỗi sản phẩm chiếm 100% chiều rộng
+  const translateX = currentIndex * -100;
 
   return (
     <div className="p-3 relative w-full box-border text-[#333333]">
@@ -29,8 +33,8 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
         className={`flex flex-nowrap m-0 p-0 whitespace-nowrap h-full relative transition-transform duration-[400ms] ease-out`}
         style={{ transform: `translateX(${translateX}%)` }}
       >
-        {data.map((product, index) => (
-          <div key={index} className="h-auto mr-1 productNewImport flex-shrink-0 box-border whitespace-normal">
+        {data.map((product) => (
+          <div key={product._id} className="h-auto mr-1 productNewImport flex-shrink-0 box-border whitespace-normal">
             <div className="bg-white rounded-md h-full block">
               <div className="relative w-full h-full p-4 flex flex-col bg-white justify-between">
                 <a
@@ -100,6 +104,7 @@ const NewImportedProducts = ({ data, itemsPerPage }) => {
       </div>
     </div>
   );
-}
+});
+NewImportedProducts.displayName = "NewImportedProducts";
 
 export default NewImportedProducts;

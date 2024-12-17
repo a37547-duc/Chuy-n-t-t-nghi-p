@@ -106,7 +106,8 @@ const UserManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {currentUsers.map((user, index) => (
+          {currentUsers.length > 0 ? (
+            currentUsers.map((user, index) => (
               <tr
                 key={index}
                 className="border-b border-gray-200 text-gray-700 hover:bg-gray-100"
@@ -135,7 +136,12 @@ const UserManagement = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center text-red-500 py-4">Người dùng không tồn tại</td>
+              </tr>
+            )}
           </tbody>
   
           {/* Pagination & Count within table footer */}

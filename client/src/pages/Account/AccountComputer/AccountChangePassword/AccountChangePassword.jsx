@@ -28,6 +28,8 @@ const AccountChangePassword = () => {
       newErrors.newPassword = "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt (!@#$%^&*...)";
     } else if (whiteSpaceRegex.test(newPassword)) {
       newErrors.newPassword = "Mật khẩu mới không được chứa khoảng trắng";
+    } else if (newPassword.length > 20) {
+      newErrors.newPassword = "Mật khẩu mới chỉ được chứa nhiều nhất 20 ký tự";
     }
     if (!confirmPassword.trim()) {
       newErrors.confirmPassword = "Nhập lại mật khẩu mới không được để trống";

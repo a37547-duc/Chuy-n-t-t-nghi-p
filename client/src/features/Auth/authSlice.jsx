@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await api.post('/user/login', formData);
-      console.log(response.data);
+      // console.log(response.data);
       const token = response.data;
       if (token) {
         localStorage.setItem('access_token', token.user.token);
@@ -79,9 +79,11 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       state.registerError = null;
+
       localStorage.removeItem('access_token');
       localStorage.removeItem('user'); 
       localStorage.removeItem("profile_bg_color");
+      
       window.location.href = "/";
       toast.success("Bạn đã đăng xuất");
     },

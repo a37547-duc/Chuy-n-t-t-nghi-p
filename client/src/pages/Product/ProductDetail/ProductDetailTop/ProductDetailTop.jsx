@@ -8,7 +8,7 @@ import ShowImageMobile from './ShowImageMobile/ShowImageMobile';
 import DescriptionProduct from './DescriptionProduct/DescriptionProduct';
 import OverviewProduct from './OverviewProduct/OverviewProduct';
 import PromotionProduct from './PromotionProduct/PromotionProduct';
-import ButtonBuyProduct from './ButtonBuyProduct/BottonBuyProduct';
+import ButtonBuyProduct from './ButtonBuyProduct/ButtonBuyProduct';
 
 const ProductDetailTop = ({ product, onVariantChange }) => {
   // console.log("Varinant: ", onVariantChange)

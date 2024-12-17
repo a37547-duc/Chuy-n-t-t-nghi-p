@@ -1,20 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from "../../api/apiConfig";
 
-export const customRange = createAsyncThunk(
-    "/products/order/stats",
-    async (data, { rejectWithValue }) => {
-      try {
-        const response = await api.post(
-          "/admin/products/order/stats",
-          data
-        );
-        return response.data;
-      } catch (error) {
-        return rejectWithValue(error.response.data);
-      }
+// Thunk để gọi API và xử lý dữ liệu
+export const fetchStats = createAsyncThunk(
+  "stats/fetchStats",
+  async (filter, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/admin/products/order/stats?filter=${filter}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
     }
-  );
+  }
+);
 
 const statsSlice = createSlice({
   name: 'stats',
@@ -26,15 +24,15 @@ const statsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(customRange.pending, (state) => {
+      .addCase(fetchStats.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(customRange.fulfilled, (state, action) => {
+      .addCase(fetchStats.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
       })
-      .addCase(customRange.rejected, (state, action) => {
+      .addCase(fetchStats.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

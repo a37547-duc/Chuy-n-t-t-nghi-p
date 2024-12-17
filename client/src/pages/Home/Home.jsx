@@ -51,6 +51,7 @@ export default function Home() {
       {renderTopHome}
 
       {renderLogoButton}
+
       <div className="mt-[50px] mb-[20px]">
         <div className="max-w-[1100px] mx-auto">
           <ProductCategory />

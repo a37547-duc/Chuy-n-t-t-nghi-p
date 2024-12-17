@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../features/Auth/authSlice";
 import { useState } from "react";
+import { MdOutlineDiscount } from "react-icons/md";
 
 export default function AuthButtons() {
   const dispatch = useDispatch();
@@ -46,7 +47,13 @@ export default function AuthButtons() {
               <Link to="/account/order" aria-label="Go to orders">
                 <div className="px-4 py-2 text-xs text-gray-700 hover:bg-gray-200 flex items-center" role="menuitem">
                   <FontAwesomeIcon icon={faRectangleList} className="mr-2" />
-                  Quản lý đơn hàng
+                  Lịch sử mua hàng
+                </div>
+              </Link>
+              <Link to="/account/discounts" aria-label="Go to orders">
+                <div className="px-4 py-2 text-xs text-gray-700 hover:bg-gray-200 flex items-center" role="menuitem">
+                  <MdOutlineDiscount className="mr-2" size={13}/>
+                  Ưu đãi của bạn
                 </div>
               </Link>
               <div className="flex justify-center mt-2">

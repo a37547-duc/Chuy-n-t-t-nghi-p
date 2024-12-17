@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useCallback } from "react";
 import "./SearchBar.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import { setSearchName } from "../../../../features/Client/ClientFilterSlice";
@@ -12,7 +12,6 @@ export default function SearchBar() {
   const [showList, setShowList] = useState(false);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // Hàm gọi API
   const fetchProducts = async (searchName) => {
@@ -62,7 +61,7 @@ export default function SearchBar() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setSearchName(search)); // Dispatch Redux action
-    navigate(`/productList?searchName=${encodeURIComponent(search)}`);
+    window.location.href=`/productList?searchName=${encodeURIComponent(search)}`;
   };
 
   return (
@@ -107,7 +106,13 @@ export default function SearchBar() {
                 </Link>
               ))}
               {products.length > 5 && (
-                <div className="px-4 py-2 text-gray-600 justify-center text-center hover:cursor-pointer">
+                <div 
+                  className="px-4 py-2 text-gray-600 justify-center text-center hover:cursor-pointer"
+                  onClick={() => {
+                    dispatch(setSearchName(search)); // Dispatch Redux action
+                    window.location.href=`/productList?searchName=${encodeURIComponent(search)}`;
+                  }}
+                >
                   Xem thêm {products.length - 5} sản phẩm khác
                 </div>
               )}

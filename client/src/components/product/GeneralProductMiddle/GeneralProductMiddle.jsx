@@ -32,7 +32,7 @@ const GeneralProductMiddle = ({ data }) => {
   const handleProductClick = (productId) => {navigate(`/products/${productId}`);};
 
   if (data.length === 0) {
-    return null; // hoặc bạn có thể render một thông báo như "Không có sản phẩm nào"
+    return null;
   }
 
   return (

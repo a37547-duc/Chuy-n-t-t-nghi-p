@@ -128,7 +128,7 @@ const OrderManagement = () => {
       )}
       {!loading && !error && (
         <table className="table-auto w-full mt-6 bg-white shadow-md rounded-lg">
-          <thead>
+          <thead onMouseDown={(event) => {event.preventDefault();}}>
             <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
               <th className="p-4">ID</th>
               <th className="p-4">Tên khách hàng</th>
@@ -148,7 +148,8 @@ const OrderManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {currentOrders.map((order) => (
+          {currentOrders.length > 0 ? (
+            currentOrders.map((order) => (
               <tr key={order._id} className="border-b border-gray-200 text-gray-700 hover:bg-gray-100">
                 <td className="p-4 text-sm">{order._id}</td>
                 <td className="p-4 text-sm">{order.shippingInfo.fullName}</td>
@@ -180,8 +181,13 @@ const OrderManagement = () => {
                   </div>
                 </td>
               </tr>
-            ))}
-          </tbody>
+            ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center text-red-500 py-4">Đơn hàng không tồn tại</td>
+              </tr>
+            )}
+            </tbody>
 
           <tfoot>
             <tr>
