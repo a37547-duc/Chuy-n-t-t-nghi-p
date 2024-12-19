@@ -15,7 +15,6 @@ const ProductDetailTop = ({ product, onVariantChange }) => {
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 540);
   const [selectedVariant, setSelectedVariant] = useState(product?.variants?.[0]);
 
-  // Function to check screen size on resize
   const handleResize = () => {
     setIsMobileView(window.innerWidth <= 768);
   };

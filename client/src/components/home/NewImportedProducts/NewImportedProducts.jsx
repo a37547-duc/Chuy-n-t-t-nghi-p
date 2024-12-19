@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import { useCallback } from "react";
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import "./NewImportedProducts.css";
+import { useCallback, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 
 const NewImportedProducts = React.memo(({ data, itemsPerPage }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -105,6 +104,7 @@ const NewImportedProducts = React.memo(({ data, itemsPerPage }) => {
     </div>
   );
 });
+
 NewImportedProducts.displayName = "NewImportedProducts";
 
 export default NewImportedProducts;

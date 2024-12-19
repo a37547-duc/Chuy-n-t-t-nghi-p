@@ -7,7 +7,6 @@ import { addItemToCart } from "../../../../../features/cart/cartSlice";
 const ButtonBuyProduct = ({ product, variant }) => {
   const dispatch = useDispatch();
 
-  // Lấy cartTotal từ Redux store
   const cartTotal = useSelector((state) => state.discount?.cartTotal);
 
   // console.log("THÔNG TIN KHI MUA SẢN PHẨM: ", variant);

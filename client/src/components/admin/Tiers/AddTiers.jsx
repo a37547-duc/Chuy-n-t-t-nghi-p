@@ -71,7 +71,6 @@ const AddTiers = ({ onClose }) => {
       // Thêm tier nếu không trùng
       try {
         await dispatch(addTiers(newTier));
-        console.log("Added tier:", newTier);
         dispatch(getAllTiers());
         setNewTier({
           name: "",
@@ -85,7 +84,7 @@ const AddTiers = ({ onClose }) => {
         });
         onClose();
       } catch (error) {
-        console.error("Error adding tier:", error);
+        setError("Lỗi thêm hạng:", error);
       }
     },
     [dispatch, tiers, newTier, onClose]
@@ -209,7 +208,7 @@ const AddTiers = ({ onClose }) => {
               className="mt-1 block w-16 h-10 border-0 rounded-md"
               required
             />
-            <p className="ml-4 mt-2 text-sm text-gray-500">Mã màu: {newTier.color}</p>
+            <p className="ml-4 mt-2 text-sm text-gray-500 font-medium">Mã màu: {newTier.color}</p>
           </div>
         </div>
       </div>

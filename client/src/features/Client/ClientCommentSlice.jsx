@@ -1,14 +1,14 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../api/apiConfig";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 // Thunk để lấy danh sách bình luận theo sản phẩm ID
 export const getCommentsByProductId = createAsyncThunk(
   "comments/getCommentsByProductId",
   async (productId, { rejectWithValue }) => {
     try {
       const response = await api.get(`/ratings/${productId}`);
-      // console.log("Data: ", response.data);
       const { totalRatings, starCounts, ratings } = response.data.data;
-      return { totalRatings, starCounts, ratings }; // Trả về dữ liệu cần thiết
+      return { totalRatings, starCounts, ratings };
     } catch (error) {
       if (error.response && error.response.status === 404) {
         return [];
@@ -22,9 +22,9 @@ export const getCommentsByProductId = createAsyncThunk(
 const commentsSlice = createSlice({
   name: "comments",
   initialState: {
-    totalRatings: 0,  // Tổng số đánh giá
+    totalRatings: 0,
     starCounts: {},   // Số lượng đánh giá theo sao
-    ratings: [],      // Danh sách bình luận
+    ratings: [],
     loading: false,
     error: null,
   },

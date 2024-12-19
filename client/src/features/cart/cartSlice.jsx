@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { toast } from "react-toastify";
+import { createSlice } from '@reduxjs/toolkit';
 import "react-toastify/dist/ReactToastify.css";
 
 // Load cart from localStorage

@@ -1,12 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../api/apiConfig";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getUserTier = createAsyncThunk(
   "userTier/getUserTier",
   async (userId, { rejectWithValue }) => {
     try {
       const response = await api.get(`/user/tier`);
-      // console.log("Data: ", response.data.data)
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.response ? error.response.data : error.message);

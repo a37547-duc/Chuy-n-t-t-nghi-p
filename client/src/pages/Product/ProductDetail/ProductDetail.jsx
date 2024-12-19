@@ -15,14 +15,9 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         // Fetch dữ liệu sản phẩm từ API
-        const response = await fetch(
-          `https://laptech4k.onrender.com/api/v1/products/${id}`
-        );
+        const response = await fetch(`https://laptech4k.onrender.com/api/v1/products/${id}`);
 
-        // Kiểm tra lỗi từ API
-        if (!response.ok) {
-          throw new Error(`Failed to fetch product: ${response.statusText}`);
-        }
+        if (!response.ok) {throw new Error(`Failed to fetch product: ${response.statusText}`);}
 
         const data = await response.json();
 
@@ -41,7 +36,7 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-    window.scrollTo(0, 0); // Cuộn lên đầu trang khi thay đổi ID sản phẩm
+    window.scrollTo(0, 0);
   }, [id, dispatch]);
 
   // Kiểm tra sản phẩm trước khi render

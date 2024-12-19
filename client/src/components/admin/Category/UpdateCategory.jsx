@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { updateCategory } from "../../../features/Admin/adminCategorySlice";
 import { getAllCategories } from "../../../features/category/categoriesSlice";
 import ImageUploadOne from "../../images/ImageUploadOne";
@@ -8,10 +8,6 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 const UpdateCategory = ({ editCategory, onClose }) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
-
-  // useEffect(() => {
-  //   console.log("UpdateCate: ", categories)
-  // },[categories])
 
   const [error, setError] = useState("");
   const [updatedCategory, setUpdatedCategory] = useState({

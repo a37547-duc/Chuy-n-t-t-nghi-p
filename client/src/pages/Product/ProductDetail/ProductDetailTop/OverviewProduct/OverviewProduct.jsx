@@ -1,19 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  setCartTotal,
-  setDiscountInfo,
-  clearDiscountInfo,
-  setOriginalPrice,
-} from "./../../../../../features/Client/discountSlice";
+import { setCartTotal, setDiscountInfo, clearDiscountInfo, setOriginalPrice } from "./../../../../../features/Client/discountSlice";
 
 const OverviewProduct = ({ data, onVariantChange }) => {
   const dispatch = useDispatch();
 
   // Lấy thông tin giảm giá từ Redux store
-  const discountInfo = useSelector((state) => state.discount) || {
-    discount: 0,
-  };
+  const discountInfo = useSelector((state) => state.discount) || {discount: 0,};
   const originalPrice = useSelector((state) => state.discount.originalPrice);
   const cartTotal = useSelector((state) => state.discount.cartTotal);
 
@@ -21,26 +16,20 @@ const OverviewProduct = ({ data, onVariantChange }) => {
   const priceDifference = originalPrice - cartTotal;
 
   // Lấy biến thể đầu tiên có hàng, nếu không lấy biến thể đầu tiên
-  const initialVariant =
-    data?.variants?.find((variant) => variant?.stock_quantity > 0) ||
-    data?.variants?.[0];
+  const initialVariant = data?.variants?.find((variant) => variant?.stock_quantity > 0) || data?.variants?.[0];
 
   const [selectedCpu, setSelectedCpu] = useState(initialVariant?._id);
   const [selectedColor, setSelectedColor] = useState(initialVariant?.color);
 
   // Cập nhật giá và màu khi biến thể thay đổi
   useEffect(() => {
-    const selectedVariant = data?.variants?.find(
-      (variant) => variant?._id === selectedCpu
-    );
+    const selectedVariant = data?.variants?.find((variant) => variant?._id === selectedCpu);
 
     if (selectedVariant) {
       // Cập nhật originalPrice và cartTotal vào Redux
       dispatch(setOriginalPrice(selectedVariant.price));
 
-      const discountedPrice = discountInfo.discount
-        ? selectedVariant.price * (1 - discountInfo.discount / 100)
-        : selectedVariant.price;
+      const discountedPrice = discountInfo.discount ? selectedVariant.price * (1 - discountInfo.discount / 100) : selectedVariant.price;
 
       dispatch(setCartTotal(discountedPrice));
       setSelectedColor(selectedVariant?.color);
@@ -94,16 +83,9 @@ const OverviewProduct = ({ data, onVariantChange }) => {
                     variant?.stock_quantity > 0 && handleCpuChange(variant)
                   }
                   className={`px-4 py-2 rounded-md border-2 text-[12px] mr-2 mb-2 cursor-pointer text-center w-[130px] overflow-hidden whitespace-nowrap truncate
-                  ${
-                    selectedCpu === variant._id
-                      ? "border-blue-500 text-blue-500"
-                      : "border-gray-300 text-gray-500"
+                    ${selectedCpu === variant._id ? "border-blue-500 text-blue-500" : "border-gray-300 text-gray-500"}
+                    ${variant?.stock_quantity <= 0 ? "cursor-not-allowed opacity-50": ""}`
                   }
-                  ${
-                    variant?.stock_quantity <= 0
-                      ? "cursor-not-allowed opacity-50"
-                      : ""
-                  }`}
                 >
                   {variant?.ram?.capacity}GB RAM
                   <br />

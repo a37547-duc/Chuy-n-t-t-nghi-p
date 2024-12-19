@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-// ImageUpload.jsx
-import { useState, useEffect } from "react";
-import { storage } from "../../firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "firebase/compat/storage";
+import { storage } from "../../firebase";
+import { useState, useEffect } from "react";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const ImageUploadOne = ({ onUploadComplete, existingUrl = "" }) => {
   const [image, setImage] = useState(null);
@@ -56,10 +55,7 @@ const ImageUploadOne = ({ onUploadComplete, existingUrl = "" }) => {
         />
       </div>
 
-      {/* Error Message */}
-      {error && (
-        <p className="text-red-500 font-medium text-center">{error}</p>
-      )}
+      {error && (<p className="text-red-500 font-medium text-center">{error}</p>)}
 
       {/* Uploaded Image Preview */}
       {url && (

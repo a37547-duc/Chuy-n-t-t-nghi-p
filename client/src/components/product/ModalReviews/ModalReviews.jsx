@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import { useDispatch } from "react-redux";
 import { postRating } from "../../../features/Client/Comment";
+import { getCommentsByProductId } from "../../../features/Client/ClientCommentSlice";
+
 
 /* eslint-disable react/prop-types */
 const ModalReviews = ({ open, onClose, product }) => {
@@ -14,18 +16,19 @@ const ModalReviews = ({ open, onClose, product }) => {
   const [comment, setComment] = useState("");
 
   const handleSubmit = () => {
-    // Tạo dữ liệu để gửi lên API
     const ratingData = {
       productId: product?.product?._id, // ID của sản phẩm
       rating: selectedRating, // Rating (1 đến 5 sao)
-      comment: comment, // Bình luận
+      comment: comment,
     };
 
     // Gửi dữ liệu đến Redux để gửi lên API
-    dispatch(postRating(ratingData));
-    onClose(); // Đóng modal sau khi gửi
-    setSelectedRating(0); // Reset rating
-    setComment(""); // Reset comment
+    dispatch(postRating(ratingData)).then(() => {
+      dispatch(getCommentsByProductId(product?.product?._id));
+    });
+    onClose();
+    setSelectedRating(0);
+    setComment("");
   };
 
   return (
@@ -36,7 +39,6 @@ const ModalReviews = ({ open, onClose, product }) => {
       aria-describedby="rating-modal-description"
     >
       <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] bg-white shadow-lg p-4 rounded-lg">
-        {/* Nút đóng ở góc phải */}
         <button
           onClick={onClose}
           className="absolute top-0 right-0 text-2xl font-bold text-gray-700 hover:text-gray-900 px-2 hover:bg-gray-200 rounded-tr-lg"
@@ -84,7 +86,7 @@ const ModalReviews = ({ open, onClose, product }) => {
         />
         <button
           className="w-full bg-red-600 text-white mt-4 py-2 rounded hover:bg-red-700"
-          onClick={handleSubmit} // Gọi hàm handleSubmit khi nhấn gửi đánh giá
+          onClick={handleSubmit}
         >
           Gửi đánh giá
         </button>

@@ -2,14 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGift } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setCartTotal,
-  setDiscountInfo,
-  clearDiscountInfo,
-  setIsApplied,
-} from "./../../../../../features/Client/discountSlice";
+import { setCartTotal, setDiscountInfo, clearDiscountInfo, setIsApplied } from "./../../../../../features/Client/discountSlice";
 import { api } from "../../../../../api/apiConfig";
 
 const PromotionProduct = () => {
@@ -19,18 +13,10 @@ const PromotionProduct = () => {
   const isApplied = useSelector((state) => state.discount.isApplied);
   const cartTotal = useSelector((state) => state.discount.originalPrice);
 
-  const userId = "675d1ccd43b1ba1701249d32";
-
   // Hàm xử lý click khuyến mãi
   const handlePromotionClick = async () => {
     try {
-      const response = await api.post("/user/tier/check-discount",
-        {
-          cartTotal,
-          isApplied,
-        }
-      );
-
+      const response = await api.post("/user/tier/check-discount",{cartTotal,isApplied});
       const data = response.data;
 
       if (data.isApplied !== undefined) {
@@ -40,23 +26,23 @@ const PromotionProduct = () => {
           dispatch(setCartTotal(data.finalPrice));
           dispatch(setDiscountInfo(data.discount));
           toast.success("Áp dụng khuyến mãi thành công!", {
-            className: "mt-20 text-[15px]",
+            className: " text-[15px]",
           });
         } else {
           dispatch(clearDiscountInfo());
           toast.info("Bỏ áp dụng khuyến mãi thành công", {
-            className: "mt-20 text-[15px]",
+            className: "text-[15px]",
           });
         }
       } else {
         toast.warning("Không đủ điều kiện áp dụng khuyến mãi", {
-          className: "mt-20 text-[15px]",
+          className: "text-[15px]",
         });
       }
     } catch (error) {
       console.error("Lỗi kiểm tra khuyến mãi:", error);
       toast.error("Có lỗi xảy ra khi kiểm tra khuyến mãi", {
-        className: "mt-20 text-[15px]",
+        className: "text-[15px]",
       });
     }
   };
@@ -73,11 +59,9 @@ const PromotionProduct = () => {
 
       {/* Nội dung khuyến mãi */}
       <div
-        className={`w-full flex flex-row gap-0 justify-start items-start opacity-100 box-border mt-2.5 p-3 rounded-lg cursor-pointer relative overflow-hidden ${
-          isApplied
-            ? "bg-[#F5F5F5] border-2 border-blue-500"
-            : "bg-white border border-gray-200"
-        }`}
+        className={`w-full flex flex-row gap-0 justify-start items-start opacity-100 box-border mt-2.5 p-3 rounded-lg cursor-pointer relative overflow-hidden 
+          ${isApplied ? "bg-[#F5F5F5] border-2 border-blue-500": "bg-white border border-gray-200"}`
+        }
         onClick={handlePromotionClick}
       >
         {/* Icon khuyến mãi */}

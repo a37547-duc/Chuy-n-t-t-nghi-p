@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../api/apiConfig";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Thunk để gọi API lấy thương hiệu theo ID
 export const getBrandById = createAsyncThunk(
@@ -24,10 +24,8 @@ export const getAllBrands = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        // Trả về mảng rỗng nếu lỗi 404
         return [];
       }
-      // Các lỗi khác được xử lý bình thường
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }

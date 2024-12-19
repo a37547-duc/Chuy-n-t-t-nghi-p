@@ -32,7 +32,7 @@ const AccountSideBar = () => {
   const sidebarItems = [
     { path: "/account/information", label: "Thông tin tài khoản", icon: FaRegUserCircle },
     { path: "/account/order", label: "Lịch sử mua hàng", icon: MdOutlineEventNote },
-    { path: "/account/discounts", label: "Ưu đãi của bạn", icon: TfiGift },
+    { path: "/account/discounts", label: "Hạng thành viên", icon: TfiGift },
     { path: "/account/changePassword", label: "Đổi mật khẩu", icon: MdOutlineChangeCircle },
   ];
 

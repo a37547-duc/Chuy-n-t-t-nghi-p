@@ -11,7 +11,6 @@ const DeleteCategory = ({categoryId, categoryName, onClose }) => {
     dispatch(deleteCategory(categoryId))
       .unwrap()
       .then(() => {
-        console.log("Danh mục đã được xóa thành công.");
         dispatch(getAllCategories());
         onClose();
       })
@@ -25,8 +24,7 @@ const DeleteCategory = ({categoryId, categoryName, onClose }) => {
       <h2 className="mb-4 text-xl font-semibold tracking-wide text-red-500">Xóa danh mục</h2>
       <p className="text-gray-700">
         Bạn có chắc chắn muốn xóa danh mục{" "}
-        <span className="font-bold">{categoryName}</span> không? Hành động này
-        không thể hoàn tác.
+        <span className="font-bold">{categoryName}</span> không? Hành động này không thể hoàn tác.
       </p>
 
       <div className="flex justify-end space-x-2">

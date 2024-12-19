@@ -11,7 +11,6 @@ const DeleteTiers = ({ tierId, tierName, onClose }) => {
     dispatch(deleteTiers(tierId))
       .unwrap()
       .then(() => {
-        console.log("Hạng đã được xóa thành công.");
         dispatch(getAllTiers());
         onClose();
       })
