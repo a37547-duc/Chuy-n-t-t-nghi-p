@@ -16,8 +16,13 @@ const cartSlice = createSlice({
     addItemToCart(state, action) {
       const existingItem = state.items.find(item => item._id === action.payload._id);
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity;
-        toast.info("Thêm sản phẩm thành công");
+        // if (existingItem.stock_quantity <= existingItem.quantity) {
+        //   toast.error("Sản phẩm vượt quá số lượng trong kho");
+        //   return;
+        // } else {
+          existingItem.quantity += action.payload.quantity;
+          toast.info("Thêm sản phẩm thành công");
+        // }
       } else {
         state.items.push(action.payload);
         toast.success("Thêm sản phẩm thành công");
