@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await api.post('/user/login', formData);
-      console.log(response.data);
+      // console.log(response.data);
       const token = response.data;
       if (token) {
         localStorage.setItem('access_token', token.user.token);

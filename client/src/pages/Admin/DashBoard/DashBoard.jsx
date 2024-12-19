@@ -1,5 +1,5 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import "react-datepicker/dist/react-datepicker.css"; 
 import { useDispatch, useSelector } from 'react-redux';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -12,7 +12,7 @@ import { fetchStats } from '../../../features/Admin/statistical';
 const DashBoard = () => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.stats);
-  console.log(data);
+  // console.log(data);
 
   const [filter, setFilter] = useState("today");
   const [totalRevenue, setTotalRevenue] = useState(0);

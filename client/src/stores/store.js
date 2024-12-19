@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import statsReducer from "../features/Admin/statistical";
+import adminTierReducer from "../features/Admin/adminTiersSlice";
 import adminBrandReducer from "../features/Admin/adminBrandSlice";
 import adminProductReducer from "../features/Admin/adminProductsSlice";
 import adminCategoryReducer from "../features/Admin/adminCategorySlice";
@@ -13,6 +14,7 @@ import cartReducer from "../features/cart/cartSlice";
 import brandReducer from "../features/brand/brandsSlice";
 import orderReducer from "../features/order/orderSlice";
 import categoryReducer from "../features/category/categoriesSlice";
+import tierReducer from "../features/tier/tiersSlice";
 
 import authReducer from "../features/Auth/authSlice";
 import authProfileReducer from "../features/Auth/authProfileSlice";
@@ -35,12 +37,14 @@ export const store = configureStore({
     product: productReducer,
     cart: cartReducer,
     order: orderReducer,
+    tier: tierReducer,
     user: userReducer,
     stats: statsReducer,
     adminProduct: adminProductReducer,
     adminVariation: adminVariationReducer,
     adminCategory: adminCategoryReducer,
     adminBrand: adminBrandReducer,
+    adminTier: adminTierReducer,
     auth: authReducer,
     profile: authProfileReducer,
     ordersUser: authOrdersUserReducer,

@@ -29,7 +29,7 @@ const BrandManagement = React.lazy(() => import("./pages/Admin/BrandManagement/B
 const OrderManagement = React.lazy(() => import("./pages/Admin/OrderManagement/OrderManagement"));
 const ProductVariation = React.lazy(() => import("./pages/Admin/ProductManagement/ProductVariation"));
 const ProductManagement = React.lazy(() => import("./pages/Admin/ProductManagement/ProductManagement"));
-const RestoreManagement = React.lazy(() => import("./pages/Admin/RestoreManagement/RestoreManagement"));
+const TiersManagement = React.lazy(() => import("./pages/Admin/TiersManagement/TiersManagement"));
 const CategoryManagement = React.lazy(() => import("./pages/Admin/CategoryManagement/CategoryManagement"));
 
 const Login = React.lazy(() => import("./pages/Login/Login"));
@@ -312,10 +312,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "restore",
+        path: "tiers",
         element: (
           <Suspense>
-            <RestoreManagement />
+            <TiersManagement />
           </Suspense>
         ),
       },
