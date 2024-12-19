@@ -12,7 +12,6 @@ import "./Taskbar.css";
 const Taskbar = () => {
   const dispatch = useDispatch();
   const { data: categories, loading} = useSelector((state) => state.clientCategory);
-  const { data: categories, loading} = useSelector((state) => state.clientCategory);
 
   useEffect(() => {
     dispatch(getAllCategoriesClient());
@@ -29,7 +28,6 @@ const Taskbar = () => {
   };
 
   const handleProductClick = (categoryName) => {
-    dispatch(setCategoryName(categoryName));
     dispatch(setCategoryName(categoryName));
   };
   return (
@@ -110,4 +108,3 @@ const Taskbar = () => {
 };
 
 export default Taskbar;
-

@@ -9,11 +9,6 @@ const UpdateBrand = ({ editBrand, onClose }) => {
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.brand.brands);
 
-  useEffect(() => {
-    console.log("UpdateBrand: ", brands);
-    console.log('Brand:', editBrand);
-  }, [brands, editBrand]);
-
   const [error, setError] = useState("");
   const [updatedBrand, setUpdatedBrand] = useState({
     name: "",
@@ -27,13 +22,11 @@ const UpdateBrand = ({ editBrand, onClose }) => {
         image: editBrand.image || null,
       });
       setError("");
-      setError("");
     }
   }, [editBrand]);
 
   const duplicateCategory = useMemo(() => {
     return brands.find(
-      (cat) => cat.name.toLowerCase().trim() === updatedBrand.name.toLowerCase().trim() && cat._id !== editBrand._id
       (cat) => cat.name.toLowerCase().trim() === updatedBrand.name.toLowerCase().trim() && cat._id !== editBrand._id
     );
   }, [brands, updatedBrand.name, editBrand._id]);
@@ -45,7 +38,6 @@ const UpdateBrand = ({ editBrand, onClose }) => {
 
   const handleImageUpload = useCallback((url) => {
     setUpdatedBrand((prev) => ({ ...prev, image: url }));
-    setUpdatedBrand((prev) => ({ ...prev, image: url }));
   },[]);
 
   const handleSubmit = useCallback(
@@ -53,7 +45,6 @@ const UpdateBrand = ({ editBrand, onClose }) => {
       e.preventDefault();
 
       if (duplicateCategory) {
-        setError("Thương hiệu đã tồn tại.");
         setError("Thương hiệu đã tồn tại.");
         return;
       }
@@ -68,7 +59,6 @@ const UpdateBrand = ({ editBrand, onClose }) => {
         dispatch(getAllBrands());
         onClose();
       } catch (error) {
-        setError("Error edit category", error);
         setError("Error edit category", error);
       }
     },[dispatch, updatedBrand, editBrand._id, duplicateCategory, onClose]

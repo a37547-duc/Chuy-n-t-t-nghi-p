@@ -17,10 +17,6 @@ const BrandManagement = () => {
   //Truy xuất dữ liệu
   const { brands, loading, error } = useSelector((state) => state.brand);
   const { products } = useSelector((state) => state.product);
-  // useEffect(() => {
-  //   console.log("Brand: ", brands);
-  // console.log("ProductAdmin: ", products);
-  // }, [brands]);
 
   //Phân trang
   const [page, setPage] = useState(0);

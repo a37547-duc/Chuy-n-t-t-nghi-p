@@ -6,29 +6,22 @@ import { useNavigate } from 'react-router-dom';
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 
 const NewImportedProducts = React.memo(({ data, itemsPerPage }) => {
-const NewImportedProducts = React.memo(({ data, itemsPerPage }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
   const totalItems = data.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handleArrowClick = useCallback((direction) => {
-  const handleArrowClick = useCallback((direction) => {
     setCurrentIndex(prevIndex => {
       return direction === 'left' ? Math.max(0, prevIndex - 1) : Math.min(totalPages - 1, prevIndex + 1);
     });
   }, [totalPages]);
-  }, [totalPages]);
 
-  const handleProductClick = useCallback((productId) => {
-    navigate(`/products/${productId}`);
-  }, [navigate]);
   const handleProductClick = useCallback((productId) => {
     navigate(`/products/${productId}`);
   }, [navigate]);
 
   // Tính toán giá trị translateX
-  const translateX = currentIndex * -100;
   const translateX = currentIndex * -100;
 
   return (
@@ -39,8 +32,6 @@ const NewImportedProducts = React.memo(({ data, itemsPerPage }) => {
         className={`flex flex-nowrap m-0 p-0 whitespace-nowrap h-full relative transition-transform duration-[400ms] ease-out`}
         style={{ transform: `translateX(${translateX}%)` }}
       >
-        {data.map((product) => (
-          <div key={product._id} className="h-auto mr-1 productNewImport flex-shrink-0 box-border whitespace-normal">
         {data.map((product) => (
           <div key={product._id} className="h-auto mr-1 productNewImport flex-shrink-0 box-border whitespace-normal">
             <div className="bg-white rounded-md h-full block">

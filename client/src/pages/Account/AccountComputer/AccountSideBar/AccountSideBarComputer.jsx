@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { MdOutlineEventNote, MdOutlineChangeCircle } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import { TfiGift } from "react-icons/tfi";
-import { TfiGift } from "react-icons/tfi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../../../features/Auth/authProfileSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,7 +63,6 @@ const AccountSideBar = () => {
             <li key={path} className="list-none">
               <Link to={path} onDragStart={(e) => e.preventDefault()}>
                 <div
-                  className={` cursor-pointer flex items-center justify-between py-1 my-2 bg-transparent hover:text-[rgb(20,53,195)] hover:font-bold ${
                   className={` cursor-pointer flex items-center justify-between py-1 my-2 bg-transparent hover:text-[rgb(20,53,195)] hover:font-bold ${
                     isActive ? "text-[rgb(20,53,195)] font-bold" : ""}`
                   }

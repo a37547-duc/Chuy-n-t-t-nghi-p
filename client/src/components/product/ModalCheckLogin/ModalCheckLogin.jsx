@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
 import { Modal, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-// import { useState } from "react";
 
 const LoginCheckModal = ({ open, setOpen }) => {
-  const handleCloseLoginModal = () => setOpen(false); // Đóng modal
+  const handleCloseLoginModal = () => setOpen(false);
 
   return (
     <Modal
