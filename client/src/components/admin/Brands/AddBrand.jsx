@@ -94,3 +94,4 @@ const AddBrand = ({ onClose }) => {
 };
 
 export default AddBrand;
+

@@ -15,6 +15,13 @@ const BrandImageLogo = ({ image }) => {
       dispatch(setBrandName(logo));
       setActiveLogo(logo);
     }
+    if (activeLogo === logo) {
+      dispatch(setBrandName(null));
+      setActiveLogo(null);
+    } else {
+      dispatch(setBrandName(logo));
+      setActiveLogo(logo);
+    }
   };
 
   return (
@@ -24,6 +31,8 @@ const BrandImageLogo = ({ image }) => {
           <button
             key={index}
             className={`opacity-100 w-[88px] h-10 p-1 rounded border border-[#e4e5f0] bg-transparent relative flex items-center justify-center outline-none min-w-[2.5rem] cursor-pointer transition duration-[80ms] transition-bg ${
+            activeLogo === logo.name ? "border-blue-500" : ""}`}
+            onClick={() => handleLogoClick(logo.name)}
             activeLogo === logo.name ? "border-blue-500" : ""}`}
             onClick={() => handleLogoClick(logo.name)}
           >

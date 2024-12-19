@@ -29,6 +29,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
   const duplicateCategory = useMemo(() => {
     return categories.find(
       (cat) => cat.name.toLowerCase().trim() === updatedCategory.name.toLowerCase().trim() && cat._id !== editCategory._id
+      (cat) => cat.name.toLowerCase().trim() === updatedCategory.name.toLowerCase().trim() && cat._id !== editCategory._id
     );
   }, [categories, updatedCategory.name, editCategory]);
 
@@ -40,6 +41,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
 
   const handleImageUpload = useCallback((url) => {
     setUpdatedCategory((prev) => ({ ...prev, image: url }));
+    setUpdatedCategory((prev) => ({ ...prev, image: url }));
   },[]);
 
   const handleSubmit = useCallback(
@@ -47,6 +49,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
       e.preventDefault();
 
       if (duplicateCategory) {
+        setError("Danh mục đã tồn tại.");
         setError("Danh mục đã tồn tại.");
         return;
       }
@@ -62,6 +65,7 @@ const UpdateCategory = ({ editCategory, onClose }) => {
         dispatch(getAllCategories());
         onClose();
       } catch (error) {
+        setError("Error edit category", error);
         setError("Error edit category", error);
       }
     },[duplicateCategory, dispatch, editCategory, updatedCategory, onClose]
