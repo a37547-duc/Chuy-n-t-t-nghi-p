@@ -7,6 +7,7 @@ import { getAllTiers } from "../../../features/tier/tiersSlice";
 const AddTiers = ({ onClose }) => {
   const dispatch = useDispatch();
   const tiers = useSelector((state) => state.tier.tiers);
+  const [fieldErrors, setFieldErrors] = useState({});
   const nameInputRef = useRef(null);
 
   const [error, setError] = useState("");
@@ -23,11 +24,26 @@ const AddTiers = ({ onClose }) => {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
+  
+    // Kiểm tra lỗi cho các trường cụ thể
+    if ((name === "minSpent" || name === "discountValue") && value < 0) {
+      setFieldErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: `${name === "minSpent" ? "Chi tiêu tối thiểu" : "Giá trị giảm giá"} không được âm.`,
+      }));
+      return;
+    }
+  
+    // Xóa lỗi nếu giá trị hợp lệ
+    setFieldErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
+  
     setNewTier((prevTier) => ({
       ...prevTier,
       [name]: value,
     }));
-    setError("");
   }, []);
 
   const handleBenefitsChange = useCallback((e, index) => {
@@ -56,18 +72,32 @@ const AddTiers = ({ onClose }) => {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-
+  
+      // Kiểm tra lỗi
+      const errors = {};
+      if (newTier.minSpent < 0) {
+        errors.minSpent = "Chi tiêu tối thiểu không được âm.";
+      }
+      if (newTier.discountValue < 0) {
+        errors.discountValue = "Giá trị giảm giá không được âm.";
+      }
+  
+      if (Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+        return;
+      }
+  
       // Kiểm tra trùng tên tier
       const isDuplicate = tiers.some(
         (tier) => tier.name.toLowerCase() === newTier.name.toLowerCase().trim()
       );
-
+  
       if (isDuplicate) {
         setError("Hạng đã tồn tại. Vui lòng nhập tên khác.");
         nameInputRef.current.focus();
         return;
       }
-
+  
       // Thêm tier nếu không trùng
       try {
         await dispatch(addTiers(newTier));
@@ -117,9 +147,12 @@ const AddTiers = ({ onClose }) => {
             name="minSpent"
             value={newTier.minSpent}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
+            className={`mt-1 block w-full border ${
+              fieldErrors.minSpent ? "border-red-500" : "border-gray-300"
+            } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
+          {fieldErrors.minSpent && <p className="mt-1 text-sm text-red-500">{fieldErrors.minSpent}</p>}
         </div>
 
         <div>
@@ -129,9 +162,14 @@ const AddTiers = ({ onClose }) => {
             name="discountValue"
             value={newTier.discountValue}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
+            className={`mt-1 block w-full border ${
+              fieldErrors.discountValue ? "border-red-500" : "border-gray-300"
+            } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
+          {fieldErrors.discountValue && (
+            <p className="mt-1 text-sm text-red-500">{fieldErrors.discountValue}</p>
+          )}
         </div>
 
         <div>

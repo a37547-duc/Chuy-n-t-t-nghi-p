@@ -20,6 +20,11 @@ const UpdateTiers = ({ editTier, onClose }) => {
     color: "",
   });
 
+  const [fieldErrors, setFieldErrors] = useState({
+    minSpent: "",
+    discountValue: "",
+  });
+
   useEffect(() => {
     if (editTier) {
       setUpdatedTier({
@@ -46,8 +51,19 @@ const UpdateTiers = ({ editTier, onClose }) => {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
+  
+    // Reset lỗi cho trường đang nhập
+    setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+  
+    if ((name === "minSpent" || name === "discountValue") && value < 0) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        [name]: `${name === "minSpent" ? "Chi tiêu tối thiểu" : "Giá trị giảm giá"} không được âm.`,
+      }));
+      return;
+    }
+  
     setUpdatedTier((prev) => ({ ...prev, [name]: value }));
-    setError(""); 
   }, []);
 
   const handleBenefitsChange = useCallback((e, index) => {
@@ -120,9 +136,11 @@ const UpdateTiers = ({ editTier, onClose }) => {
             name="minSpent"
             value={updatedTier.minSpent}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
+            className={`mt-1 block w-full border ${fieldErrors.minSpent ? "border-red-500" : "border-gray-300"} 
+              focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
+          {fieldErrors.minSpent && <p className="mt-1 text-sm text-red-500">{fieldErrors.minSpent}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium">Giá trị giảm giá</label>
@@ -131,9 +149,11 @@ const UpdateTiers = ({ editTier, onClose }) => {
             name="discountValue"
             value={updatedTier.discountValue}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2"
+            className={`mt-1 block w-full border ${fieldErrors.discountValue ? "border-red-500" : "border-gray-300"} 
+              focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
             required
           />
+          {fieldErrors.discountValue && <p className="mt-1 text-sm text-red-500">{fieldErrors.discountValue}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium">Loại giảm giá</label>
