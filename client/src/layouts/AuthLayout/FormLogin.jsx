@@ -17,8 +17,6 @@ function FormLogin() {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const from = location.state?.from?.pathname || "/";
-
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({

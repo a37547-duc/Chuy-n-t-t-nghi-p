@@ -9,7 +9,6 @@ import { getCommentsByProductId } from "../../../features/Client/ClientCommentSl
 
 /* eslint-disable react/prop-types */
 const ModalReviews = ({ open, onClose, product }) => {
-  console.log("Product: ",product)
   const dispatch = useDispatch();
   const [selectedRating, setSelectedRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartTotal, setDiscountInfo, clearDiscountInfo, setIsApplied } from "./../../../../../features/Client/discountSlice";
-import { api } from "../../../../../api/apiConfig";
+import { apiFormData } from "../../../../../api/apiConfig";
 
 const PromotionProduct = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const PromotionProduct = () => {
   // Hàm xử lý click khuyến mãi
   const handlePromotionClick = async () => {
     try {
-      const response = await api.post("/user/tier/check-discount",{cartTotal,isApplied});
+      const response = await apiFormData.post("/user/tier/check-discount",{cartTotal,isApplied});
       const data = response.data;
 
       if (data.isApplied !== undefined) {
@@ -41,9 +41,9 @@ const PromotionProduct = () => {
       }
     } catch (error) {
       console.error("Lỗi kiểm tra khuyến mãi:", error);
-      toast.error("Có lỗi xảy ra khi kiểm tra khuyến mãi", {
-        className: "text-[15px]",
-      });
+      // toast.info("Bạn cần đăng nhập để áp dụng mức khuyến mãi", {
+      //   className: "text-[15px]",
+      // });
     }
   };
 
