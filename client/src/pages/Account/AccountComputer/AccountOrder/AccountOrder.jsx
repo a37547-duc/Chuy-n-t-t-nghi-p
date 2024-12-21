@@ -92,7 +92,7 @@ const AccountOrder = () => {
         <div className="rounded-md mt-4">
           {orders && orders.length > 0 ? (
             <div className="max-h-[700px] overflow-y-auto">
-              {orders.map((order) => (
+              {orders.slice().reverse().map((order) => (
                 <div key={order.id} className="border-t pt-4">
                   <div className="bg-white p-4 flex justify-between rounded-md">
                     <div className="flex items-start space-x-4 w-[502.6px]">
