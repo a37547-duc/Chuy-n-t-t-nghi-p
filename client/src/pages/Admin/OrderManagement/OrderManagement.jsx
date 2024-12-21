@@ -27,7 +27,7 @@ const OrderManagement = () => {
 
   const filteredOrders = useMemo(() => {
     return orders.filter(order => 
-      order._id.toLowerCase().includes(searchQuery.toLowerCase())
+      order._id && order._id.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [orders, searchQuery]);
 

@@ -59,7 +59,7 @@ const UpdateBrand = ({ editBrand, onClose }) => {
         dispatch(getAllBrands());
         onClose();
       } catch (error) {
-        setError("Error edit category", error);
+        setError("Lỗi cập nhật thương hiệu!!!", error);
       }
     },[dispatch, updatedBrand, editBrand._id, duplicateCategory, onClose]
   );

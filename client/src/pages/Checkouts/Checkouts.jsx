@@ -162,6 +162,7 @@ function Checkout() {
       },
       paymentMethod: formData.payment, 
     }
+    console.log(orderData);
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length > 0) {
