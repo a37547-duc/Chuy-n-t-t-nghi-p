@@ -63,9 +63,9 @@ apiFormData.interceptors.response.use(
       //   toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại", { toastId: "getSessionExpiredError" });
       // }
       toast.info("Bạn cần đăng nhập để áp dụng mức khuyến mãi");
-      // setTimeout(() => {
-      //   window.location.href = "/login";
-      // }, 1000);
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
     }
     return Promise.reject(error);
   }
