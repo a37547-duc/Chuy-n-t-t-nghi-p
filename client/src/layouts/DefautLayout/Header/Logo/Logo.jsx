@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetFilter } from "../../../../features/Client/ClientFilterSlice";
 
+
 export default function Logo() {
   const dispatch = useDispatch();
 

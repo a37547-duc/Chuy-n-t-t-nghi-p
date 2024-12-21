@@ -9,6 +9,9 @@ import { MdOutlineDiscount } from "react-icons/md";
 export default function AuthButtons() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  // const { useProfile } = useSelector((state) => state.profile)
+  // const profileBgColor = useSelector((state) => state.auth.profileBgColor);
+  // const firstLetter = user?.username?.charAt(0)?.toUpperCase() || "?";
   const [isHovered, setIsHovered] = useState(false);
 
   const handleLogout = () => {
@@ -22,6 +25,12 @@ export default function AuthButtons() {
       className="flex items-center lg:order-2 relative">
       {user?.role === "user" ? (
         <>
+          {/* <div
+            className="relative flex items-center justify-center w-7 h-7 rounded-full cursor-pointer text-white font-bold text-lg mr-3"
+            style={{ backgroundColor: profileBgColor }}
+          >
+            {firstLetter}
+          </div> */}
           <FontAwesomeIcon
             icon={faUser}
             className="h-5 w-5 text-gray-800 dark:text-white mr-4 cursor-pointer"

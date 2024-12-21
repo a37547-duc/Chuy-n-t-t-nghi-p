@@ -9,7 +9,16 @@ const OrderItemDetailAdmin = ({ data, onClose }) => {
       <h2 className="text-xl font-bold mb-4">Chi tiết đơn đặt hàng</h2>
       <div className="mb-4">
         <div className="flex gap-4 mb-2">
-          <div className="w-full">
+        <div className="w-1/2">
+            <label className="block font-semibold">Mã đơn hàng</label>
+            <input
+              type="email"
+              value={data?._id}
+              readOnly
+              className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
+            />
+          </div>
+          <div className="w-1/2">
             <label className="block font-semibold">Họ và tên người nhận:</label>
             <input
               type="text"
@@ -34,7 +43,7 @@ const OrderItemDetailAdmin = ({ data, onClose }) => {
             <label className="block font-semibold">Email:</label>
             <input
               type="email"
-              value={data.email}
+              value={data?.email}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
             />
@@ -43,7 +52,7 @@ const OrderItemDetailAdmin = ({ data, onClose }) => {
             <label className="block font-semibold">Số điện thoại:</label>
             <input
               type="text"
-              value={data.shippingInfo.phone}
+              value={data.shippingInfo?.phone}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full"
             />
@@ -54,7 +63,7 @@ const OrderItemDetailAdmin = ({ data, onClose }) => {
             <label className="block font-semibold">Phương thức thanh toán:</label>
             <input
               type="text"
-              value={data.paymentMethod}
+              value={data?.paymentMethod}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
             />
@@ -63,7 +72,7 @@ const OrderItemDetailAdmin = ({ data, onClose }) => {
             <label className="block font-semibold">Trạng thái thanh toán:</label>
             <input
               type="text"
-              value={data.paymentStatus}
+              value={data?.paymentStatus}
               readOnly
               className="border border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2 w-full mb-2"
             />

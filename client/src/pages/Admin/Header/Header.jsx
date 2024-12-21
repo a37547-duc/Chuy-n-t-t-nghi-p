@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faBell, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faBell, faBars, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { GiEvilMoon } from "react-icons/gi";
 import { BsEmojiSunglasses } from "react-icons/bs";
 import { logoutUser} from "../../../features/Auth/authSlice"
@@ -65,6 +65,13 @@ function Header({ toggleSidebar, toggleDarkMode }) {
           </button>
 
           <div className="relative">
+            {/* <FontAwesomeIcon 
+              icon={faUserTie} 
+              size="lg" 
+              className="rounded-full cursor-pointer"
+              alt="Profile"
+              onClick={toggleDropdown}
+            /> */}
             <img
               className="h-8 w-8 rounded-full cursor-pointer"
               src="https://randomuser.me/api/portraits/men/1.jpg"

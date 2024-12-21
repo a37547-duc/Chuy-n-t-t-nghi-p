@@ -22,6 +22,8 @@ const AccountChangePassword = () => {
     }
     if (!newPassword.trim()) {
       newErrors.newPassword = "Mật khẩu mới không được để trống";
+    } else if (newPassword === currentPassword) {
+      newErrors.newPassword = "Mật khẩu mới phải khác mật khẩu hiện tại";
     } else if (newPassword.length < 8) {
       newErrors.newPassword = "Mật khẩu mới phải chứa ít nhất 8 ký tự";
     } else if (!specialCharRegex.test(newPassword)) {
