@@ -5,9 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartTotal, setDiscountInfo, clearDiscountInfo, setIsApplied } from "./../../../../../features/Client/discountSlice";
 import { apiFormData } from "../../../../../api/apiConfig";
-
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const PromotionProduct = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // Lấy trạng thái từ Redux
   const isApplied = useSelector((state) => state.discount.isApplied);
@@ -41,9 +44,9 @@ const PromotionProduct = () => {
       }
     } catch (error) {
       console.error("Lỗi kiểm tra khuyến mãi:", error);
-      // toast.info("Bạn cần đăng nhập để áp dụng mức khuyến mãi", {
-      //   className: "text-[15px]",
-      // });
+      setTimeout(() => {
+        navigate("/login", { state: { from: location }, replace: true });
+      }, 1000);
     }
   };
 

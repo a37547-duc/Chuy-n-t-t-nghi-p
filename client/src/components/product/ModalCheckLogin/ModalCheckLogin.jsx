@@ -39,7 +39,7 @@ const LoginCheckModal = ({ open, setOpen }) => {
 
         {/* Nội dung Modal */}
         <img
-          src="/path-to-your-image.png" // Thay thế bằng đường dẫn hình ảnh của bạn
+          src="https://themewagon.com/wp-content/uploads/2021/03/Frame-172-1.png" // Thay thế bằng đường dẫn hình ảnh của bạn
           alt="Logo"
           className="w-20 mx-auto"
         />
