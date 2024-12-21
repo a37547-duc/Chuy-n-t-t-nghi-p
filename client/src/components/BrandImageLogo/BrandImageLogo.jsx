@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-// Cần hiển thị ngay không dùng lazy
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setBrandName } from "../../features/Client/ClientFilterSlice";
-import { useState } from "react";
 
 const BrandImageLogo = ({ image }) => {
   const dispatch = useDispatch();

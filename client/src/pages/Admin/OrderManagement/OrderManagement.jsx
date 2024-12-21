@@ -128,7 +128,7 @@ const OrderManagement = () => {
       )}
       {!loading && !error && (
         <table className="table-auto w-full mt-6 bg-white shadow-md rounded-lg">
-          <thead>
+          <thead onMouseDown={(event) => {event.preventDefault();}}>
             <tr className="text-left text-xs bg-gray-200 text-gray-500 uppercase">
               <th className="p-4">ID</th>
               <th className="p-4">Tên khách hàng</th>

@@ -20,8 +20,8 @@ const AccountOrder = () => {
     { label: "Tất cả" },
     { label: "Chờ xác nhận" },
     { label: "Đã xác nhận" },
-    { label: "Đang vận chuyển" },
     { label: "Đã giao hàng" },
+    { label: "Giao hàng thành công" },
     { label: "Đã hủy" },
   ];
 
@@ -52,7 +52,7 @@ const AccountOrder = () => {
             <button
               key={index}
               onClick={() => handleItemClick(index, item.label)}
-              className={`w-[140px] py-2 rounded-md ${activeIndex === index ? "bg-red-600 text-white" : "bg-white border-2 border-gray-300"}`}
+              className={`w-[150px] text-[13px] font-medium py-2 rounded-md ${activeIndex === index ? "bg-red-600 text-white" : "bg-white border-2 border-gray-300"}`}
             >
               {item.label}
             </button>

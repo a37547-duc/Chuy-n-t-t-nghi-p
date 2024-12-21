@@ -28,6 +28,7 @@ import ClientBrandReducer from '../features/Client/ClientBrandSlice';
 import ClientCategoryReducer from "../features/Client/ClientCategorySlice";
 import ClientDiscountReducer from "../features/Client/ClientDiscountSlice";
 import CommentReducer from "../features/Client/Comment";
+import discountReducer from "../features/Client/discountSlice";
 
 export const store = configureStore({
   reducer: {
@@ -54,6 +55,7 @@ export const store = configureStore({
     clientCategory: ClientCategoryReducer,
     clientDiscount: ClientDiscountReducer,
     comment: CommentReducer,
+    discount: discountReducer,
     filter: ClientFilterReducer,
     [productApi.reducerPath]: productApi.reducer, 
   },

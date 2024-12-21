@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { updateBrand } from "../../../features/Admin/adminBrandSlice";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
 import ImageUploadOne from "../../images/ImageUploadOne";
@@ -8,11 +8,6 @@ import ImageUploadOne from "../../images/ImageUploadOne";
 const UpdateBrand = ({ editBrand, onClose }) => {
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.brand.brands);
-
-  useEffect(() => {
-    console.log("UpdateBrand: ", brands);
-    console.log('Brand:', editBrand);
-  }, [brands, editBrand]);
 
   const [error, setError] = useState("");
   const [updatedBrand, setUpdatedBrand] = useState({

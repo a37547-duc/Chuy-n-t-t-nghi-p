@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import { Modal, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-// import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const LoginCheckModal = ({ open, setOpen }) => {
-  const handleCloseLoginModal = () => setOpen(false); // Đóng modal
+  const location = useLocation()
+  const handleCloseLoginModal = () => setOpen(false);
 
   return (
     <Modal
@@ -59,7 +60,9 @@ const LoginCheckModal = ({ open, setOpen }) => {
           </Link>
           <Link
             to="/login"
+            state={{ from: location}}
             className="px-4 py-2 bg-red-600 text-white font-medium rounded focus:outline-none hover:bg-red-700"
+            // onClick={handleProductID}
           >
             Đăng nhập
           </Link>

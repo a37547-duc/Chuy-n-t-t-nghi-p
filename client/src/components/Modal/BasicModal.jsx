@@ -1,6 +1,6 @@
 import Modal from "react-modal";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // eslint-disable-next-line react/prop-types
 const BasicModal = ({ isOpen, onRequestClose, children }) => {

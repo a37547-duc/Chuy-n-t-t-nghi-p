@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import "react-datepicker/dist/react-datepicker.css"; 
 import { useDispatch, useSelector } from 'react-redux';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { LineChart, Line } from 'recharts';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';

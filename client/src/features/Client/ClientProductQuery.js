@@ -4,7 +4,7 @@ export const productApi = createApi({
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://laptech4k.onrender.com/api/v1",
-  }), // Cấu hình baseUrl đúng
+  }),
   endpoints: (builder) => ({
     getAllProducts: builder.query({
       query: (params) => {

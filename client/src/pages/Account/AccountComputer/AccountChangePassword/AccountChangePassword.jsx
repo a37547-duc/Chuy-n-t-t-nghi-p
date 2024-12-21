@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { changePassword } from '../../../../features/user/userSlice';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AccountChangePassword = () => {

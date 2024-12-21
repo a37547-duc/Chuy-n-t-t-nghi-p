@@ -1,17 +1,13 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ImageUploadOne from "../../images/ImageUploadOne";
 import { addBrand } from "../../../features/Admin/adminBrandSlice";
 import { getAllBrands } from "../../../features/brand/brandsSlice";
-import ImageUploadOne from "../../images/ImageUploadOne";
 
 // eslint-disable-next-line react/prop-types
 const AddBrand = ({ onClose }) => {
   const dispatch = useDispatch();
   const brands = useSelector((state) => state.brand.brands);
-
-  useEffect(() => {
-    console.log("AddBrand: ",brands)
-  },[brands])
   
   const [error, setError] = useState("");
   const [newBrand, setNewBrand] = useState({
@@ -25,7 +21,7 @@ const AddBrand = ({ onClose }) => {
   },[]);
 
   const handleImageUpload = useCallback((url) => {
-    setNewBrand((prev) => ({ ...prev, image: url })); // Lưu URL thay cho file
+    setNewBrand((prev) => ({ ...prev, image: url }));
   },[]);
 
   const handleSubmit = useCallback(
@@ -44,12 +40,11 @@ const AddBrand = ({ onClose }) => {
 
       try {
         await dispatch(addBrand(newBrand));
-        console.log("Brand added successfully");
         dispatch(getAllBrands());
         setNewBrand({ name: "", image: null });
         onClose();
       } catch (error) {
-        console.error("Error adding brand:", error);
+        setError("Error adding brand:", error);
       }
   },[brands, newBrand, dispatch, onClose]);
 
@@ -64,9 +59,9 @@ const AddBrand = ({ onClose }) => {
             name="name"
             value={newBrand.name}
             onChange={handleChange}
-            className={`mt-1 block w-full border ${
-              error ? "border-red-500" : "border-gray-300"
-            } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
+            className={`mt-1 block w-full border ${error ? "border-red-500" : "border-gray-300"} 
+              focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`
+            }
             required
           />
           {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
@@ -99,3 +94,4 @@ const AddBrand = ({ onClose }) => {
 };
 
 export default AddBrand;
+

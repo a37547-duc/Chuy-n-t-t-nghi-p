@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../../api/apiConfig';
 import { toast } from "react-toastify";
+import { api } from '../../api/apiConfig';
 import "react-toastify/dist/ReactToastify.css";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 //Hàm đăng ký user
 export const registerUser = createAsyncThunk(
@@ -22,7 +22,6 @@ export const loginUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await api.post('/user/login', formData);
-      // console.log(response.data);
       const token = response.data;
       if (token) {
         localStorage.setItem('access_token', token.user.token);
@@ -124,7 +123,6 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loginLoading = false;
         state.error = action.payload;
-        console.log(state.error);
         toast.error(state.error || "Đăng nhập thất bại. Vui lòng thử lại.");
       });
   },

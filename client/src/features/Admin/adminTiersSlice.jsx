@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../api/apiConfig";
+import "react-toastify/dist/ReactToastify.css";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Thunk để gọi API thêm hạng
 export const addTiers = createAsyncThunk(
@@ -63,14 +63,14 @@ const handleTierUpdate = (state, action) => {
 const tierSlice = createSlice({
   name: "tiers",
   initialState,
-  reducers: {}, // Không có reducer nào cần ở đây
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Thêm hạng
       .addCase(addTiers.pending, handlePending)
       .addCase(addTiers.fulfilled, (state, action) => {
         state.loading = false;
-        state.tiers.push(action.payload); // Sử dụng tiers
+        state.tiers.push(action.payload);
         toast.success("Thêm hạng thành công!");
       })
       .addCase(addTiers.rejected, (state, action) => {
@@ -83,7 +83,7 @@ const tierSlice = createSlice({
       .addCase(updateTier.pending, handlePending)
       .addCase(updateTier.fulfilled, (state, action) => {
         state.loading = false;
-        handleTierUpdate(state, action); // Sử dụng tiers
+        handleTierUpdate(state, action);
         toast.success("Sửa hạng thành công!");
       })
       .addCase(updateTier.rejected, (state, action) => {
@@ -96,7 +96,7 @@ const tierSlice = createSlice({
       .addCase(deleteTiers.pending, handlePending)
       .addCase(deleteTiers.fulfilled, (state, action) => {
         state.loading = false;
-        state.tiers = state.tiers.filter((tier) => tier._id !== action.payload.id); // Sử dụng tiers
+        state.tiers = state.tiers.filter((tier) => tier._id !== action.payload.id);
         toast.success("Xóa hạng thành công!");
       })
       .addCase(deleteTiers.rejected, (state, action) => {

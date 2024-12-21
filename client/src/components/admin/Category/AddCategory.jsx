@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ImageUploadOne from "../../images/ImageUploadOne";
 import { addCategories } from "../../../features/Admin/adminCategorySlice";
 import { getAllCategories } from "../../../features/category/categoriesSlice";
-import ImageUploadOne from "../../images/ImageUploadOne";
 
 // eslint-disable-next-line react/prop-types
 const AddCategory = ({ onClose }) => {
@@ -58,13 +58,11 @@ const AddCategory = ({ onClose }) => {
 
       try {
         await dispatch(addCategories(newCategory));
-        console.log("Added category:", newCategory);
-        console.log("Category added successfully");
         dispatch(getAllCategories());
         setNewCategory({ name: "", image: null });
         onClose();
       } catch (error) {
-        console.error("Error adding category:", error);
+        setError("Error adding category:", error);
       }
     },[dispatch, categories, newCategory, onClose] // Đảm bảo mọi thứ cần thiết là dependencies
   );
@@ -80,9 +78,9 @@ const AddCategory = ({ onClose }) => {
             name="name"
             value={newCategory.name}
             onChange={handleChange}
-            className={`mt-1 block w-full border ${
-              error ? "border-red-500" : "border-gray-300"
-            } focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`}
+            className={`mt-1 block w-full border ${error ? "border-red-500" : "border-gray-300"} 
+              focus:border-2 focus:border-blue-500 focus:outline-none rounded-md p-2`
+            }
             required
           />
           {error && <p className="mt-1 text-sm text-red-500">{error}</p>}

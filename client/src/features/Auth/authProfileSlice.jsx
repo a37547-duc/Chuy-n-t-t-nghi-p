@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { api } from "../../api/apiConfig";
 import { toast } from "react-toastify";
+import { api } from "../../api/apiConfig";
 import "react-toastify/dist/ReactToastify.css";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Hàm lấy thông tin profile của người dùng
 export const getUserProfile = createAsyncThunk(
@@ -25,10 +25,8 @@ export const updateUserProfile = createAsyncThunk(
   async (updatedData, { rejectWithValue }) => {
     try {
       const response = await api.patch("/user/account/update", updatedData);
-      // toast.success("Cập nhật thông tin thành công");
       return response.data;
     } catch (error) {
-      // toast.error("Cập nhật thông tin thất bại");
       return rejectWithValue(error.response ? error.response.data : error.message);
     }
   }

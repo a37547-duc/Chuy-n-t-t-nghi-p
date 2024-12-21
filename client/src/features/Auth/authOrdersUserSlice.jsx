@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { api } from "../../api/apiConfig";
 import { toast } from "react-toastify";
+import { api } from "../../api/apiConfig";
 import "react-toastify/dist/ReactToastify.css";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Hàm lấy thông tin đơn hàng của người dùng
 export const getOrdersUser = createAsyncThunk(
@@ -9,11 +9,9 @@ export const getOrdersUser = createAsyncThunk(
   async (status, { rejectWithValue }) => {
     try {
       const response = await api.get(`/user/order?status=${status}`);
-      console.log("Response: ",response)
       // Nếu API trả về phản hồi thành công nhưng không có dữ liệu
       if (response.status === 404 && (!response.data || response.data.length === 0)) {
-        console.log("RE", response)
-        return { data: [] }; // Trả về mảng rỗng nếu không có đơn hàng
+        return { data: [] };
       }
       return response.data;
     } catch (error) {
@@ -42,7 +40,6 @@ const userOrdersSlice = createSlice({
       .addCase(getOrdersUser.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload.data;
-        // console.log("State: ",state.orders)
       })
       .addCase(getOrdersUser.rejected, (state, action) => {
         state.loading = false;

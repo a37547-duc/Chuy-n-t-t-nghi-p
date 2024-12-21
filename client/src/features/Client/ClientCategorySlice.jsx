@@ -1,12 +1,12 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../api/apiConfig";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAllCategoriesClient = createAsyncThunk(
   "client/fetchCategories",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/products/category");
-      return response.data?.category || []; // Trả về dữ liệu brands
+      return response.data?.category || [];
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -20,7 +20,7 @@ const clientCategorySlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {}, // Không cần thêm reducers nếu chỉ gọi API
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllCategoriesClient.pending, (state) => {

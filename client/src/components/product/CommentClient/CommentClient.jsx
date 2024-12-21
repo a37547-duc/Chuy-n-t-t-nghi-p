@@ -19,7 +19,7 @@ const CommentClient = ({ product }) => {
     if (product?.product?._id) {
       dispatch(getCommentsByProductId(product?.product?._id));
     }
-  }, [dispatch, product?.product?._id]);
+  }, [dispatch, product?.product?._id, ratings]);
 
   const ratingSort = ratings.slice().reverse();
 

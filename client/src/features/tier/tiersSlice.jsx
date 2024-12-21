@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../api/apiConfig";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Thunk để gọi API lấy danh sách các tiers
 export const getAllTiers = createAsyncThunk(

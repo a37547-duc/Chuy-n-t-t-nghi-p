@@ -8,14 +8,13 @@ import ShowImageMobile from './ShowImageMobile/ShowImageMobile';
 import DescriptionProduct from './DescriptionProduct/DescriptionProduct';
 import OverviewProduct from './OverviewProduct/OverviewProduct';
 import PromotionProduct from './PromotionProduct/PromotionProduct';
-import ButtonBuyProduct from './ButtonBuyProduct/BottonBuyProduct';
+import ButtonBuyProduct from './ButtonBuyProduct/ButtonBuyProduct';
 
 const ProductDetailTop = ({ product, onVariantChange }) => {
   // console.log("Varinant: ", onVariantChange)
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 540);
   const [selectedVariant, setSelectedVariant] = useState(product?.variants?.[0]);
 
-  // Function to check screen size on resize
   const handleResize = () => {
     setIsMobileView(window.innerWidth <= 768);
   };

@@ -1,15 +1,15 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { api } from "../../api/apiConfig";
+import "react-toastify/dist/ReactToastify.css";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Thunk để gọi API gửi đánh giá sản phẩm
 export const postRating = createAsyncThunk(
   "rating/postRating",
   async (ratingData, { rejectWithValue }) => {
     try {
-      const response = await api.post("/rating/post", ratingData); // API gửi đánh giá
-      return response.data; // Dữ liệu trả về từ API sẽ được trả về đây
+      const response = await api.post("/rating/post", ratingData);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Có lỗi xảy ra khi gửi đánh giá.");
     }
@@ -36,7 +36,7 @@ const ratingSlice = createSlice({
       .addCase(postRating.pending, handlePending)
       .addCase(postRating.fulfilled, (state, action) => {
         state.loading = false;
-        state.rating = action.payload; // Cập nhật rating với dữ liệu trả về từ API
+        state.rating = action.payload;
         toast.success("Đánh giá của bạn đã được gửi thành công!");
       })
       .addCase(postRating.rejected, (state, action) => {

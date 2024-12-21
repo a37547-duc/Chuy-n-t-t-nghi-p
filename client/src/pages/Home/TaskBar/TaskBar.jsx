@@ -1,12 +1,12 @@
+import { Link } from "react-router-dom";
+import { Skeleton } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComputer } from "@fortawesome/free-solid-svg-icons";
 import { faGreaterThan } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { setCategoryName } from "../../../features/Client/ClientFilterSlice";
 import { getAllCategoriesClient } from "../../../features/Client/ClientCategorySlice";
-import { Skeleton } from "@mui/material";
 
 import "./Taskbar.css";
 const Taskbar = () => {
@@ -33,7 +33,6 @@ const Taskbar = () => {
   return (
     <div
       className="taskbar w-full max-w-[1100px] max-h-[376px] h-full top-[20px] relative bg-white flex flex-col z-10 rounded-md border border-[#ddd] text-[12px]"
-      onMouseLeave={handleMouseLeave}
     >
       {loading ? (
         <div className="">
@@ -66,6 +65,7 @@ const Taskbar = () => {
             }`}
             onMouseEnter={() => handleMouseEnter(index)}
             onClick={() => handleProductClick(category.name)}
+            onMouseLeave={handleMouseLeave}
           >
             {category.image ? (
               <img

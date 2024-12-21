@@ -29,7 +29,6 @@ const filterSlice = createSlice({
       state.searchName = action.payload;
     },
     resetFilter: () => {
-      // console.log("Filters have been reset");
       return initialState;
     },
   },
